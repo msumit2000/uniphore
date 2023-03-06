@@ -1,0 +1,3 @@
+[console_scripts]
+udops = udops.__main__:app
+

@@ -1,0 +1,46 @@
+{
+  "asr": [
+    {
+      "key": "id",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "file",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "text",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "gender",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": false
+    },
+    {
+      "key": "speaker_id",
+      "data_type": "int64",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "language",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": false
+    },
+    {
+      "key": "audio",
+      "data_type": "string",
+      "data_class": "Audio",
+      "mandatory": true
+    }
+  ]
+}

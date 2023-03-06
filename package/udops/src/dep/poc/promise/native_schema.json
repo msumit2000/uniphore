@@ -1,0 +1,94 @@
+{
+  "asr": [
+    {
+      "key": "annotation",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "annotation_session",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "dataset",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "answer",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "transcript_id",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "file_source",
+      "data_type": "float64",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "turn_id",
+      "data_type": "int64",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "speaker",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "text",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "tags",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "turn_labels",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "has_tag",
+      "data_type": "bool",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "source",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "token_tags",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "biluo_tags",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    }
+  ]
+}

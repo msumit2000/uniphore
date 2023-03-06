@@ -1,0 +1,22 @@
+{
+  "asr": [
+    {
+      "key": "file_path",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "text",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    },
+    {
+      "key": "id",
+      "data_type": "string",
+      "data_class": "Value",
+      "mandatory": true
+    }
+  ]
+}
