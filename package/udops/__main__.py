@@ -131,7 +131,7 @@ try:
     @app.command()
 
     def export_data(corpus_details_dict, output_loc, schema_type : Optional[str] =typer.Argument("common"), custom_schema:Optional[str] =typer.Argument(None) ):
-=======
+
     def store_data(corpus_details_dict, output_loc, schema_type : Optional[str] =typer.Argument("common"), custom_schema:Optional[str] =typer.Argument(None) ):
 
         ucorpus.store_data(corpus_details_dict,output_loc,schema_type,custom_schema)
