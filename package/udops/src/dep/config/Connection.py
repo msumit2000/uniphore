@@ -17,7 +17,7 @@ class Connection:
             return conn
         except Exception as e:
             raise e
-<<<<<<< HEAD
+
 
     def create_connection(self,host,dbname,user,password):
         config = configparser.ConfigParser()
@@ -40,5 +40,3 @@ class Connection:
             config.write(f)
             print(config.get('DatabaseSection','user'))
 
-=======
->>>>>>> 66c08d085420a328082f15354c6b5488aef2cbf5

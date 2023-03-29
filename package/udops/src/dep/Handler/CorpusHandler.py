@@ -11,12 +11,12 @@ conn = connection.get_connection()
 
 
 class CorpusHandler:
-<<<<<<< HEAD
+
     def RDSConfig(self,host, dbname , user, password):
         connection.create_connection( host=host, dbname=dbname, user=user, password=password)
 
-=======
->>>>>>> 66c08d085420a328082f15354c6b5488aef2cbf5
+
+
     def list_corpus_names(self, filter_value):
          try:
              corpusMetadataManager = CorpusMetadataManager()

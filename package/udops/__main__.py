@@ -11,7 +11,7 @@ app = typer.Typer(name="udops",add_completion=False,help="Udops utility")
 
 try:
     @app.command()
-<<<<<<< HEAD
+
     def RDSConfig(host: str = typer.Option(...,"--host"),
                   dbname: str = typer.Option(...,"--dbname"),
                   username: str = typer.Option(...,"--username"),
@@ -19,8 +19,8 @@ try:
         ucorpus.RDSConfig(host = host , dbname = dbname , user = username, password = password)
     
     @app.command()
-=======
->>>>>>> 66c08d085420a328082f15354c6b5488aef2cbf5
+
+
     def listCorpusNames(filter_value: str):
         ucorpus.listCorpusNames(filter_value)
 

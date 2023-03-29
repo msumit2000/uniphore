@@ -24,13 +24,13 @@ class ucorpus:
   #      print(row)
         return row
         
-<<<<<<< HEAD
+
     def RDSConfig(host,dbname , user, password):
         corpus_handler = CorpusHandler()
         corpus_handler.RDSConfig(host = host , dbname = dbname , user = user , password = password)
-=======
 
->>>>>>> 66c08d085420a328082f15354c6b5488aef2cbf5
+
+
 
     def init(file,target):
         corpus_handler = CorpusHandler()
