@@ -129,11 +129,11 @@ try:
         ucorpus.datareader(corpus_details_dict, schema_type, custom_schema)
 
     @app.command()
-<<<<<<< HEAD
+
     def export_data(corpus_details_dict, output_loc, schema_type : Optional[str] =typer.Argument("common"), custom_schema:Optional[str] =typer.Argument(None) ):
 =======
     def store_data(corpus_details_dict, output_loc, schema_type : Optional[str] =typer.Argument("common"), custom_schema:Optional[str] =typer.Argument(None) ):
->>>>>>> 66c08d085420a328082f15354c6b5488aef2cbf5
+
         ucorpus.store_data(corpus_details_dict,output_loc,schema_type,custom_schema)
 
     #Dataset Commands    
