@@ -29,7 +29,9 @@ class CorpusRepositoryManager:
             to_remote=False,
         )
         
-  
+    def destroy(self):
+        s = Repo(os.getcwd())
+        s.destroy()
 
     def commit(self, message):
         g = git.Repo(os.getcwd())

@@ -30,7 +30,9 @@ class ucorpus:
         corpus_handler.RDSConfig(host = host , dbname = dbname , user = user , password = password)
 
 
-
+    def delete_corpus(corpusname):
+        corpus_handler = CorpusHandler()
+        corpus_handler.delete_corpus(corpusname)
 
     def init(file,target):
         corpus_handler = CorpusHandler()

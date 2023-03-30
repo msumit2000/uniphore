@@ -38,5 +38,5 @@ class Connection:
 
         with open(dir_path + '/DatabaseConnection.properties', 'w') as f:
             config.write(f)
-            print(config.get('DatabaseSection','user'))
+            print("Udops connected to ",config.get('DatabaseSection','user'))
 

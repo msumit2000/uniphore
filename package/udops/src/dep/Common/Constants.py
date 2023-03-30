@@ -18,7 +18,9 @@ class Constants:
     # Update Corpus
     update_query = "UPDATE corpus_metadata SET source_type=%s,customer_name=%s,data_domain_name= %s WHERE corpus_id=(%s) "
     corpus_error = "Corpus Doesnt Exist"
-
+    
+    #Delete Corpus
+    delete_query = "DELETE from corpus_metadata where corpus_name = (%s) "
     # update_timestamp
     update_ts_query = "UPDATE corpus_metadata SET  lastUpdated_ts= timezone(INTERVAL '+00:00', now()) where corpus_name=(%s)"
 

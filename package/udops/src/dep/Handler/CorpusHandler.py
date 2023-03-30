@@ -56,6 +56,15 @@ class CorpusHandler:
             return response
         except Exception as e:
             raise e
+     
+    def delete_corpus(self, corpus_name):
+        try:
+            corpusMetadataManager = CorpusMetadataManager()
+            corpusMetadataManager.delete_corpus(corpus_name,conn)
+            corpusRepositoryManager = CorpusRepositoryManager()
+            corpusRepositoryManager.destroy()
+        except Exception as e:
+            raise e
 
     def manager_get_metadata_type(self, corpus_type):
         try:

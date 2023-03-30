@@ -186,7 +186,7 @@ class CorpusMetadataManager:
             print(e)
 
     def update_timestamp(self, conn, args):
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute(Constants.update_ts_query, args)
         conn.commit()
         conn.close()
@@ -199,7 +199,15 @@ class CorpusMetadataManager:
         conn.commit()
         conn.close()
         cursor.close()
-
+    
+    def delete_corpus(self, corpusname,conn):
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute("DELETE FROM corpus_metadata WHERE corpus_name = %s",(corpusname,))
+        print("Deleted corpus ",corpusname)
+        conn.commit()
+        cur.close()
+        conn.close()
+    
     def _filter(self, filterValue):
         filters = filterValue.split(",")
         resp = []

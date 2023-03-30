@@ -11,7 +11,6 @@ app = typer.Typer(name="udops",add_completion=False,help="Udops utility")
 
 try:
     @app.command()
-
     def RDSConfig(host: str = typer.Option(...,"--host"),
                   dbname: str = typer.Option(...,"--dbname"),
                   username: str = typer.Option(...,"--username"),
@@ -19,8 +18,10 @@ try:
         ucorpus.RDSConfig(host = host , dbname = dbname , user = username, password = password)
     
     @app.command()
+    def delete_corpus(corpusname):
+        ucorpus.delete_corpus(corpusname)
 
-
+    @app.command()
     def listCorpusNames(filter_value: str):
         ucorpus.listCorpusNames(filter_value)
 
@@ -131,9 +132,6 @@ try:
     @app.command()
 
     def export_data(corpus_details_dict, output_loc, schema_type : Optional[str] =typer.Argument("common"), custom_schema:Optional[str] =typer.Argument(None) ):
-
-    def store_data(corpus_details_dict, output_loc, schema_type : Optional[str] =typer.Argument("common"), custom_schema:Optional[str] =typer.Argument(None) ):
-
         ucorpus.store_data(corpus_details_dict,output_loc,schema_type,custom_schema)
 
     #Dataset Commands    
@@ -173,11 +171,7 @@ try:
 
 
     @app.command()
-<<<<<<< HEAD
     def export_dataset(dataset_name: str = typer.Option(..., "--dataset_name"),
-=======
-    def store_dataset(dataset_name: str = typer.Option(..., "--dataset_name"),
->>>>>>> 66c08d085420a328082f15354c6b5488aef2cbf5
                       output_path: str = typer.Option(None, "--output_path"),
                       schema_type_args: Optional[str] = typer.Option("common", "--schema"),
                       custom_schema: Optional[str] = typer.Option(None, "--custom_schema")):
