@@ -24,7 +24,9 @@ class udataset:
         dataset_handler.store_dataset(dataset_name, output_path, schema_type_args, custom_schema)
 
 
-    
+    def dataset_custom_fields(datasetname, kv_pairs):
+        dataset_handler.dataset_custom_fields(datasetname, kv_pairs)
+
     def listDatasetNames(corpus_type: str, properties_file: str, detailed_flag: str = ""):
    #     dataset_props = json.load(open(properties_file, 'r'))
         result = dataset_handler.list_dataset_names(corpus_type, properties_file, detailed_flag)

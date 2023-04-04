@@ -37,6 +37,22 @@ class DatasetMetadatamanager:
 
         except Exception as e:
             raise e
+    
+    def corpus_custom_fields(self ,corpusname,kv_pairs):
+        conn = connection.get_connection()
+        cur = conn.cursor()
+        cur.execute("select dataset_id from dataset_metadata where dataset_name = %s",(datasetname,))
+        rows = cur.fetchall()
+        for i in rows:
+            c = i[0]
+        print(c)
+        for key, value in kv_pairs.items():
+           cur.execute("insert into dataset_custom_fields(dataset_id, field_name, field_value) values (%s , %s , %s)",(c,key,value))
+           print(key,":",value,"\n")
+
+        conn.commit()
+        cur.close()
+        conn.close()
 
     def list_dataset_by_name(self, dataset_name, list_corpus1):
         try:

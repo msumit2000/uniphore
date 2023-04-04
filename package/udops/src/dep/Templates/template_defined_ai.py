@@ -44,18 +44,20 @@ class DefinedAIDataset(datasets.GeneratorBasedBuilder):
             for file_path in file_path_list:
                 dataframe = pd.read_csv(file_path, sep="\t")
                 rslt_df = dataframe[(dataframe['RecordingId']) == id_]
-                native_keys = ['TranscriptionId', 'Channels', 'Channel', 'StartTime', 'EndTime', 'SegmentDuration',
-                               'Transcription',
-                               'RecordingId', 'Domain', 'Duration', 'SampleRate', 'BitDepth', 'AudioFileUrl',
-                               'RelativeFileName',
-                               'LeftChannelSpeakerId', 'LeftChannelNative', 'LeftChannelRole', 'LeftChannelSpeakerAge',
-                               'LeftChannelSpeakerGender', 'LeftChannelSpeakerLivingCountry',
-                               'LeftChannelSpeakerAccent',
-                               'RightChannelSpeakerId', 'RightChannelNative', 'RightChannelRole',
-                               'RightChannelSpeakerAge',
-                               'RightChannelSpeakerGender', 'RightChannelSpeakerLivingCountry',
-                               'RightChannelSpeakerAccent']
+                native_keys=dataframe.columns.tolist()
 
+#                native_keys = ['TranscriptionId', 'Channels', 'Channel', 'StartTime', 'EndTime', 'SegmentDuration',
+ #                              'Transcription',
+  #                             'RecordingId', 'Domain', 'Duration', 'SampleRate', 'BitDepth', 'AudioFileUrl',
+   #                            'RelativeFileName',
+    #                           'LeftChannelSpeakerId', 'LeftChannelNative', 'LeftChannelRole', 'LeftChannelSpeakerAge',
+     #                          'LeftChannelSpeakerGender', 'LeftChannelSpeakerLivingCountry',
+      #                         'LeftChannelSpeakerAccent',
+       #                        'RightChannelSpeakerId', 'RightChannelNative', 'RightChannelRole',
+        #                       'RightChannelSpeakerAge',
+         #                      'RightChannelSpeakerGender', 'RightChannelSpeakerLivingCountry',
+          #                     'RightChannelSpeakerAccent']
+        
                 for index, row in rslt_df.iterrows():
                     detail = {}
                     for key1 in native_keys:

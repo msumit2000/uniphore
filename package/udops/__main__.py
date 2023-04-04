@@ -1,6 +1,6 @@
 from udops.src.dep.ucorpus import ucorpus
 from udops.src.dep.udataset import udataset
-from typing import Optional
+from typing import Optional, List
 import re
 from urllib.parse import urlparse, parse_qs
 import shutil
@@ -73,7 +73,7 @@ try:
                 },
                 {
                     "field_name": "common_schema",
-                    "field_value": "/src/dep/poc/promise/" + str(c)
+                    "field_value": "/poc/promise/" + str(c)
                 }
             ]
 
@@ -85,6 +85,30 @@ try:
         else:
             return "Corpus name and folder name should be same"
     
+    @app.command()
+    def corpus_custom_fields(corpusname , data: List[str]):
+        """
+        Process multiple key-value pairs
+        """
+        """
+        Map key-value pairs to a name
+        """
+        kv_pairs = dict()
+        for i in data:
+            for pair in i.split():
+                key, value = pair.split('=')
+                kv_pairs[key] = value
+        ucorpus.corpus_custom_fields(corpusname , kv_pairs)
+    
+    @app.command()
+    def dataset_custom_fields(datasetname , data:List[str]):
+        kv_pairs = dict()
+        for i in data:
+            for pair in i.split():
+                key , value = pair.split('=')
+                kv_pairs[key] = value
+        ucorpus.corpus_custom_fields(datasetname , kv_pairs)
+
     @app.command()
     def add(target: str):
         ucorpus.add(target)

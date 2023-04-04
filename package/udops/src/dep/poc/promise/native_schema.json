@@ -1,94 +1,167 @@
 {
-  "asr": [
-    {
-      "key": "annotation",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "annotation_session",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "dataset",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "answer",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "transcript_id",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "file_source",
-      "data_type": "float64",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "turn_id",
-      "data_type": "int64",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "speaker",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "text",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "tags",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "turn_labels",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "has_tag",
-      "data_type": "bool",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "source",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "token_tags",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    },
-    {
-      "key": "biluo_tags",
-      "data_type": "string",
-      "data_class": "Value",
-      "mandatory": true
-    }
-  ]
-}
+    "asr": [
+      {
+        "key": "file",
+        "data_type": "string",
+        "data_class": "Value",
+        "mandatory": true
+      },
+      {
+        "key": "audio",
+        "data_type": "string",
+        "data_class": "Audio",
+        "mandatory": false
+      },
+      {
+        "key": "transcription_detail",
+        "data_type": [
+          {
+            "key": "TranscriptionId",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "Channels",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "Channel",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "StartTime",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "EndTime",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "SegmentDuration",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "Transcription",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "RecordingId",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "Domain",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "Duration",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "SampleRate",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "BitDepth",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "AudioFileUrl",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "RelativeFileName",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "LeftChannelSpeakerId",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "LeftChannelNative",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "LeftChannelRole",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "LeftChannelSpeakerAge",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "LeftChannelSpeakerGender",
+            "data_type": "string",
+            "data_class": "Value"
+          },{
+            "key": "LeftChannelSpeakerLivingCountry",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "LeftChannelSpeakerAccent",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "RightChannelSpeakerId",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "RightChannelNative",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "RightChannelRole",
+            "data_type": "string",
+            "data_class": "Value"
+          },{
+            "key": "RightChannelSpeakerAge",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "RightChannelSpeakerGender",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "RightChannelSpeakerLivingCountry",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "RightChannelSpeakerAccent",
+            "data_type": "string",
+            "data_class": "Value"
+          }
+        ],
+        "data_class": "Sequence",
+        "mandatory": true
+      },
+      {
+        "key": "id",
+        "data_type": "string",
+        "data_class": "Value",
+        "mandatory": true
+      }
+    ]
+  }

@@ -47,7 +47,8 @@ class CorpusDataReaderManager:
 
         corpus_detail=corpus_metadat_manager.get_corpus_metadata_by_id(corpus_name,conn)
         # print(corpus_detail['corpus_type'])
-        
+        print(file_path)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&")
         output_schema = json.load(open(file_path[0]))
     
         for corpus in corpus_detail:

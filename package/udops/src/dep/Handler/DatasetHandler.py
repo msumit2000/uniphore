@@ -38,6 +38,10 @@ class DatasetHandler:
             return result
         except Exception as e:
             raise e
+    
+    def dataset_custom_fields(self, datasetname, kv_pairs):
+        try: 
+            result = datasetMetadataManager1.dataset_custom_list(datasetname, kv_pairs)
 
     def store_dataset(self, dataset_name, output_file_path, schema_type_args, custom_schema):
         try:

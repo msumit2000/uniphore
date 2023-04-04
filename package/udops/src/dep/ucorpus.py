@@ -29,6 +29,9 @@ class ucorpus:
         corpus_handler = CorpusHandler()
         corpus_handler.RDSConfig(host = host , dbname = dbname , user = user , password = password)
 
+    def corpus_custom_fields(corpusname , kv_pairs):
+        corpus_handler = CorpusHandler()
+        corpus_handler.corpus_custom_fields(corpusname , kv_pairs)
 
     def delete_corpus(corpusname):
         corpus_handler = CorpusHandler()

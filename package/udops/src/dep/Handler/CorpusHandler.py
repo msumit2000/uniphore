@@ -16,6 +16,11 @@ class CorpusHandler:
         connection.create_connection( host=host, dbname=dbname, user=user, password=password)
 
 
+    def corpus_custom_fields(self,corpusname,kv_pairs):
+        corpusMetadataManager = CorpusMetadataManager()
+        conn = connection.get_connection()
+        corpusMetadataManager.corpus_custom_fields(corpusname, kv_pairs, conn)
+
 
     def list_corpus_names(self, filter_value):
          try:

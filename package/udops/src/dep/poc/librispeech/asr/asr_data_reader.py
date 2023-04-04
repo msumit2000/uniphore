@@ -11,7 +11,8 @@ class ASRDataReader:
         temp_file_path = "reader-" + datetime.now().strftime('%Y%m%d%H%M%S') + ".py"
         try:
             self.__create_file(output_schema, data_dir[0], template_file_path[0], temp_file_path)
-#            print( data_dir, template_file_path,temp_file_path)
+            print("***************")
+            print( data_dir, template_file_path,temp_file_path)
             dataset = load_dataset(temp_file_path, data_dir=data_dir[0])
             return dataset
         except Exception as err:

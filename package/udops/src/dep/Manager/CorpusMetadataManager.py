@@ -199,7 +199,22 @@ class CorpusMetadataManager:
         conn.commit()
         conn.close()
         cursor.close()
-    
+   
+    def corpus_custom_fields(self ,corpusname,kv_pairs, conn):
+        cur = conn.cursor()
+        cur.execute("select corpus_id from corpus_metadata where corpus_name = %s",(corpusname,))
+        rows = cur.fetchall()
+        for i in rows:
+            c = i[0]
+        print(c)
+        for key, value in kv_pairs.items():
+           cur.execute("insert into corpus_custom_fields(corpus_id, field_name, field_value) values (%s , %s , %s)",(c,key,value))
+           print(key,":",value,"\n")
+           
+        conn.commit()
+        cur.close()
+        conn.close()
+
     def delete_corpus(self, corpusname,conn):
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute("DELETE FROM corpus_metadata WHERE corpus_name = %s",(corpusname,))
