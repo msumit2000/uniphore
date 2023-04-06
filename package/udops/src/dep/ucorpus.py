@@ -32,6 +32,14 @@ class ucorpus:
     def corpus_custom_fields(corpusname , kv_pairs):
         corpus_handler = CorpusHandler()
         corpus_handler.corpus_custom_fields(corpusname , kv_pairs)
+     
+    def list_corpus():
+        corpus_handler = CorpusHandler()
+        corpus_handler.list_commits()
+
+    def checkout(commitid):
+        corpus_handler = CorpusHandler()
+        corpus_handler.checkout(commitid)
 
     def delete_corpus(corpusname):
         corpus_handler = CorpusHandler()

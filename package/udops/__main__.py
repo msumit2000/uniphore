@@ -110,6 +110,14 @@ try:
         ucorpus.corpus_custom_fields(datasetname , kv_pairs)
 
     @app.command()
+    def list_commits():
+        ucorpus.list_corpus()
+
+    @app.command()
+    def checkout(commitid):
+        ucorpus.checkout(commitid)
+
+    @app.command()
     def add(target: str):
         ucorpus.add(target)
     

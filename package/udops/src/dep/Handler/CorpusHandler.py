@@ -21,6 +21,15 @@ class CorpusHandler:
         conn = connection.get_connection()
         corpusMetadataManager.corpus_custom_fields(corpusname, kv_pairs, conn)
 
+    def list_commits(self):
+        corpusRepositoryManager = CorpusRepositoryManager()
+        corpusRepositoryManager.list_commits()
+       
+    def checkout(self, commitid):
+        corpusRepositoryManager = CorpusRepositoryManager()
+        corpusRepositoryManager.checkout(commitid)
+
+
 
     def list_corpus_names(self, filter_value):
          try:

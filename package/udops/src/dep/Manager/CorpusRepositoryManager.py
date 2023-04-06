@@ -28,7 +28,15 @@ class CorpusRepositoryManager:
             fname=None,
             to_remote=False,
         )
-        
+    
+    def checkout(self, commitid):
+        g = git.Repo(os.getcwd())
+        g.git.checkout(commitid)
+
+    def list_commits(self):
+        g = git.Git(os.getcwd())
+        print(g.log('--reflog'))
+
     def destroy(self):
         s = Repo(os.getcwd())
         s.destroy()
