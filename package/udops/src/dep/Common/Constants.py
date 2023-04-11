@@ -71,6 +71,6 @@ class Constants:
     TABLESPACE pg_default'''
 
     # insert query
-    insert_query_dataset_metadata = "insert into dataset_metadata (dataset_name,corpus_type,corpus_filter) values (%s,%s,%s)"
+    insert_query_dataset_metadata = "insert into dataset_metadata (dataset_name,corpus_type,corpus_filter,corpus_training) values (%s,%s,%s,%s)"
     insert_query_dataset_custom = "insert into dataset_custom_fields (dataset_id,field_name,field_value) values(%s,%s,%s)"
     insert_query_dataset_corpora = "insert into dataset_corpus_list (dataset_id, corpus_id,corpus_name) values(%s,%s,%s)"

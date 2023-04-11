@@ -171,14 +171,14 @@ try:
     def create_dataset_by_list(dataset_name: str = typer.Option(..., "--dataset_name"),
                                custom_field_file: str = typer.Option(None, "--custom_property"),
                                schema_type_args: str = typer.Option("common", "--schema_type"),
-                               list_json: str = typer.Option(..., "--list")):
+                               list_json: str = typer.Option(..., "--list"),training_corpus :str =typer.Option(None,"--training_corpus")):
         print("No Custom field")
         if custom_field_file != None:
             dataset_properties = json.loads(custom_field_file)
-            udataset.create_dataset_by_list(dataset_name, list_json,schema_type_args, dataset_properties)
+            udataset.create_dataset_by_list(dataset_name, list_json,schema_type_args, dataset_properties,training_corpus)
         else:
             dataset_properties = None
-            udataset.create_dataset_by_list(dataset_name, list_json,schema_type_args, dataset_properties)
+            udataset.create_dataset_by_list(dataset_name, list_json,schema_type_args, dataset_properties,training_corpus)
         print("dataset Created successfully")
 
     @app.command()
@@ -187,19 +187,19 @@ try:
                                  dataset_name: str = typer.Option(..., "--dataset_name"),
                                  corpus_type: str = typer.Option(None, "--corpus_type"),
                                  schema_type_args: Optional[str] = typer.Option("common", "--schema"),
-                                 custom_schema: Optional[str] = typer.Option(None, "--custom_schema")):
+                                 custom_schema: Optional[str] = typer.Option(None, "--custom_schema"),training_corpus :str =typer.Option(None,"--training_corpus")):
 
         # dataset_properties = json.load(open(file, 'r'))
         if custom_property != None:
             dataset_properties = json.loads(custom_property)
             udataset.create_dataset_by_filter(filter_value, dataset_properties, dataset_name, corpus_type,
                                                      schema_type_args,
-                                                     custom_schema)
+                                                     custom_schema,training_corpus)
         else:
             dataset_properties = None
             udataset.create_dataset_by_filter(filter_value, dataset_properties, dataset_name, corpus_type,
                                                      schema_type_args,
-                                                     custom_schema)
+                                                     custom_schema,training_corpus)
 
 
     @app.command()

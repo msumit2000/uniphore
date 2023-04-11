@@ -10,16 +10,16 @@ dataset_handler = DatasetHandler()
 
 
 class udataset:
-    def create_dataset_by_list(dataset_name,input_list,custom_field_file,schema_type_args):
-        dataset_handler.create_dataset(dataset_name, input_list, custom_field_file, schema_type_args)
+    def create_dataset_by_list(dataset_name,input_list,custom_field_file,schema_type_args,training_corpus):
+        dataset_handler.create_dataset(dataset_name, input_list, custom_field_file, schema_type_args,training_corpus)
 
 
 
-    def create_dataset_by_filter(filter_value: str,custom_property: str,dataset_name: str,corpus_type: str,schema_type_args:str,custom_schema:str):
+    def create_dataset_by_filter(filter_value: str,custom_property: str,dataset_name: str,corpus_type: str,schema_type_args:str,custom_schema:str,training_corpus):
         
         dataset_handler.create_dataset_by_filter(filter_value, custom_property, dataset_name, corpus_type,
                                                   schema_type_args,
-                                                 custom_schema)
+                                                 custom_schema,training_corpus)
     def store_dataset(dataset_name: str,output_path: str,schema_type_args:str,custom_schema:str):
         dataset_handler.store_dataset(dataset_name, output_path, schema_type_args, custom_schema)
 

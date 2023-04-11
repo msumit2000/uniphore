@@ -155,7 +155,6 @@ class CorpusHandler:
             output = {"template_file_path": [],"data_dir_path":[], "common_schema": [], "native_schema": []}
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-        
             cursor.execute("select * from corpus_metadata where corpus_name='" + corpus_name + "'")
             row = cursor.fetchone()
             cursor.execute("select * from corpus_custom_fields where corpus_id='" + str(row["corpus_id"]) + "'")
@@ -164,35 +163,6 @@ class CorpusHandler:
             
             dataset = CorpusDataReaderManager1.read_data(corpus_name,response, schema_type, custom_schema=custom_schema)['data']
             return dataset
-            # if corpus_name == "timit":
-            #     response = {
-            #         "template_file_path": dir_path + "/poc/librispeec/asr/template_timit.py",
-            #         "data_dir_path": os.getcwd() + "/timit",
-            #         "common_schema": dir_path + "/common_schema.json",
-            #         "native_schema": dir_path + "/poc/output_schema_timit.json"
-            #     }
-            # elif corpus_name == "librispeech":
-            #     response = {
-            #         "template_file_path": dir_path + "/poc/librispeech/asr/template_librispeech.py",
-            #         "data_dir_path": os.getcwd() + "/librispeech",
-            #         "common_schema": dir_path + "/common_schema.json",
-            #         "native_schema": dir_path + "/poc/output_schema_librispeech.json"
-            #     }
-            # elif corpus_name == corpus_name:
-            #     print(dir_path + "/poc/hinglish/native_schema.json")
-            #     response = {
-            #         "template_file_path": dir_path+"",
-            #         "data_dir_path": "C:\\Users\\AtharvaBokare(c)\\PycharmProjects\\siddhant_code\\data-ops\\hinglish",
-            #         "common_schema": "C:\\Users\\AtharvaBokare(c)\\PycharmProjects\\data_ops\\src\\main\\poc\\hinglish\\native_schema.json",
-            #         "native_schema": "C:\\Users\\AtharvaBokare(c)\\PycharmProjects\\data_ops\\src\\main\\poc\\hinglish\\native_schema.json"
-            #     }
-            # else:
-            #     return ("invalid corpus name")
-            #
-            # dataset = CorpusDataReaderManager1.read_data(response, schema_type, custom_schema=custom_schema)['data']
-            # print("1.2")
-            #
-            # return dataset
         except Exception as e:
             raise e
 
@@ -204,6 +174,7 @@ class CorpusHandler:
             dir_path = os.path.dirname(os.path.realpath(__file__))
             output = {"template_file_path": [],"data_dir_path":[], "common_schema": [], "native_schema": []}
             conn = connection.get_connection()
+    
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute("select * from corpus_metadata where corpus_name='" + corpus_name + "'")
             row = cursor.fetchone()
@@ -211,40 +182,17 @@ class CorpusHandler:
             result = cursor.fetchall()
             response=prop.input_properties(path,corpus_name,output,result)
 
-#            if corpus_name == "timit":
- #               response = {
-  #                  "template_file_path": dir_path + "/poc/librispeec/asr/template_timit.py",
-   #                 "data_dir_path": os.getcwd() + "/timit",
-    #                "common_schema": dir_path + "/common_schema.json",
-     #               "native_schema": dir_path + "/poc/output_schema_timit.json"
-      #          }
-       #     elif corpus_name == "librispeech":
-        #        response = {
-         #           "template_file_path": dir_path + "/poc/librispeech/asr/template_librispeech.py",
-          #          "data_dir_path": os.getcwd() + "/librispeech",
-           #         "common_schema": dir_path + "/common_schema.json",
-             #       "native_schema": dir_path + "/poc/output_schema_librispeech.json"
-           #     }
-            #elif corpus_name == "hinglish":
-             #   response = {
-              #      "template_file_path": dir_path + "/poc/hinglish/template_hinglish.py",
-               #     "data_dir_path": os.getcwd() + "/hinglish",
-                #    "common_schema": dir_path + "/poc/hinglish/native_schema.json",
-                 #   "native_schema": dir_path + "/poc/hinglish/native_schema.json"
-                #}
-         #   else:
-          #      return ("invalid corpus name")
-
             if output_loc == ".":
                 output_loc = os.getcwd()
 
             if schema_type == "custom":
                 if custom_schema is not None:
-                    dataset = CorpusDataReaderManager1.store_data(response, output_loc, schema_type, custom_schema)
+                    dataset = CorpusDataReaderManager1.store_data(corpus_name,response, output_loc, schema_type, custom_schema)
                 else:
                     return ("invalid custom_schema path")
             else:
-                dataset = CorpusDataReaderManager1.store_data(response, output_loc, schema_type)
+               # print("&&&&&&&&&&&&&&&&&&",response,output_loc,schema_type)
+                dataset = CorpusDataReaderManager1.store_data(corpus_name,response, output_loc, schema_type)
 
             return dataset
         except Exception as e:

@@ -38,6 +38,7 @@ class DatasetMetadatamanager:
         except Exception as e:
             raise e
     
+   
     def corpus_custom_fields(self ,corpusname,kv_pairs):
         conn = connection.get_connection()
         cur = conn.cursor()
@@ -68,13 +69,13 @@ class DatasetMetadatamanager:
             raise e
 
 
-    def create_dataset(self, dataset_name, result_list, list_corpus, custom_field_file):
+    def create_dataset(self, dataset_name, result_list, list_corpus, custom_field_file,training_corpus):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             data=()
             for each_data in result_list:
-                data = (dataset_name,each_data['corpus_type'], list_corpus)
+                data = (dataset_name,each_data['corpus_type'], list_corpus,training_corpus)
                 
             cursor.execute(Constants.insert_query_dataset_metadata, data)
             conn.commit()
@@ -102,12 +103,12 @@ class DatasetMetadatamanager:
         except Exception as e:
             raise e
 
-    def create_dataset_by_filter_ds(self, corpus_list, dataset_name, filter_value, corpus_type, file):
+    def create_dataset_by_filter_ds(self, corpus_list, dataset_name, filter_value, corpus_type, file,training_corpus):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-            data = dataset_name, corpus_type, filter_value
+            data = dataset_name, corpus_type, filter_value,training_corpus
             cursor.execute(Constants.insert_query_dataset_metadata, data)
 
             conn.commit()

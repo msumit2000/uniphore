@@ -15,19 +15,19 @@ datasetRepomanager = DatasetRepositoryManager()
 
 
 class DatasetHandler:
-    def create_dataset(self, dataset_name, list_corpus,schema_type_args, custom_field_file):
+    def create_dataset(self, dataset_name, list_corpus,schema_type_args, custom_field_file,training_corpus):
         try:
 
             resp = datasetMetadatManager1.list_dataset_by_name(dataset_name, list_corpus)
-            datasetMetadatManager1.create_dataset(dataset_name, resp, list_corpus, custom_field_file)
+            datasetMetadatManager1.create_dataset(dataset_name, resp, list_corpus, custom_field_file,training_corpus)
         except Exception as e:
             raise e
 
     def create_dataset_by_filter(self, filter_value, file, dataset_name, corpus_type, schema_type,
-                                 custom_schema):  # two args filter properties and other properties cutom must be optional
+                                 custom_schema,training_corpus):  # two args filter properties and other properties cutom must be optional
         try:
             corpus_list = datasetMetadatManager1.list_corpus_names(str(filter_value))
-            datasetMetadatManager1.create_dataset_by_filter_ds(corpus_list, dataset_name, filter_value,corpus_type, file)
+            datasetMetadatManager1.create_dataset_by_filter_ds(corpus_list, dataset_name, filter_value,corpus_type, file,training_corpus)
         except Exception as e:
             raise e
 
