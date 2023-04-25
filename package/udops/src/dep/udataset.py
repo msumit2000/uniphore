@@ -46,7 +46,6 @@ class udataset:
 
     def dataset_reader(dataset_name: str, schema_type_args: Optional[str] = typer.Argument("common"),
                        custom_schema: Optional[str] = typer.Argument(None)):
-        print(schema_type_args, dataset_name)
         dataset_handler.dataset_reader(dataset_name, schema_type_args)
 
     def generate_output(dataset_name,schema,custom_schema):

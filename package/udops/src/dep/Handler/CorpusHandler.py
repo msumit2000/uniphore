@@ -160,7 +160,7 @@ class CorpusHandler:
             cursor.execute("select * from corpus_custom_fields where corpus_id='" + str(row["corpus_id"]) + "'")
             result = cursor.fetchall()
             response=prop.input_properties(path,corpus_name,output,result)
-            
+         
             dataset = CorpusDataReaderManager1.read_data(corpus_name,response, schema_type, custom_schema=custom_schema)['data']
             return dataset
         except Exception as e:
@@ -180,6 +180,7 @@ class CorpusHandler:
             row = cursor.fetchone()
             cursor.execute("select * from corpus_custom_fields where corpus_id='" + str(row["corpus_id"]) + "'")
             result = cursor.fetchall()
+        
             response=prop.input_properties(path,corpus_name,output,result)
 
             if output_loc == ".":

@@ -65,12 +65,12 @@ class CorpusRepositoryManager:
         g.git.push("--set-upstream","origin","master")
 
     def pull(self,file):
-        print(os.getcwd())
+    
         s = Repo(os.getcwd())
         s.pull(remote="data",targets=file)
         
     def pull_dataset(self, args):
-        print("here")
+    #    print("here")
         s = Repo(os.getcwd())
         s.fetch()
         # s.checkout()

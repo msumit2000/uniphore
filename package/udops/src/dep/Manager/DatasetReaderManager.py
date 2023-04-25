@@ -40,9 +40,11 @@ class DatasetReaderManager:
             json_output_path = output_file_path +"/"+dataset_name + "/datasets/" + datetime.now().strftime(
                 '%Y%m%d%H%M%S')
             os.makedirs(json_output_path)
+
             for cpr in corpora_name:
                 for corpus in cpr:
                     if not isExist:
+                
                         isExist1 = os.path.exists(corpus_location+"/"+corpus["corpus_type"])
                         if not isExist1:
                             os.makedirs(corpus_location+"/"+corpus["corpus_type"])
@@ -56,8 +58,6 @@ class DatasetReaderManager:
                       #      audio="audio"
                        # else :
                         audio=None
-             #           corpusRepositoryManager1.remote_dataset(corpus['corpus_name'], corpus['remote_location'], corpus['git_remote'])
-                        print(os.getcwd())
                         corpusRepositoryManager1.pull(audio)
                         final_file_path = json_output_path + "/" + corpus["corpus_type"]    
                         response_corpus = corpus_handler.datareader(corpus["corpus_name"], schema_type, custom_schema)

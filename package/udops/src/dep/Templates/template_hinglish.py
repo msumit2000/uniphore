@@ -48,13 +48,15 @@ class HinglishDataset(datasets.GeneratorBasedBuilder):
         ]
 
     def _generate_examples(self, data_dir):
-        audio_path = os.path.join(data_dir, 'audio')
+        audio_path = os.path.join(data_dir, 'Audio')
         print(audio_path)
         lst_1 = os.listdir(audio_path)
         audio_lst = [file for file in lst_1 if file.endswith(".wav")]
-        transcript_path = os.path.join(data_dir, 'transcripts', 'json')
+        transcript_path = os.path.join(data_dir, 'Transcripts')
+        print(transcript_path)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
         lst_2 = os.listdir(transcript_path)
-        transcript_lst = [os.path.join(transcript_path, file) for file in lst_2 if file.endswith(".json")]
+        transcript_lst = [os.path.join(transcript_path, file) for file in lst_2 if file.endswith(".txt")]
         for key, audio in enumerate(audio_lst):
             output_schema = aOBD0b4GRw
             audio_flag = False

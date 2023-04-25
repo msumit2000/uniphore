@@ -34,6 +34,7 @@ class CorpusDataReaderManager:
         
         output_schema = self.get_output_schema(corpus_name,custom_schema)
         template_file_path = corpus_details['template_file_path']
+        
         data_dir_path = corpus_details['data_dir_path']
 
         dataset = ASRDataReader().read_all_records(output_schema, data_dir_path, template_file_path)
