@@ -30,7 +30,7 @@ try:
         file_name = "udops_config"
         def is_file_present(file_name):
          #   current_directory = os.getcwd()
-            directory = "/home/user/udops/package/udops/src/dep/config/"
+            directory = 
             #file_path = os.path.join(current_directory, file_name)
 
             file_path = os.path.join(directory, file_name)

@@ -9,6 +9,10 @@ conn = connection.get_connection()
 class User_log:
     def login(self,access_token,username):
         try:
+            dir_path = os.path.dirname(os.path.realpath(__file__))
+            
+            file_path = os.path.join(dir_path, '/udops_config')
+
             url = 'https://api.github.com/user'
             headers = {'Authorization': f'token {access_token}'}
             response = requests.get(url, headers=headers)
@@ -29,11 +33,11 @@ class User_log:
                     print('Username Doesnt exist in Udops')
                 else:
                     config = configparser.ConfigParser()
-                    config.read('/home/user/udops/package/udops/src/dep/config/udops_config')
+                    config.read(file_path)
                     if 'github' not in config:
                         config.add_section('github')
                     config.set('github', 'ACCESS_TOKEN', access_token)
-                    with open('/home/user/udops/package/udops/src/dep/config/udops_config', 'w') as config_file:
+                    with open('file_path = os.path.join(directory, file_name)', 'w') as config_file:
                         config.write(config_file)
                     print("login Successfully !!!")
 
