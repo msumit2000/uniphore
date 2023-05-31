@@ -61,6 +61,7 @@ class DatasetMetadatamanager:
             query = self._list_filter(list_corpus1)
 
             cursor = conn.cursor(cursor_factory=RealDictCursor)
+            print("***********************")
             cursor.execute(Constants.select_query_create + query)
             row = cursor.fetchall()
             return row
@@ -221,6 +222,7 @@ class DatasetMetadatamanager:
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute(Constants.select_dataset_with_name + dataset_name + "'")
         row = cursor.fetchall()
+        
         cursor.execute(Constants.select_datasetcorpora+ str(row[0]["dataset_id"]) + "'")
         resp = cursor.fetchall()
         r1 = []

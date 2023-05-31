@@ -80,6 +80,19 @@ class CorpusHandler:
         except Exception as e:
             raise e
 
+    def update_corpus(self,json_loader):
+        try:
+            corpusMetadataManager = CorpusMetadataManager()
+            if corpusMetadataManager.update_corpus(json_loader,conn)==1:
+               return 1
+            elif corpusMetadataManager.update_corpus(json_loader,conn)==0:
+                return 0
+            elif corpusMetadataManager.update_corpus(json_loader,conn)==2:
+                return 2
+            elif corpusMetadataManager.update_corpus(json_loader,conn)==3:
+                return 3
+        except Exception as e:
+            raise e
     def manager_get_metadata_type(self, corpus_type):
         try:
             corpusMetadataManager = CorpusMetadataManager()
@@ -160,7 +173,7 @@ class CorpusHandler:
             cursor.execute("select * from corpus_custom_fields where corpus_id='" + str(row["corpus_id"]) + "'")
             result = cursor.fetchall()
             response=prop.input_properties(path,corpus_name,output,result)
-         
+            
             dataset = CorpusDataReaderManager1.read_data(corpus_name,response, schema_type, custom_schema=custom_schema)['data']
             return dataset
         except Exception as e:
@@ -180,7 +193,6 @@ class CorpusHandler:
             row = cursor.fetchone()
             cursor.execute("select * from corpus_custom_fields where corpus_id='" + str(row["corpus_id"]) + "'")
             result = cursor.fetchall()
-        
             response=prop.input_properties(path,corpus_name,output,result)
 
             if output_loc == ".":
@@ -216,4 +228,36 @@ class CorpusHandler:
             corpusRepositoryManager1.pull(audio)
         except Exception as e:
             raise e
+### ______________________________________________#########333
+    def get_Counts(self):
+        try:
+            corpusMetadataManager = CorpusMetadataManager()
+            return corpusMetadataManager.get_Counts(conn)
+        except Exception as e:
+            raise e
+    def list_corpus(self):
+        try:
+            corpusMetadataManager = CorpusMetadataManager()
+            return corpusMetadataManager.list_corpus(conn)
+        except Exception as e:
+            raise e
 
+    def list_by_string(self, search_string):
+        try:
+            corpusMetadataManager = CorpusMetadataManager()
+            return corpusMetadataManager.list_by_string(search_string, conn)
+        except Exception as e:
+            raise e
+
+    def search_corpus(self, search_string):
+        try:
+            corpusMetadataManager = CorpusMetadataManager()
+            return corpusMetadataManager.search_corpus(search_string, conn)
+        except Exception as e:
+            raise e
+    def summary(self,column):
+        corpusmetadatamanager= CorpusMetadataManager()
+        return corpusmetadatamanager.summary(conn,column)
+    def donut(self,column):
+        corpusmetadatamanager= CorpusMetadataManager()
+        return corpusmetadatamanager.donut(conn,column)

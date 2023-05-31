@@ -28,7 +28,7 @@ class CorpusMetadataManager:
                             0] + "' AND " + list(mydict.keys())[1] + "= '" + list(mydict.values())[1] + "'")
                     rows = cursor.fetchall()
                     conn.commit()
-                    conn.close()
+                   # conn.close()
                     cursor.close()
                     return rows
                 elif len(mydict) == 3:
@@ -49,7 +49,7 @@ class CorpusMetadataManager:
                             3] + "= '" + list(mydict.values())[3] + "'")
                     rows = cursor.fetchall()
                     conn.commit()
-                    conn.close()
+                    #conn.close()
                     cursor.close()
                     return rows
                 elif len(mydict) == 5:
@@ -62,7 +62,7 @@ class CorpusMetadataManager:
                         list(mydict.values())[4] + "'")
                     rows = cursor.fetchall()
                     conn.commit()
-                    conn.close()
+                   # conn.close()
                     cursor.close()
                     return rows
                 else:
@@ -92,7 +92,7 @@ class CorpusMetadataManager:
             cursor.execute(Constants.metadata_select_query_type + corpus_type + "'")
             rows = cursor.fetchall()
             conn.commit()
-            conn.close()
+            #conn.close()
             cursor.close()
       #      print(rows)
             return rows
@@ -155,33 +155,38 @@ class CorpusMetadataManager:
             print("success")
             conn.commit()
             cursor.close()
-            conn.close()
+            #conn.close()
         except Exception as e:
             print(e)
 
-    def update_corpus(self, json_loader, conn):
+    def update_corpus(self,json_loader, conn):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute(Constants.metadata_select_query + json_loader["corpus_id"] + "'")
+            cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
             rows = cursor.fetchall()
             if len(rows) == 0:
-                return Constants.corpus_error
+                return 0
             else:
                 for row in rows:
                     if row["corpus_name"] != json_loader["corpus_name"] and row["corpus_type"] != json_loader[
                         "corpus_type"] \
                             and row["language"] != json_loader["language"]:
-                        return Constants.corpus_error
-                    elif json_loader["source_type"] != row["source_type"] or json_loader["customer_name"] != row[
-                        "customer_name"] or json_loader["data_domain_name"] != row["data_domain_name"]:
+                        return 2
+                    # elif (json_loader["source_type"]==row["source_type"]) and (json_loader["customer_name"] and row[
+                    #     "customer_name"]) and (json_loader["data_domain_name"] == row["data_domain_name"]):
+                    #     return 3
 
-                        data1 = json_loader["source_type"], json_loader["customer_name"], json_loader[
+                    # elif json_loader["source_type"] != row["source_type"] or json_loader["customer_name"] != row[
+                    #     "customer_name"] or json_loader["data_domain_name"] != row["data_domain_name"]:
+
+                    else:
+                        data1 = json_loader["source_type"],json_loader["language"], json_loader["customer_name"], json_loader[
                             "data_domain_name"], \
-                                json_loader["corpus_id"]
-                        cursor.execute(Constants.update_query, data1)  # corpus_id update condition
+                                json_loader["corpus_name"]
+                        cursor.execute(Constants.update_query, data1)
                         conn.commit()
                         cursor.close()
-                        conn.close()
+                        return 1
         except Exception as e:
             print(e)
 
@@ -189,7 +194,7 @@ class CorpusMetadataManager:
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute(Constants.update_ts_query, args)
         conn.commit()
-        conn.close()
+       # conn.close()
         cursor.close()
     
     def update_corpus_remote(self,name,args1,args2,conn):
@@ -197,7 +202,7 @@ class CorpusMetadataManager:
         input_remote_tuple=(args2,args1,name)
         cursor.execute("update corpus_metadata set git_remote = %s, remote_location = %s where corpus_name=%s",input_remote_tuple)
         conn.commit()
-        conn.close()
+      #  conn.close()
         cursor.close()
    
     def corpus_custom_fields(self ,corpusname,kv_pairs, conn):
@@ -213,15 +218,15 @@ class CorpusMetadataManager:
            
         conn.commit()
         cur.close()
-        conn.close()
+     #   conn.close()
 
-    def delete_corpus(self, corpusname,conn):
+    def delete_corpus(self,corpusname,conn):
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute("DELETE FROM corpus_metadata WHERE corpus_name = %s",(corpusname,))
         print("Deleted corpus ",corpusname)
         conn.commit()
         cur.close()
-        conn.close()
+      #  conn.close()
     
     def _filter(self, filterValue):
         filters = filterValue.split(",")
@@ -231,4 +236,119 @@ class CorpusMetadataManager:
             resp.append(condition)
 
         return resp
+    ### count function
 
+    
+    def get_Counts(self, conn):
+        try:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute(Constants.select_query2)
+            count = cursor.fetchall()
+            conn.commit()
+            cursor.close()
+         #   conn.close()
+            return count
+        except Exception as e:
+            print(e)
+
+    def list_corpus(self, conn):
+        try:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute(
+                "SELECT * FROM corpus_metadata")
+            rows = cursor.fetchall()
+            conn.commit()
+            cursor.close()
+          #  conn.close()
+            return rows
+        except Exception as e:
+            print(e)
+
+    def search_corpus(self, search_string, conn):
+        try:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute(
+                "SELECT corpus_id , corpus_name, corpus_type, language, source_type, customer_name FROM corpus_metadata WHERE corpus_name LIKE %s",
+                (f"%{search_string}%",))
+            rows = cursor.fetchall()
+            conn.commit()
+            cursor.close()
+          #  conn.close()
+            return rows
+        except Exception as e:
+            return e
+
+    def list_by_string(self, search_string, conn):
+        try:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute(
+                "SELECT corpus_id, corpus_name, corpus_type, language, source_type, customer_name FROM corpus_metadata WHERE language LIKE %s OR source_type LIKE %s",
+                (f"%{search_string}%", f"%{search_string}%"))
+            rows = cursor.fetchall()
+            if len(rows) == 0:
+                return Constants.corpus_error
+            else:
+                conn.commit()
+                cursor.close()
+          #      conn.close()
+                return rows
+        except Exception as e:
+            return e
+    
+    def summary(self,conn,column):
+        try:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            col =column
+            query1 = f"select DISTINCT {col} from corpus_metadata"
+            #query = "select DISTINCT language from corpus_metadata"
+            cursor.execute(query1)
+            rows = cursor.fetchall()
+            col_list = [dictionary[col] for dictionary in rows]
+            print(col_list)
+            dict ={}
+            #query = " SELECT COUNT(*) FROM corpus_metadata WHERE vendor = %s "
+            #print(query)
+            for i in range(len(col_list)):
+                data = col_list[i]
+                query = f"SELECT COUNT(*) FROM corpus_metadata WHERE {col} = '{data}'"
+                print(query)
+                cursor.execute(query)
+                #cursor.execute("SELECT COUNT(*) FROM corpus_metadata WHERE language =%s", (data,))
+                result = cursor.fetchone()
+                count = result['count']
+                final_result ={data:count}
+                dict.update(final_result)
+            print(dict)
+            json_list = [{'key': k, 'value': v} for k, v in dict.items()]
+            json_string = json.dumps(json_list)
+            conn.commit()
+            cursor.close()
+         #   conn.close()
+            return json_string
+        except Exception as e:
+            return e
+
+
+    def donut(self,conn,column):
+        try:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            col =column
+            query1 = f"select DISTINCT {col} from corpus_metadata"
+            cursor.execute(query1)
+            rows = cursor.fetchall()
+            col_list = [dictionary[col] for dictionary in rows]
+            value=[]
+            for i in range(len(col_list)):
+                data = col_list[i]
+                query = f"SELECT COUNT(*) FROM corpus_metadata WHERE {col} = '{data}'"
+                cursor.execute(query)
+                result = cursor.fetchone()
+                count = result['count']
+                value.append(count)
+                print(count)
+            conn.commit()
+            cursor.close()
+            #conn.close()
+            return col_list,value
+        except Exception as e:
+            return e

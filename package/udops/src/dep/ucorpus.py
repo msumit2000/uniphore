@@ -1,4 +1,5 @@
 from udops.src.dep.Handler.CorpusHandler import *
+
 import shutil
 from typing import Optional
 import typer
@@ -13,9 +14,11 @@ class ucorpus:
         #    print("Result :", row)
 
 
-    def getCorpusMetadata(corpus_id: str):  # take one argument
+    def getCorpusMetadata(corpus_name):  # take one argument
         corpus_handler = CorpusHandler()
-        row=corpus_handler.get_corpus_metadata(corpus_id)
+        print('*************')
+        row=corpus_handler.get_corpus_metadata(corpus_name)
+        print(row)
         return row
 
     def getCorpusMetadatabytype(corpus_type: str):
@@ -33,7 +36,7 @@ class ucorpus:
         corpus_handler = CorpusHandler()
         corpus_handler.corpus_custom_fields(corpusname , kv_pairs)
      
-    def list_corpus():
+    def list_corpus(self):
         corpus_handler = CorpusHandler()
         corpus_handler.list_commits()
 
@@ -71,7 +74,7 @@ class ucorpus:
         corpus_handler.remote_repo(name,data,gita)
 
 
-    def push():
+    def push(self):
         corpus_handler = CorpusHandler()
         corpus_handler.push_remote()
 
@@ -81,10 +84,10 @@ class ucorpus:
         corpus_handler.pull_repo(audio)
 
 
-    def update_corpus(self,file: str):
-        corpus_handler = CorpusHandler()
-        corpus_properties = json.load(open(file, 'r', encoding='utf-8'))
-        str1 = corpus_handler.manager_update_corpus(corpus_properties)
+    # def update_corpus(self,file: str):
+    #     corpus_handler = CorpusHandler()
+    #     corpus_properties = json.load(open(file, 'r', encoding='utf-8'))
+    #     str1 = corpus_handler.manager_update_corpus(corpus_properties)
 
     def datareader(corpus_details_dict, schema_type : Optional[str] =typer.Argument("common"),custom_schema:Optional[str] =typer.Argument(None)):
         corpus_handler = CorpusHandler()
@@ -92,9 +95,44 @@ class ucorpus:
     
     def store_data(corpus_details_dict, output_loc, schema_type : Optional[str] =typer.Argument("common"), custom_schema:Optional[str] =typer.Argument(None) ):
         corpus_handler = CorpusHandler()
-    
         corpus_handler.store_data(corpus_details_dict,output_loc,schema_type,custom_schema)
 
+    def get_Counts(self):
+        corpus_handler = CorpusHandler()
+        return corpus_handler.get_Counts()
+
+    def list_corpus(self):
+        corpus_handler = CorpusHandler()
+        return corpus_handler.list_corpus()
+
+    def search_corpus(self,search_string):
+        corpus_handler = CorpusHandler()
+        row = corpus_handler.search_corpus(search_string)
+        return row
+
+    def list_by_string(self,search_string):
+        corpus_handler = CorpusHandler()
+        row = corpus_handler.list_by_string(search_string)
+        return row
+
+    def update_corpus(self,data):
+       corpus_handler = CorpusHandler()
+       if corpus_handler.update_corpus(data)==1:
+           return 1
+       elif corpus_handler.update_corpus(data)==0:
+           return 0
+       elif corpus_handler.update_corpus(data)==2:
+           return 2
+       elif corpus_handler.update_corpus(data) == 3:
+           return 3
+
+    def summary(self,column):
+        corpus_handler = CorpusHandler()
+        return corpus_handler.summary(column)
+
+    def donut(self,column):
+        corpus_handler = CorpusHandler()
+        return corpus_handler.donut(column)
 
 if __name__ == '__main__':
-    app()
+    ucorpus()

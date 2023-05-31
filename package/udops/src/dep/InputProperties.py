@@ -4,11 +4,12 @@ class properties:
     def input_properties(self,path,corpus_name,output,result):
         path1=os.getcwd()
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        
+       # print(dir_path)
+       # print("****************")
         for resp in result:
             #output["data_dir_path"].append(os.getcwd()+"/hinglish")
             if resp["field_name"] == "template_file_path":
-                output["template_file_path"].append(dir_path+"/" + resp["field_value"])
+                output["template_file_path"].append(path+"/" + resp["field_value"])
                 output["data_dir_path"].append(path+"/"+corpus_name)
             elif resp["field_name"] == "native_schema":
                 output["native_schema"].append(path+"/" + resp["field_value"])

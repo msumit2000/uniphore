@@ -2,7 +2,7 @@ class Constants:
     # list queries
     select_query = "select * from public.corpus_metadata"
     select_query1 = "select * from corpus_metadata where "
-
+    select_query2 = "select count(*) from corpus_metadata "
     # corpus_metadata query
     metadata_select_query = "select * from corpus_metadata where corpus_id='"
     metadata_select_query_type = "select * from corpus_metadata where corpus_type='"
@@ -11,16 +11,19 @@ class Constants:
     insert_query_metadata = "insert into corpus_metadata (corpus_name,corpus_type,language,source_type,vendor,domain,description,lang_code,acquisition_date, migration_date) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     insert_query_custom_field = "insert into corpus_custom_fields (corpus_id,field_name,field_value) values(%s,%s,%s)"
     select_query_create = "select * from corpus_metadata "
-    query_metadta="select * from corpus_metadata where corpus_name='"
+    query_metadata="select * from corpus_metadata where corpus_name='"
     query_corpus_type="select * from corpus_metadata where corpus_name='"
-#    select_query_create = "select * from corpus_metadata "
+#   select_query_create = "select * from corpus_metadata "
 
     # Update Corpus
-    update_query = "UPDATE corpus_metadata SET source_type=%s,customer_name=%s,data_domain_name= %s WHERE corpus_id=(%s) "
+    update_query = "UPDATE corpus_metadata SET source_type=%s,language=%s,customer_name=%s,data_domain_name= %s WHERE corpus_name=(%s) "
     corpus_error = "Corpus Doesnt Exist"
     
     #Delete Corpus
     delete_query = "DELETE from corpus_metadata where corpus_name = (%s) "
+    
+    # count Corpus 
+    
     # update_timestamp
     update_ts_query = "UPDATE corpus_metadata SET  lastUpdated_ts= timezone(INTERVAL '+00:00', now()) where corpus_name=(%s)"
 
@@ -74,3 +77,5 @@ class Constants:
     insert_query_dataset_metadata = "insert into dataset_metadata (dataset_name,corpus_type,corpus_filter,corpus_training) values (%s,%s,%s,%s)"
     insert_query_dataset_custom = "insert into dataset_custom_fields (dataset_id,field_name,field_value) values(%s,%s,%s)"
     insert_query_dataset_corpora = "insert into dataset_corpus_list (dataset_id, corpus_id,corpus_name) values(%s,%s,%s)"
+
+    column_query= "SELECT array_agg(column_name) AS all_columns FROM information_schema.columns WHERE table_name = 'corpus_metadata';"
