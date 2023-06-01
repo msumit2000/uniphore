@@ -21,7 +21,7 @@ class User_log:
             if response.status_code == 200:
                 github_username = response.json()['login']
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
-                query = f"select user_name from cfg_udops_acl where user_name = '{username}';"
+                query = f"select user_name from udops_users where user_name = '{username}';"
                 cursor.execute(query)
                 rows = cursor.fetchone()
                 database_username = rows['user_name']

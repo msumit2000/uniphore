@@ -1,6 +1,7 @@
 from udops.src.dep.ucorpus import ucorpus
 from udops.src.dep.udataset import udataset
 from udops.src.dep.UserAccessControl import AccessControl
+from udops.src.dep.Handler.dvchandler import dvchandler
 from typing import Optional, List
 import re
 import json
@@ -15,9 +16,14 @@ try:
 ########----------- UAC-------------##########
 
     @app.command()
-    def login(token:str,username:str):
+    def login(token:str,username:str,teamname):
         Userlog = AccessControl()
         Userlog.login(token,username)
+        dvchandler1 = dvchandler()
+        dvchandler1.team_authenticator(username,teamname)
+        
+
+
 
 
     @app.command()

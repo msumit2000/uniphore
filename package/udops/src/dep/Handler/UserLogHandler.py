@@ -1,4 +1,4 @@
-from udops.src.dep.Manager.UserLogManager import *
+from udops.src.dep.config.UserLogManager import *
 
 
 class Userlog:
