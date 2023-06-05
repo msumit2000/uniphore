@@ -37,7 +37,7 @@ class User_log:
                     if 'github' not in config:
                         config.add_section('github')
                     config.set('github', 'ACCESS_TOKEN', access_token)
-                    with open('file_path = os.path.join(directory, file_name)', 'w') as config_file:
+                    with open(file_path, 'w') as config_file:
                         config.write(config_file)
                     print("login Successfully !!!")
 
@@ -48,12 +48,15 @@ class User_log:
 
     def logout(self):
         data_to_erase = 'github'
-        with open("/home/user/udops/package/udops/src/dep/config/udops_config", 'r') as file:
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+            
+        file_path = os.path.join(dir_path, '/udops_config')
+        with open(file_path, 'r') as file:
             lines = file.readlines()
 
         modified_lines = [line for line in lines if data_to_erase not in line]
 
-        with open("/home/user/udops/package/udops/src/dep/config/udops_config", 'w') as file:
+        with open(file_path, 'w') as file:
             file.writelines(modified_lines)
             print()
 

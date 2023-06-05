@@ -13,7 +13,7 @@ file_path = os.path.join(dir_path, '/udops_config')
 class teamusermanager:
     def team_authentication(username,team_name):
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        query = f"select exists (select user_id, team_id from cfg_udops_users where user_id = ( select user_id from udops_users where user_name = {username} ) and team_id = ( select team_id from cfg_udops_teams_metadata where teamname = {team_name}));"
+        query = f"select exists (select user_id, team_id from cfg_udops_users where user_id = ( select user_id from udops_users where user_name = '{username}' ) and team_id = ( select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'));"
         cursor.execute(query)
         rows = cursor.fetchone()
         user_team_exist = rows['exists']
