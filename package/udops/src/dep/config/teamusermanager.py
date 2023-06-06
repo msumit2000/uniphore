@@ -15,7 +15,7 @@ import os
 class teamusermanager:
     def team_authentication(username,team_name):
          
-        path = 'src/dep/config/.udops_config'
+        path = 'src/dep/config/udops_config'
         current_directory = os.getcwd()
         directory = os.path.join(current_directory,path)        
         config = configparser.ConfigParser()
