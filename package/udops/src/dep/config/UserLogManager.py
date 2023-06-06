@@ -10,8 +10,7 @@ class User_log:
     def login(self,access_token,username):
         try:
             dir_path = os.path.dirname(os.path.realpath(__file__))
-            
-            file_path = os.path.join(dir_path, '/udops_config')
+            file_path = os.path.join(dir_path, 'udops_config')
 
             url = 'https://api.github.com/user'
             headers = {'Authorization': f'token {access_token}'}
