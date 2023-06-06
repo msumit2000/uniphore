@@ -8,16 +8,14 @@ prop=properties()
 connection = Connection()
 conn = connection.get_connection()
 dir_path = os.path.dirname(os.path.realpath(__file__))
-file_path = os.path.join(dir_path, '/udops_config')
+file_path = os.path.join(dir_path, 'udops_config')
 import configparser
 import os
 
 class teamusermanager:
     def team_authentication(username,team_name):
-         
-        path = 'src/dep/config/udops_config'
-        current_directory = os.getcwd()
-        directory = os.path.join(current_directory,path)        
+        
+        directory = os.path.join(dir_path,file_path)        
         config = configparser.ConfigParser()
         config.read(directory)
 
