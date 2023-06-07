@@ -1,3 +1,4 @@
+#commit
 from udops.src.dep.ucorpus import ucorpus
 from udops.src.dep.udataset import udataset
 from udops.src.dep.UserAccessControl import AccessControl
@@ -23,9 +24,6 @@ try:
         dvchandler1.team_authenticator(username,teamname)
         
 
-
-
-
     @app.command()
     def logout():
         Userlog =AccessControl()
@@ -33,14 +31,20 @@ try:
     
     @app.command()
     def user_login():
-        file_name = "udops_config"
+        file_name = "src/dep/config/udops_config"
         def is_file_present(file_name):
+<<<<<<< HEAD
 
 
 
 
             file_path = os.path.join(directory, file_name)
             return os.path.isfile(file_path)
+=======
+            current_directory = os.getcwd()
+            directory = os.path.join(current_directory, file_name)
+            return os.path.isfile(directory)
+>>>>>>> e2a9f74a503ed43a5717bd444321fc3341d95d60
 
         file_exists = is_file_present(file_name)
         if file_exists:
@@ -101,13 +105,12 @@ try:
                       migration_date : datetime = typer.Option(None,"--migration_date"),
                      ):
 
-        file_name = "udops_config"
+        file_name = "src/dep/config/udops_config"
         def is_file_present(file_name):
-          #  current_directory = os.getcwd()
-            #file_path = os.path.join(current_directory, file_name)
-            directory = "/home/user/udops/package/udops/src/dep/config/"
-            file_path = os.path.join(directory, file_name)
-            return os.path.isfile(file_path)
+            current_directory = os.getcwd()
+            directory = os.path.join(current_directory, file_name)
+            return os.path.isfile(directory)
+        
         file_exists = is_file_present(file_name)
         if file_exists:
             config = configparser.ConfigParser()
@@ -207,13 +210,11 @@ try:
     
     @app.command()
     def push(corpus_id):
-        file_name = "udops_config"
+        file_name = "src/dep/config/udops_config"
         def is_file_present(file_name):
-            # current_directory = os.getcwd()
-            # file_path = os.path.join(current_directory, file_name)
-            directory = "/home/user/udops/package/udops/src/dep/config/"
-            file_path = os.path.join(directory, file_name)
-            return os.path.isfile(file_path)
+            current_directory = os.getcwd()
+            directory = os.path.join(current_directory, file_name)
+            return os.path.isfile(directory)
 
         file_exists = is_file_present(file_name)
 
@@ -242,13 +243,12 @@ try:
     
     @app.command()
     def clone(git:str,corpus_id):
-        file_name = "udops_config"
+        file_name = "src/dep/config/udops_config"
         def is_file_present(file_name):
-            # current_directory = os.getcwd()
-            # file_path = os.path.join(current_directory, file_name)
-            directory = "/home/user/udops/package/udops/src/dep/config/"
-            file_path = os.path.join(directory, file_name)
-            return os.path.isfile(file_path)
+            current_directory = os.getcwd()
+            directory = os.path.join(current_directory, file_name)            
+            return os.path.isfile(directory)
+        
         file_exists = is_file_present(file_name)
 
         if file_exists:
@@ -274,13 +274,11 @@ try:
 
     @app.command()
     def pull(corpus_id,folder: Optional[str] =typer.Argument(None)):
-        file_name = "udops_config"
+        file_name = "src/dep/config/udops_config"
         def is_file_present(file_name):
-            # current_directory = os.getcwd()
-            # file_path = os.path.join(current_directory, file_name)
-            directory = "/home/user/udops/package/udops/src/dep/config/"
-            file_path = os.path.join(directory, file_name)
-            return os.path.isfile(file_path)
+            current_directory = os.getcwd()
+            directory = os.path.join(current_directory, file_name)            
+            return os.path.isfile(directory)
 
         file_exists = is_file_present(file_name)
 

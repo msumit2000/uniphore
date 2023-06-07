@@ -8,10 +8,27 @@ prop=properties()
 connection = Connection()
 conn = connection.get_connection()
 dir_path = os.path.dirname(os.path.realpath(__file__))
+<<<<<<< HEAD
 
 
 class teamusermanager:
     def team_authentication(self,username,team_name):
+=======
+file_path = os.path.join(dir_path, 'udops_config')
+import configparser
+import os
+
+class teamusermanager:
+    def team_authentication(username,team_name):
+        
+        directory = os.path.join(dir_path,file_path)        
+        config = configparser.ConfigParser()
+        config.read(directory)
+        config.set('github', 'team_name', team_name)
+        with open(directory, 'w') as config_file:
+            config.write(config_file)
+        
+>>>>>>> e2a9f74a503ed43a5717bd444321fc3341d95d60
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = f"select exists (select user_id, team_id from cfg_udops_users where user_id = ( select user_id from udops_users where user_name = '{username}' ) and team_id = ( select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'));"
         cursor.execute(query)
