@@ -28,40 +28,6 @@ try:
     def logout():
         Userlog =AccessControl()
         Userlog.logout()
-    
-    @app.command()
-    def user_login():
-        file_name = "src/dep/config/udops_config"
-        def is_file_present(file_name):
-<<<<<<< HEAD
-
-
-
-
-            file_path = os.path.join(directory, file_name)
-            return os.path.isfile(file_path)
-=======
-            current_directory = os.getcwd()
-            directory = os.path.join(current_directory, file_name)
-            return os.path.isfile(directory)
->>>>>>> e2a9f74a503ed43a5717bd444321fc3341d95d60
-
-        file_exists = is_file_present(file_name)
-        if file_exists:
-            config = configparser.ConfigParser()
-            config.read(file_name)
-            ACCESS_TOKEN = config.get('github','access_token')
-            authentication = AccessControl()
-            user_id = authentication.authenticate(ACCESS_TOKEN)
-
-            if authentication.get_user_team(user_id)==1:
-                print("error and exit")
-            else:
-                print(authentication.get_user_team(user_id))
-
-        else:
-            print(f"The file '{file_name}' does not exist in the current working directory.")
-
 
 # Corpus commands
 
