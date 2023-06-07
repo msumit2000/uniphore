@@ -7,10 +7,12 @@ class duplotoken:
             configParser = configparser.RawConfigParser()
             home = os.path.expanduser('~')
             configFilePath = home + "/.aws/config"
-            configParser.readfp(open(configFilePath))
+            configParser.read(configFilePath)
             print(configParser.get("default",'region'))
             newvalue = "duplo-jit aws --tenant={} --host https://uniphore-ds.duplocloud.net --token {}".format(tenant,token)
             configParser.set("default",'credential_process',newvalue)
-            configParser.write(sys.stdout)
+            with open(configFilePath, 'w') as configfile:
+                configParser.write(configfile)
+
         except Exception as e:
             raise e
