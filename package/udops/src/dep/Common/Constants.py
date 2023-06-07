@@ -7,6 +7,12 @@ class Constants:
     metadata_select_query = "select * from corpus_metadata where corpus_id='"
     metadata_select_query_type = "select * from corpus_metadata where corpus_type='"
 
+    # Udops_Users
+    Udops_users_insert = "insert into udops_users (user_name, first_name , last_name , email) values (%s,%s,%s,%s)"
+    Udops_users_select = "select user_id from udops_users where user_name = '"
+    Udops_User_list = "select * from udops_users'"
+    Udops_users_update = "Update udops_users set user_name = (%s), firstname = (%s), lastname = (%s), email = (%s) where user_name = '"
+
     # create corpus
     insert_query_metadata = "insert into corpus_metadata (corpus_name,corpus_type,language,source_type,vendor,domain,description,lang_code,acquisition_date, migration_date) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     insert_query_custom_field = "insert into corpus_custom_fields (corpus_id,field_name,field_value) values(%s,%s,%s)"

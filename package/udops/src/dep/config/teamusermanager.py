@@ -18,10 +18,7 @@ class teamusermanager:
         directory = os.path.join(dir_path,file_path)        
         config = configparser.ConfigParser()
         config.read(directory)
-
-        if 'github' not in config:
-            config.add_section('github')
-        config.set('github', 'team_name', team)
+        config.set('github', 'team_name', team_name)
         with open(directory, 'w') as config_file:
             config.write(config_file)
         
