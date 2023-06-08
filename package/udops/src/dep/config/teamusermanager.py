@@ -64,6 +64,6 @@ class teamusermanager:
         if rows2 != '':
             cursor.execute("select s3_base_path from cfg_udops_teams_metadata where teamname = '{}';".format(team))
             s3 = cursor.fetchone()
-            return s3
+            return s3['s3_base_path']
         else: 
             raise('User doesnt have permission for the team')
