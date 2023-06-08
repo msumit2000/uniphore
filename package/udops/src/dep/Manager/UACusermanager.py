@@ -30,6 +30,7 @@ class uacusermanager:
     def upsert_team(self , teamname , permanent_access_token , tenant_id , admin_user_id , s3_base_path ):
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute('select team_id from cfg_udops_teams_metadata where teamname = "{teamname}"')
+        data = teamname,permanent_access_token,tenant_id,admin_user_id,s3_base_path
 
         rows = cursor.fetchone()
 
