@@ -59,7 +59,7 @@ class teamusermanager:
         headers = {'Authorization': f'token {git_token}'}
         response = requests.get(url, headers=headers)
         github_username = response.json()['login']
-        cursor.execute("select user_id from cfg_udops_users where user_name = '{}' and teamname = '{}';".format(github_username,team))
+        cursor.execute("select user_id from cfg_udops_users where user_name = '{}' and team_id = (select team_id from cfg_udops_teams_metadata where teamname = '{}');".format(github_username,team))
         rows2 = cursor.fetchone()
         if rows2 != '':
             cursor.execute("select s3_base_path from cfg_udops_teams_metadata where teamname = '{}';".format(team))
