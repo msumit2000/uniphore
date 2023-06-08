@@ -36,11 +36,10 @@ class User_log:
                     if 'github' not in config:
                         config.add_section('github')
                     config.set('github', 'ACCESS_TOKEN', access_token)
-<<<<<<< HEAD
+
                     with open(dir_path + '/udops_config', 'w') as config_file:
-=======
-                    with open(file_path, 'w') as config_file:
->>>>>>> e2a9f74a503ed43a5717bd444321fc3341d95d60
+ 
+
                         config.write(config_file)
                     print("login Successfully !!!")
 
@@ -52,23 +51,23 @@ class User_log:
     def logout(self):
         data_to_erase = 'github'
         dir_path = os.path.dirname(os.path.realpath(__file__))
-<<<<<<< HEAD
+
 
         with open(dir_path + "/udops_config", 'r') as file:
-=======
+
             
-        file_path = os.path.join(dir_path, '/udops_config')
-        with open(file_path, 'r') as file:
->>>>>>> e2a9f74a503ed43a5717bd444321fc3341d95d60
+
+
+
             lines = file.readlines()
 
         modified_lines = [line for line in lines if data_to_erase not in line]
 
-<<<<<<< HEAD
-        with open(dir_path + "/udops_config", 'w') as file:
-=======
+
+
+
         with open(file_path, 'w') as file:
->>>>>>> e2a9f74a503ed43a5717bd444321fc3341d95d60
+
             file.writelines(modified_lines)
             print("Logout Successful")
 
