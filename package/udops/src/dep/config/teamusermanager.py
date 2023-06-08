@@ -53,16 +53,16 @@ class teamusermanager:
         config.read(directory)
         team = config.get('github','team_name')
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        cursor.execute('select team_id from cfg_udops_teams_metadata where teamname = "{}";'.format(team))
+        cursor.execute("select team_id from cfg_udops_teams_metadata where teamname = '{}';".format(team))
         git_token = config.get('github','access_token')
         url = 'https://api.github.com/user'
         headers = {'Authorization': f'token {git_token}'}
         response = requests.get(url, headers=headers)
         github_username = response.json()['login']
-        cursor.execute('select user_id from cfg_udops_users where user_name = "{}" and teamname = "{}";'.format(github_username,team))
+        cursor.execute("select user_id from cfg_udops_users where user_name = '{}' and teamname = '{}';".format(github_username,team))
         rows2 = cursor.fetchone()
         if rows2 != '':
-            cursor.execute('select s3_base_path from cfg_udops_teams_metadata where teamname = "{team}";')
+            cursor.execute("select s3_base_path from cfg_udops_teams_metadata where teamname = '{}';".format(team))
             s3 = cursor.fetchone()
             return s3
         else: 
