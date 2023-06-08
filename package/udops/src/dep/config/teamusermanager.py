@@ -53,7 +53,7 @@ class teamusermanager:
         config.read(directory)
         team = config.get('github','team_name')
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        cursor.execute('select team_id from cfg_udops_teams_metadata where teamname = {};'.format(team))
+        cursor.execute('select team_id from cfg_udops_teams_metadata where teamname = "{}";'.format(team))
         git_token = config.get('github','access_token')
         url = 'https://api.github.com/user'
         headers = {'Authorization': f'token {git_token}'}
