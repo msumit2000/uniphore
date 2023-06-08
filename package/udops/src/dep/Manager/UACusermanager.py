@@ -27,6 +27,17 @@ class uacusermanager:
             data = username , firstname,lastname, email
             cursor.execute(Constants.Udops_users_insert + data)
 
+    def upsert_team(self , teamname , permanent_access_token , tenant_id , admin_user_id , s3_base_path ):
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        cursor.execute('select team_id from cfg_udops_teams_metadata where teamname = "{teamname}"')
+
+        rows = cursor.fetchone()
+
+        if rows != '':
+            cursor.execute('insert into cfg_udops_teams_metadata (teamname, permanent_access_token, tenant_id,admin_user_id,s3_base_path) values ("{teamname}","{permanent_access_token}","{tenant_id}","{admin_user_id}","{s3_base_path}");')
+        else:
+            cursor.execute('update cfg_udops_teams_metadata set teamname = "{teamname}" , permanent_access_token = "{permanent_access_token}", tenant_id = "{tenant_id}", admin_user_id = "{admin_user_id}", s3_base_path = "{s3_base_path}" where team_id = {rows};')
+
     
             
         
