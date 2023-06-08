@@ -3,6 +3,7 @@ from udops.src.dep.ucorpus import ucorpus
 from udops.src.dep.udataset import udataset
 from udops.src.dep.UserAccessControl import AccessControl
 from udops.src.dep.Handler.dvchandler import dvchandler
+from udops.src.dep.config.teamusermanager import teamusermanager
 from typing import Optional, List
 import re
 import json
@@ -164,8 +165,9 @@ try:
         ucorpus.add(target)
     
     @app.command()
-    def remote(name : str, data: str, gita: str):
+    def remote(name : str, gita: str):
         if re.sub(r'^.*/(.*?)(\.git)?$', r'\1', gita) == os.path.basename(os.getcwd()):
+            data = teamusermanager().get_s3_path()
             ucorpus.remote(name, data, gita)
         else: 
             return "Git Repository name should be same as Corpus name"
