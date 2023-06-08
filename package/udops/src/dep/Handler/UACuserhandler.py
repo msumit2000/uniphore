@@ -9,3 +9,8 @@ class uacuserhandler:
     def update_user(self,username,firstname,lastname,email):
         uacusermanager1 = uacusermanager()
         uacusermanager1.upsert_user(username,firstname,lastname,email)
+    
+    def update_team(self,  teamname , permanent_access_token , tenant_id , admin_user_id , s3_base_path):
+        uacusermanager1 = uacusermanager()
+        uacusermanager1.upsert_team(teamname , permanent_access_token , tenant_id , admin_user_id , s3_base_path)
+
