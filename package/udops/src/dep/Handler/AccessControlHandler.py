@@ -20,8 +20,8 @@ class UserAuthenticationHandler:
     def get_user_team(self,user_id):
         authentication = udpos_authentication()
         team_id= authentication.get_user_team(user_id,conn)
-        if team_id ==1:
-            return 1
+        if team_id ==0:
+            return 0
         else:
             return team_id
 

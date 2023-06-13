@@ -17,7 +17,7 @@ class udpos_authentication:
                 conn.commit()
                 return user_id
             else:
-                return 1
+                return 0 
         except Exception as e:
             print(e)
 

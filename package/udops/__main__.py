@@ -72,7 +72,8 @@ try:
                       migration_date : datetime = typer.Option(None,"--migration_date"),
                      ):
 
-        file_name = "src/dep/config/udops_config"
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
         def is_file_present(file_name):
             current_directory = os.getcwd()
             directory = os.path.join(current_directory, file_name)
@@ -85,7 +86,7 @@ try:
             ACCESS_TOKEN = config.get('github', 'access_token')
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
-            if authentication.get_user_team(user_id)==1:
+            if authentication.get_user_team(user_id)==0:
                 print("team not found")
             else:
                 if corpus_name == os.path.basename(os.getcwd()):
