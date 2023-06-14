@@ -15,7 +15,7 @@ import os
 class teamusermanager:
     def team_authentication(self,username,team_name):
         
-        directory = os.path.join(dir_path,file_path)        
+        directory = file_path      
         config = configparser.ConfigParser()
         config.read(directory)
 
@@ -24,27 +24,32 @@ class teamusermanager:
         config.set('github', 'team_name', team_name)
         with open(directory, 'w') as config_file:
             config.write(config_file)
-        
+        print(username)
+        print(team_name)
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = f"select exists (select user_id, team_id from cfg_udops_users where user_id = ( select user_id from udops_users where user_name = '{username}' ) and team_id = ( select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'));"
         cursor.execute(query)
         rows = cursor.fetchone()
         user_team_exist = rows['exists']
+        print(user_team_exist)
         conn.commit()
 
-        if user_team_exist == 't':
+        if user_team_exist == True:
+            print(user_team_exist)
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query  = f"select permanent_access_token from cfg_udops_teams_metadata where teamname = {team_name};"
+            query  = f"select permanent_access_token from cfg_udops_teams_metadata where teamname = '{team_name}';"
             cursor.execute(query)
             rows = cursor.fetchone()
             duplo_token = rows['permanent_access_token']
             conn.commit()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query  = f"select tenant_id from cfg_udops_teams_metadata where teamname = {team_name};"
+            query  = f"select tenant_id from cfg_udops_teams_metadata where teamname = '{team_name}';"
             cursor.execute(query)
             rows = cursor.fetchone()
             tenant = rows['tenant_id']
             conn.commit()
+            print(tenant)
+            print(duplo_token)
             duplo.ChangeToken(tenant,duplo_token)
 
     def get_s3_path(self):

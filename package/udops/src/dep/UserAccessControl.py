@@ -37,6 +37,7 @@ class AccessControl:
 
     def retrieve_change(self):
         dir_path = os.path.dirname(os.path.realpath(__file__))
+        print("...")
         file_name = os.path.join(dir_path, 'config/udops_config')
         config = configparser.ConfigParser()
         config.read(file_name)
