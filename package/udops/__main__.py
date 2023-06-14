@@ -127,6 +127,8 @@ try:
                     shutil.copy(native_schema,os.getcwd())
                     shutil.copy(common_schema,os.path.dirname(os.path.realpath(__file__)) + "/src/dep/poc/promise/")
                     ucorpus.init(corpus_details,source)
+                    corpus_id = authentication.corpus_id(corpus_name)
+                    authentication.default_access(corpus_id,user_id)
                     AccessControl().retrieve_change()
                 else:
                     return "Corpus name and folder name should be same"

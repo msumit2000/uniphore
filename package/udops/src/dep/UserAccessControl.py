@@ -34,6 +34,15 @@ class AccessControl:
     
     def partial_change(self,source_tenant,own_token):
         duplo.ChangeToken(tenant=source_tenant,token=own_token)
+    
+    def corpus_id(self,corpus_name):
+        user = UserAuthenticationHandler()
+        return user.corpus_id(corpus_name)
+    
+    def default_access(self,corpus_id,user_id):
+        user = UserAuthenticationHandler()
+        return user.default_acess(corpus_id,user_id)
+
 
     def retrieve_change(self):
         dir_path = os.path.dirname(os.path.realpath(__file__))

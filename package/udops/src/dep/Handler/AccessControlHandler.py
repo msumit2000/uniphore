@@ -24,7 +24,16 @@ class UserAuthenticationHandler:
             return 0
         else:
             return team_id
+        
 
+    def default_acess(self,corpus_id,user_id):
+        authentication = udpos_authentication()
+        return authentication.default_access(corpus_id,user_id,conn)
+
+    def corpus_id(self,corpus_name):
+        authentication = udpos_authentication()
+        return authentication.corpus_id(corpus_name,conn)
+    
     def authorize_user(self,user_id,corpus_id,access_type):
         authentication = udops_authorise()
         if authentication.authorise_user(user_id,corpus_id,access_type,conn)==1:
