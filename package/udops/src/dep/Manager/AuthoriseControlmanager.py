@@ -11,8 +11,7 @@ class udops_authorise:
         if access == 'read' or access == 'write':
             return 1
         else:
-            print('No read or write permission for user') 1
-        return rows
+            return 2
 
     def update_user_access(self, username, new_access_type,conn):
         try:
