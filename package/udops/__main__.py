@@ -91,7 +91,7 @@ try:
             else:
                 Source_tenant = input("Enter Source Tenant name")
                 User_Token = input("Enter User Token") # Partial change for import of data
-                AccessControl.partial_change(Source_tenant,User_Token)
+                AccessControl().partial_change(Source_tenant,User_Token)
                 if corpus_name == os.path.basename(os.getcwd()):
                     a = os.path.basename(template)
                     b = os.path.basename(native_schema)
@@ -127,7 +127,7 @@ try:
                     shutil.copy(native_schema,os.getcwd())
                     shutil.copy(common_schema,os.path.dirname(os.path.realpath(__file__)) + "/src/dep/poc/promise/")
                     ucorpus.init(corpus_details,source)
-                    AccessControl.retrieve_change()
+                    AccessControl().retrieve_change()
                 else:
                     return "Corpus name and folder name should be same"
         else:
