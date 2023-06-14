@@ -34,7 +34,14 @@ class UserAuthenticationHandler:
         authentication = udpos_authentication()
         return authentication.corpus_id(corpus_name,conn)
     
-    def authorize_user(self,user_id,corpus_id):
+    def authorize_user_clone(self,user_id,corpus_id):
+        authentication = udops_authorise()
+        if authentication.authorise_user_clone(user_id,corpus_id,conn)==1:
+            return 1
+        else:
+            return 2
+        
+    def authorize_user(self,user_id,corpus_id,access_type):
         authentication = udops_authorise()
         if authentication.authorise_user(user_id,corpus_id,access_type,conn)==1:
             return 1

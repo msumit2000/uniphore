@@ -2,7 +2,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 class udops_authorise:
-    def authorise_user(self,user_id,corpus_id,conn):
+    def authorise_user_clone(self,user_id,corpus_id,conn):
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = f"select permission from cfg_udops_acl where user_id ={user_id} AND corpus_id={corpus_id};"
         cursor.execute(query)
@@ -12,6 +12,17 @@ class udops_authorise:
             return 1
         else:
             return 2
+        
+    def authorise_user(self,user_id,corpus_id,access_type,conn):
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = f"select permission from cfg_udops_acl where user_id ={user_id} AND corpus_id={corpus_id};"
+        cursor.execute(query)
+        rows = cursor.fetchone()
+        access = rows['permission']
+        if access != access_type:
+            print("ACCESS DENY")
+        else:
+            return 1 
 
     def update_user_access(self, username, new_access_type,conn):
         try:

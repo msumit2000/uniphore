@@ -228,9 +228,8 @@ try:
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
         def is_file_present(file_name):
-            current_directory = os.getcwd()
-            directory = os.path.join(current_directory, file_name)            
-            return os.path.isfile(directory)
+                        
+            return os.path.isfile(file_name)
         
         file_exists = is_file_present(file_name)
 
@@ -241,7 +240,7 @@ try:
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
             
-            if authentication.authorize_user(user_id,corpus_id)==1:
+            if authentication.authorize_user_clone(user_id,corpus_id)==1:
                 return ucorpus.clone(git)
             else:
                 print("No access for user to clone corpus")
