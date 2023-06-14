@@ -145,7 +145,7 @@ class CorpusMetadataManager:
             cursor.execute(
                 Constants.insert_query_metadata,
                 data)
-            cursor.execute(Constants.query_metadta + json_loader["corpus_name"] + "'")
+            cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
             corpus_details = cursor.fetchone()
             for row in json_loader["custom_fields"]:
                 param_list = corpus_details["corpus_id"], row["field_name"], row["field_value"]

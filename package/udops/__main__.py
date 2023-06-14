@@ -202,7 +202,7 @@ try:
 
             if authentication.authorize_user(user_id,corpus_id,access_type) == 1:
                 print("Valid user.....")
-               # return ucorpus.push()
+                return ucorpus.push()
             else:
                 print("ACCESS DENY")
         else:
