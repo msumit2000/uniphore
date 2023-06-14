@@ -184,13 +184,16 @@ try:
         ucorpus.commit(message)
     
     @app.command()
-    def push(corpus_id):
+    def push(corpus_name):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
         def is_file_present(file_name):
             current_directory = os.getcwd()
             directory = os.path.join(current_directory, file_name)
             return os.path.isfile(directory)
+
+        authentication = AccessControl()
+        corpus_id = authentication.corpus_id(corpus_name)
 
         file_exists = is_file_present(file_name)
 
@@ -218,7 +221,10 @@ try:
         ucorpus.push()
     
     @app.command()
-    def clone(git:str,corpus_id):
+    def clone(git:str):
+        corpus_name = re.sub(r'^.*/(.*?)(\.git)?$', r'\1', git)
+        authentication = AccessControl()
+        corpus_id = authentication.corpus_id(corpus_name)
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
         def is_file_present(file_name):
@@ -234,11 +240,11 @@ try:
             ACCESS_TOKEN = config.get('github', 'access_token')
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
-            access_type ="write"
-            if authentication.authorize_user(user_id,corpus_id,access_type)==1:
+            
+            if authentication.authorize_user(user_id,corpus_id)==1:
                 return ucorpus.clone(git)
             else:
-                print("ACCESS DENY")
+                print("No access for user to clone corpus")
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
 
@@ -250,14 +256,14 @@ try:
         ucorpus.pull(folder)
 
     @app.command()
-    def pull(corpus_id,folder: Optional[str] =typer.Argument(None)):
+    def pull(corpus_name,folder: Optional[str] =typer.Argument(None)):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
-        def is_file_present(file_name):
-            current_directory = os.getcwd()
-            directory = os.path.join(current_directory, file_name)            
-            return os.path.isfile(directory)
+        def is_file_present(file_name):            
+            return os.path.isfile(file_name)
 
+        authentication = AccessControl()
+        corpus_id = authentication.corpus_id(corpus_name)
         file_exists = is_file_present(file_name)
 
         if file_exists:

@@ -17,9 +17,9 @@ class AccessControl:
         else:
             return user.get_user_team(user_id)
 
-    def authorize_user(self,user_id,corpus_id,access_type):
+    def authorize_user(self,user_id,corpus_id):
         user = UserAuthenticationHandler()
-        if user.authorize_user(user_id,corpus_id,access_type)==1:
+        if user.authorize_user(user_id,corpus_id)==1:
             return 1
         else:
             return 2
