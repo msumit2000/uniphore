@@ -71,7 +71,7 @@ try:
                       acquisition_date: datetime = typer.Option(None,"--acquisition_date"),
                       migration_date : datetime = typer.Option(None,"--migration_date"),
                      ):
-
+        
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
         def is_file_present(file_name):
@@ -89,6 +89,9 @@ try:
             if authentication.get_user_team(user_id)==0:
                 print("team not found")
             else:
+                Source_tenant = input("Enter Source Tenant name")
+                User_Token = input("Enter User Token") # Partial change for import of data
+                AccessControl.partial_change(Source_tenant,User_Token)
                 if corpus_name == os.path.basename(os.getcwd()):
                     a = os.path.basename(template)
                     b = os.path.basename(native_schema)
@@ -124,6 +127,7 @@ try:
                     shutil.copy(native_schema,os.getcwd())
                     shutil.copy(common_schema,os.path.dirname(os.path.realpath(__file__)) + "/src/dep/poc/promise/")
                     ucorpus.init(corpus_details,source)
+                    AccessControl.retrieve_change()
                 else:
                     return "Corpus name and folder name should be same"
         else:
@@ -179,7 +183,8 @@ try:
     
     @app.command()
     def push(corpus_id):
-        file_name = "src/dep/config/udops_config"
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
         def is_file_present(file_name):
             current_directory = os.getcwd()
             directory = os.path.join(current_directory, file_name)
@@ -212,7 +217,8 @@ try:
     
     @app.command()
     def clone(git:str,corpus_id):
-        file_name = "src/dep/config/udops_config"
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
         def is_file_present(file_name):
             current_directory = os.getcwd()
             directory = os.path.join(current_directory, file_name)            
@@ -243,7 +249,8 @@ try:
 
     @app.command()
     def pull(corpus_id,folder: Optional[str] =typer.Argument(None)):
-        file_name = "src/dep/config/udops_config"
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
         def is_file_present(file_name):
             current_directory = os.getcwd()
             directory = os.path.join(current_directory, file_name)            
