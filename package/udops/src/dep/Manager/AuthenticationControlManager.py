@@ -10,7 +10,7 @@ class udpos_authentication:
             if response.status_code == 200:
                 username = response.json()['login']
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
-                query  = f"select user_id from cfg_udops_acl where user_name = '{username}'"
+                query  = f"select user_id from udops_users where user_name = '{username}'"
                 cursor.execute(query)
                 rows = cursor.fetchone()
                 user_id = rows['user_id']
