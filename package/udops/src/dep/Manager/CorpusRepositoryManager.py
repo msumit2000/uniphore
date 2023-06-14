@@ -54,7 +54,7 @@ class CorpusRepositoryManager:
         g = git.Repo(os.getcwd())
         with s.config.edit() as conf:
             conf["core"] = {"remote":"data"}
-            conf["remote"]["data"] = {"url": str(data)+name}
+            conf["remote"]["data"] = {"url": str(data)+'/'+name}
         g.create_remote('origin', str(gita))
         g.git.add('--all')
 
