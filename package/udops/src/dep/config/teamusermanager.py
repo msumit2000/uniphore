@@ -46,6 +46,8 @@ class teamusermanager:
             tenant = rows['tenant_id']
             conn.commit()
             duplo.ChangeToken(tenant,duplo_token)
+        else :
+            print('User not mapped in the selected team')
 
     def get_s3_path(self):
         directory = os.path.join(dir_path,file_path)        
