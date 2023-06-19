@@ -29,7 +29,6 @@ class teamusermanager:
         cursor.execute(query)
         rows = cursor.fetchone()
         user_team_exist = rows['exists']
-        print(user_team_exist)
         conn.commit()
 
         if user_team_exist == True:
@@ -46,8 +45,6 @@ class teamusermanager:
             rows = cursor.fetchone()
             tenant = rows['tenant_id']
             conn.commit()
-            print(tenant)
-            print(duplo_token)
             duplo.ChangeToken(tenant,duplo_token)
         else :
             print('User not mapped in the selected team')
