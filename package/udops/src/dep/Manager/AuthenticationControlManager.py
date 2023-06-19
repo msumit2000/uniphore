@@ -69,7 +69,7 @@ class udpos_authentication:
         try:
             cursor = conn.cursor()
             data = team_id,corpus_id
-            query = f"insert into cfg_udops_teams_acl (team_id,corpus_id,) values (%s,%s);"
+            query = f"insert into cfg_udops_teams_acl (team_id,corpus_id) values (%s,%s);"
             cursor.execute(query,data)
             conn.commit()
             cursor.close()
