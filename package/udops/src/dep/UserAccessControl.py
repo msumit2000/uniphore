@@ -65,6 +65,11 @@ class AccessControl:
         teamuser = teamusermanager()
         teamuser.team_authentication(username,teamname)
 
+
+    def Corpus_team_map(self,team_id , corpus_id):
+        user = UserAuthenticationHandler()
+        return user.Corpus_team_map(team_id,corpus_id)
+
         
 
 

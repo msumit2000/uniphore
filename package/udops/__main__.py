@@ -86,11 +86,12 @@ try:
             ACCESS_TOKEN = config.get('github', 'access_token')
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
-            if authentication.get_user_team(user_id)==0:
+            team_id = authentication.get_user_team(user_id)
+            if team_id==0:
                 print("team not found")
             else:
-                Source_tenant = input("Enter Source Tenant name")
-                User_Token = input("Enter User Token") # Partial change for import of data
+                Source_tenant = input("Enter Source Tenant name:")
+                User_Token = input("Enter User Token:") # Partial change for import of data
                 AccessControl().partial_change(Source_tenant,User_Token)
                 if corpus_name == os.path.basename(os.getcwd()):
                     a = os.path.basename(template)
@@ -129,6 +130,7 @@ try:
                     ucorpus.init(corpus_details,source)
                     corpus_id = authentication.corpus_id(corpus_name)
                     authentication.default_access(corpus_id,user_id)
+                    authentication.Corpus_team_map(team_id , corpus_id)
                     AccessControl().retrieve_change()
                 else:
                     return "Corpus name and folder name should be same"

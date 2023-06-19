@@ -33,7 +33,7 @@ class udpos_authentication:
 
                return team_id
             else:
-                return 1
+                return 0
         except Exception as e:
             print(e)
 
@@ -59,6 +59,17 @@ class udpos_authentication:
             p = 'write'
             data = user_id,username,corpus_id,p
             query = f"insert into cfg_udops_acl (user_id,user_name,corpus_id,permission) values (%s,%s,%s,%s);"
+            cursor.execute(query,data)
+            conn.commit()
+            cursor.close()
+        except Exception as e:
+            print(e)
+
+    def Corpus_team_map(self,team_id , corpus_id,conn):
+        try:
+            cursor = conn.cursor()
+            data = team_id,corpus_id
+            query = f"insert into cfg_udops_teams_acl (team_id,corpus_id,) values (%s,%s);"
             cursor.execute(query,data)
             conn.commit()
             cursor.close()

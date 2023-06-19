@@ -13,8 +13,7 @@ class udops_authorise:
                 return 1
             else:
                 return 2
-        except Exception as e:
-            raise(e)
+        except TypeError:
             print(" User not given access to this corpus")
         
     def authorise_user(self,user_id,corpus_id,access_type,conn):
