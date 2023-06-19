@@ -8,7 +8,6 @@ class duplotoken:
             home = os.path.expanduser('~')
             configFilePath = home + "/.aws/config"
             configParser.read(configFilePath)
-            print(configParser.get("default",'region'))
             newvalue = "duplo-jit aws --tenant={} --host https://uniphore-ds.duplocloud.net --token {}".format(tenant,token)
             configParser.set("default",'credential_process',newvalue)
             with open(configFilePath, 'w') as configfile:
