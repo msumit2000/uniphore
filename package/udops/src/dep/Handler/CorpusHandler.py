@@ -85,14 +85,11 @@ class CorpusHandler:
             corpusMetadataManager = CorpusMetadataManager()
             if corpusMetadataManager.update_corpus(json_loader,conn)==1:
                return 1
-            elif corpusMetadataManager.update_corpus(json_loader,conn)==0:
+            else:
                 return 0
-            elif corpusMetadataManager.update_corpus(json_loader,conn)==2:
-                return 2
-            elif corpusMetadataManager.update_corpus(json_loader,conn)==3:
-                return 3
         except Exception as e:
             raise e
+
     def manager_get_metadata_type(self, corpus_type):
         try:
             corpusMetadataManager = CorpusMetadataManager()
@@ -235,6 +232,11 @@ class CorpusHandler:
             return corpusMetadataManager.get_Counts(conn)
         except Exception as e:
             raise e
+
+    def summary(self, column):
+        corpusmetadatamanager = CorpusMetadataManager()
+        return corpusmetadatamanager.summary(conn, column)
+
     def list_corpus(self):
         try:
             corpusMetadataManager = CorpusMetadataManager()
@@ -242,22 +244,27 @@ class CorpusHandler:
         except Exception as e:
             raise e
 
-    def list_by_string(self, search_string):
+    def search_corpus(self, corpus_name):
         try:
             corpusMetadataManager = CorpusMetadataManager()
-            return corpusMetadataManager.list_by_string(search_string, conn)
+            if corpusMetadataManager.search_corpus(corpus_name, conn) == 0:
+                return 0
+            else:
+                return corpusMetadataManager.search_corpus(corpus_name, conn)
         except Exception as e:
             raise e
 
-    def search_corpus(self, search_string):
-        try:
-            corpusMetadataManager = CorpusMetadataManager()
-            return corpusMetadataManager.search_corpus(search_string, conn)
-        except Exception as e:
-            raise e
-    def summary(self,column):
-        corpusmetadatamanager= CorpusMetadataManager()
-        return corpusmetadatamanager.summary(conn,column)
-    def donut(self,column):
-        corpusmetadatamanager= CorpusMetadataManager()
-        return corpusmetadatamanager.donut(conn,column)
+    def donut(self, column):
+        corpusmetadatamanager = CorpusMetadataManager()
+        return corpusmetadatamanager.donut(conn, column)
+
+    def summary_custom(self, corpus_name):
+        corpusmetadatamanager = CorpusMetadataManager()
+        return corpusmetadatamanager.summary_cutom(conn, corpus_name)
+
+    def update_custom_field(self, data):
+        corpusmetadatamanager = CorpusMetadataManager()
+        if corpusmetadatamanager.update_custom_field(data, conn) == 1:
+            return 1
+        else:
+            return 2

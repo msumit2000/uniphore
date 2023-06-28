@@ -55,5 +55,31 @@ class udataset:
         except Exception as e:
             raise e
 
+    #### dataset API ###
+
+    def get_summary(self,dataset_name):
+        dataset = DatasetHandler()
+        return dataset.get_summary(dataset_name)
+
+    def get_list(self):
+        dataset =DatasetHandler()
+        return dataset.get_list()
+
+    def search_dataset(self,property):
+        dataset =DatasetHandler()
+        return dataset.search_dataset(property)
+
+    def update(self,name, value):
+        dataset = DatasetHandler()
+        if dataset.update(name, value)==1:
+            return 1
+        else:
+            return 2
+
+    def dataset_corpus_list(self,dataset_name):
+        dataset = DatasetHandler()
+        return dataset.dataset_corpus_list(dataset_name)
+
+
 if __name__ == '__main__':
     app()

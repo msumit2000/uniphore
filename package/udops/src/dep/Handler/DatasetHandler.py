@@ -113,3 +113,30 @@ class DatasetHandler:
             datasetReaderManager.generate_output(dataset_name,schema,custom_field)
         except Exception as e:
             raise e
+
+
+    ############ dataset upi ############
+
+    def get_summary(self,dataset_name):
+        dataset = DatasetMetadatamanager()
+        return dataset.get_summary(dataset_name)
+
+    def get_list(self):
+        dataset = DatasetMetadatamanager()
+        return dataset.get_list()
+
+    def search_dataset(self,property):
+        dataset = DatasetMetadatamanager()
+        return dataset.search_dataset(property)
+
+    def update(self,name,value):
+        dataset = DatasetMetadatamanager()
+        if  dataset.update(name,value)==1:
+            return 1
+        else:
+            return 2
+
+    def dataset_corpus_list(self,dataset_name):
+        dataset = DatasetMetadatamanager()
+        return dataset.dataset_corpus_list(dataset_name)
+

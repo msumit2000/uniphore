@@ -267,3 +267,107 @@ class DatasetMetadatamanager:
         sql = sql[0:len(sql) - 4]
     #    print(sql)
         return sql
+
+############## function for dataset api####### def get_summary(self,dataset_name,property):
+
+
+    def get_summary(self,dataset_name):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"select dataset_corpus_list.corpus_name from dataset_metadata JOIN dataset_corpus_list \
+                     ON dataset_metadata.dataset_id = dataset_corpus_list.dataset_id \
+                     where dataset_metadata.dataset_name = '{dataset_name}';"
+            cursor.execute(query)
+            conn.commit()
+            rows = cursor.fetchall()
+            corpus_name =[]
+            for row in rows:
+                corpus_name.append(row["corpus_name"])
+            final_dict ={}
+            result =[]
+            pro = ["language","corpus_type","source_type"]
+            for property in pro:
+                for name  in corpus_name:
+                     q = f"select {property} from corpus_metadata where corpus_name ='{name}';"
+                     cursor.execute(q)
+                     r =cursor.fetchall()
+                     a=f"{property}"
+                     if len(r)==0 :
+                          pass
+                     else:
+                        value = r[0][a]
+                        result.append(value)
+                counts = Counter(result)
+                dict={}
+                for letter, count in counts.items():
+                    final_result = {letter: count}
+                    dict.update(final_result)
+                json_list = [{'key': k, 'value': v} for k, v in dict.items()]
+                json_string = json.dumps(json_list)
+                final_dict[property]=json_string
+                result.clear()
+            dataset=[]
+            for key, value in final_dict.items():
+                array_data = json.loads(value)
+                data={}
+                data["corpus_property"]=key
+                data["countSummary"]=array_data
+                dataset.append(data)
+            conn.commit()
+            cursor.close()
+            return dataset
+        except Exception as e:
+            raise e
+
+    def get_list(self):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = "select * from dataset_metadata"
+            cursor.execute(query)
+            rows= cursor.fetchall()
+            conn.commit()
+            cursor.close()
+            return rows
+        except Exception as e:
+            raise e
+
+    def search_dataset(self,property):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"select dataset_id, dataset_name,corpus_type,corpus_filter from dataset_metadata where corpus_type='{property}';"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            conn.commit()
+            cursor.close()
+            return rows
+        except Exception as e:
+            raise e
+
+    def update(self,name,value):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"UPDATE dataset_metadata SET corpus_filter= '{value}'where dataset_name ='{name}';"
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+            return 1
+        except Exception as e:
+            raise e
+
+    def dataset_corpus_list(self,dataset_name):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"select dataset_corpus_list.corpus_name from dataset_corpus_list join dataset_metadata on dataset_corpus_list.dataset_id= dataset_metadata.dataset_id where dataset_metadata.dataset_name ='{dataset_name}';"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            conn.commit()
+            cursor.close()
+            print(rows)
+            return rows
+        except Exception as e:
+            raise e
