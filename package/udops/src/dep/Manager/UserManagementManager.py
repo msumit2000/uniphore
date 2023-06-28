@@ -186,17 +186,19 @@ class UserManagementManager:
                     cursor.close()
                     return 1
             else : 
-
-                query = f"select user_id from udops_users where user_name = '{user_name}'"
-                cursor.execute(query)
-                user_id = cursor.fetchone()['user_id']
-                query2 = f"select corpus_id from corpus_metadata where corpus_name = '{corpus_name}'"
-                cursor.execute(query2)
-                corpus_id = cursor.fetchone()['corpus_id']
-                query3 = f"insert into cfg_udops_acl (user_id, user_name , corpus_id , permission) values ('{user_id}','{user_name}','{corpus_id}','{permission}')"
-                cursor.execute(query3)
-                conn.commit()
-                cursor.close()
+                user_names_str = ", ".join([f"'{name}'" for name in user_name])
+                for user in user_name:
+                    query = f"select user_id from udops_users where user_name = '{user}'"
+                    cursor.execute(query)
+                    user_id = cursor.fetchone()['user_id']
+                    query2 = f"select corpus_id from corpus_metadata where corpus_name = '{corpus_name}'"
+                    cursor.execute(query2)
+                    corpus_id = cursor.fetchone()['corpus_id']
+                    query3 = f"insert into cfg_udops_acl (user_id, user_name , corpus_id , permission) values ('{user_id}','{user}','{corpus_id}','{permission}')"
+                    cursor.execute(query3)
+                    conn.commit()
+                    cursor.close()
+                    return 1
         except Exception as e:
             raise e
 
