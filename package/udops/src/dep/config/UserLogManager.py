@@ -64,7 +64,7 @@ class User_log:
 
 
 
-        with open(file_path, 'w') as file:
+        with open(dir_path + "/udops_config", 'w') as file:
 
             file.writelines(modified_lines)
             print("Logout Successful")
