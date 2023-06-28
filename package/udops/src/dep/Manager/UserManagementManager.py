@@ -164,7 +164,7 @@ class UserManagementManager:
             rows = cursor.fetchone()
             user_exist = rows['exists']
             
-            if user_exist != True:
+            if user_exist == True:
                 user_names_str = ", ".join([f"'{name}'" for name in user_name])
 
                 # Construct the SQL query using f-strings
@@ -186,7 +186,7 @@ class UserManagementManager:
                     cursor.close()
                     return 1
             else : 
-
+                print(user_name)
                 query = f"select user_id from udops_users where user_name = '{user_name}'"
                 cursor.execute(query)
                 user_id = cursor.fetchone()['user_id']
