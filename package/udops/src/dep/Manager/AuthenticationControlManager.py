@@ -21,10 +21,10 @@ class udpos_authentication:
         except Exception as e:
             print(e)
 
-    def get_user_team(self, user_id_,conn):
+    def get_user_team(self, team_name ,conn):
         try:
             cursor = conn.cursor()
-            query = f"select team_id from cfg_udops_users where user_id = '{user_id_}'"
+            query = f"select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'"
             cursor.execute(query)
             rows = cursor.fetchone()
             if rows is not None:

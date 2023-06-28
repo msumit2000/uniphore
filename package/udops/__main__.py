@@ -84,9 +84,10 @@ try:
             config = configparser.ConfigParser()
             config.read(file_name)
             ACCESS_TOKEN = config.get('github', 'access_token')
+            team_name = config.get('github', 'team_name')
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
-            team_id = authentication.get_user_team(user_id)
+            team_id = authentication.get_user_team(team_name)
             if team_id==0:
                 print("team not found")
             else:
