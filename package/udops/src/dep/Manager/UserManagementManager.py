@@ -159,27 +159,44 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            # query = f"UPDATE cfg_udops_acl SET permission = '{permission}' WHERE user_name = '{user_name}' AND corpus_id = (SELECT corpus_id FROM corpus_metadata WHERE corpus_name = '{corpus_name}')"
-            user_names_str = ", ".join([f"'{name}'" for name in user_name])
+            query1 = f"select exists (select user_id from cfg_udops_acl where corpus_id = ( SELECT corpus_id FROM corpus_metadata WHERE corpus_name = '{corpus_name}'))"
+            cursor.execute(query1)
+            rows = cursor.fetchone()
+            user_exist = rows['exists']
+            
+            if user_exist != True:
+                user_names_str = ", ".join([f"'{name}'" for name in user_name])
 
-            # Construct the SQL query using f-strings
-            query = f"""
-            UPDATE cfg_udops_acl
-            SET permission = '{permission}'
-            WHERE corpus_id = (
-                SELECT corpus_id
-                FROM corpus_metadata
-                WHERE corpus_name = '{corpus_name}'
-            )
-            AND user_name IN ({user_names_str});
-            """
-            cursor.execute(query)
-            if cursor.rowcount == 0:
-                return 2
-            else:
+                # Construct the SQL query using f-strings
+                query = f"""
+                    UPDATE cfg_udops_acl
+                SET permission = '{permission}'
+                WHERE corpus_id = (
+                    SELECT corpus_id
+                    FROM corpus_metadata
+                    WHERE corpus_name = '{corpus_name}'
+                )
+                AND user_name IN ({user_names_str});
+                """
+                cursor.execute(query)
+                if cursor.rowcount == 0:
+                    return 2
+                else:
+                    conn.commit()
+                    cursor.close()
+                    return 1
+            else : 
+
+                query = f"select user_id from udops_users where user_name = '{user_name}'"
+                cursor.execute(query)
+                user_id = cursor.fetchone()['user_id']
+                query2 = f"select corpus_id from corpus_metadata where corpus_name = '{corpus_name}'"
+                cursor.execute(query2)
+                corpus_id = cursor.fetchone()['corpus_id']
+                query3 = f"insert into cfg_udops_acl (user_id, user_name , corpus_id , permission) values ('{user_id}','{user_name}','{corpus_id}','{permission}')"
+                cursor.execute(query3)
                 conn.commit()
                 cursor.close()
-                return 1
         except Exception as e:
             raise e
 
