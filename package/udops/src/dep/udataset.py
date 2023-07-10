@@ -23,6 +23,10 @@ class udataset:
     def store_dataset(dataset_name: str,output_path: str,schema_type_args:str,custom_schema:str):
         dataset_handler.store_dataset(dataset_name, output_path, schema_type_args, custom_schema)
 
+    def get_counts(self):
+        dataset = DatasetHandler()
+        return dataset.get_Counts()
+
 
     def dataset_custom_fields(datasetname, kv_pairs):
         dataset_handler.dataset_custom_fields(datasetname, kv_pairs)

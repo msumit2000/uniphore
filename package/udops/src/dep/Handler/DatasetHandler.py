@@ -30,6 +30,13 @@ class DatasetHandler:
             datasetMetadatManager1.create_dataset_by_filter_ds(corpus_list, dataset_name, filter_value,corpus_type, file,training_corpus)
         except Exception as e:
             raise e
+        
+    def get_Counts(self):
+        try:
+            dataset = DatasetMetadatamanager()
+            return dataset.get_Counts()
+        except Exception as e:
+            raise e
 
     def list_dataset_names(self, corpus_type, json_loader, detailed_flag):
         try:

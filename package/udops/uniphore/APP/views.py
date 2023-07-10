@@ -37,7 +37,6 @@ def summary(request):
         data = json.loads(request.body)
         corpus = ucorpus()
         response = corpus.summary(data['column'])
-        print(response)
         data = json.loads(response)
         return JsonResponse(data, safe=False)
 
@@ -104,7 +103,6 @@ def donut(request):
         for i in range(len(data)):
             corpus_property = data[i]
             response = corpus.donut(corpus_property)
-            print(response)
             key = response[0]
             value = response[1]
             _data = {'name': f'Per {corpus_property}', 'labels': key, 'dataset': [{'label': ' ', 'data': f'{value}'}]}
@@ -119,10 +117,19 @@ def summary_custom(request):
         data = json.loads(request.body)
         corpus = ucorpus()
         response = corpus.summary_custom(data["corpus_name"])
-        # print(response)
         data = json.loads(response)
         return JsonResponse(data, safe=False)
 
+@csrf_exempt
+def get_datset_count(request):
+    if request.method == 'GET':
+        dataset = udataset()
+        response = dataset.get_counts()
+        response_data = {
+            "status": "success",
+            "data": response
+        }
+        return JsonResponse(response_data, safe=False)
 
 @csrf_exempt
 def update_custom_field(request):

@@ -357,6 +357,18 @@ class DatasetMetadatamanager:
             return 1
         except Exception as e:
             raise e
+        
+    def get_Counts(self):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute("select count(*) from dataset_metadata ")
+            count = cursor.fetchall()
+            conn.commit()
+            cursor.close()
+            return count
+        except Exception as e:
+            print(e)
 
     def dataset_corpus_list(self,dataset_name):
         try:

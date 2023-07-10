@@ -172,7 +172,7 @@ class CorpusMetadataManager:
                     cursor.execute(query)
                     conn.commit()
                     cursor.close()
-                    return 1
+                return 1
         except Exception as e :
             print(e)
 
@@ -241,7 +241,7 @@ class CorpusMetadataManager:
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute(
-                "SELECT corpus_id , corpus_name, corpus_type, language, source_type,customer_name  FROM corpus_metadata")
+                "SELECT corpus_id , corpus_name, corpus_type, language, source_type  FROM corpus_metadata")
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
@@ -250,20 +250,26 @@ class CorpusMetadataManager:
             print(e)
 
     def search_corpus(self, corpus_name, conn):
-        try:
-            cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute(
-                "SELECT corpus_id , corpus_name, corpus_type, language, source_type, customer_name FROM corpus_metadata WHERE corpus_name LIKE %s",
-                (f"%{corpus_name}%",))
-            rows = cursor.fetchall()
-            conn.commit()
-            cursor.close()
-            if rows == None:
-                return 0
-            else:
-                return rows
-        except Exception as e:
-            return e
+            try:
+                if corpus_name=="":
+                    cursor = conn.cursor(cursor_factory=RealDictCursor)
+                    cursor.execute( "SELECT corpus_id , corpus_name, corpus_type, language, source_type FROM corpus_metadata")
+                    rows = cursor.fetchall()
+                    conn.commit()
+                    cursor.close()
+                    return rows
+                else:
+                    cursor = conn.cursor(cursor_factory=RealDictCursor)
+                    cursor.execute(f"SELECT corpus_id , corpus_name, corpus_type, language, source_type FROM corpus_metadata WHERE corpus_name ='{corpus_name}'")
+                    rows = cursor.fetchall()
+                    conn.commit()
+                    cursor.close()
+                    if rows==None:
+                        return 0
+                    else:
+                        return rows
+            except Exception as e:
+                return e
 
     def summary(self, conn, column):
         try:
@@ -274,21 +280,18 @@ class CorpusMetadataManager:
             cursor.execute(query1)
             rows = cursor.fetchall()
             col_list = [dictionary[col] for dictionary in rows]
-            print(col_list)
             dict = {}
             # query = " SELECT COUNT(*) FROM corpus_metadata WHERE vendor = %s "
             # print(query)
             for i in range(len(col_list)):
                 data = col_list[i]
                 query = f"SELECT COUNT(*) FROM corpus_metadata WHERE {col} = '{data}'"
-                print(query)
                 cursor.execute(query)
                 # cursor.execute("SELECT COUNT(*) FROM corpus_metadata WHERE language =%s", (data,))
                 result = cursor.fetchone()
                 count = result['count']
                 final_result = {data: count}
                 dict.update(final_result)
-            print(dict)
             json_list = [{'key': k, 'value': v} for k, v in dict.items()]
             json_string = json.dumps(json_list)
             conn.commit()
@@ -314,7 +317,6 @@ class CorpusMetadataManager:
                 result = cursor.fetchone()
                 count = result['count']
                 value.append(count)
-                print(count)
             conn.commit()
             cursor.close()
             # conn.close()
@@ -335,7 +337,6 @@ class CorpusMetadataManager:
                 dictionary[key] = value
             json_list = [{'key': k, 'value': v} for k, v in dictionary.items()]
             json_string = json.dumps(json_list)
-            print(json_string)
             conn.commit()
             cursor.close()
             return json_string

@@ -37,5 +37,6 @@ urlpatterns = [
     path('udops/user/add_user/',views.add_user),
     path('udops/team/list_search_team/',views.get_team_list_search),
     path('udops/user/list_search_user/',views.list_user_search),
+    path('udops/dataset/count/',views.get_datset_count),
 
 ]
