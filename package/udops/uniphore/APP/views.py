@@ -480,3 +480,30 @@ def list_user_search(request):
             "data": response
         }
         return JsonResponse(response_data, safe=False)
+    
+@csrf_exempt
+def user_status(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        git_username = data['git_username']
+        token = data['token']
+        dataset = UserManagement()
+        response = dataset.user_status(git_username, token)
+        if response == 0:
+            response_data = {
+                "User_role": "User Not exist",
+            }
+        else:
+            val = response[0]
+            user_data = response[1]
+            if val == 1:
+                response_data = {
+                    "User_role": "normal user",
+                    "user_data":user_data
+                }
+            else:
+                response_data = {
+                    "User_role": "Admin user",
+                    "user_data": user_data
+                }
+        return JsonResponse(response_data, safe=False)

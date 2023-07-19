@@ -159,49 +159,39 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query1 = f"select exists (select user_id from cfg_udops_acl where corpus_id = ( SELECT corpus_id FROM corpus_metadata WHERE corpus_name = '{corpus_name}'))"
-            cursor.execute(query1)
-            rows = cursor.fetchone()
-            user_exist = rows['exists']
-            
-            if user_exist == True:
-                user_names_str = ", ".join([f"'{name}'" for name in user_name])
+            # Get the corpus_id based on the corpus_name
+            cursor.execute("SELECT corpus_id FROM corpus_metadata WHERE corpus_name = %s;", [corpus_name])
+            corpus = cursor.fetchone()
+            corpus_id = corpus['corpus_id']
 
-                # Construct the SQL query using f-strings
-                query = f"""
-                    UPDATE cfg_udops_acl
-                SET permission = '{permission}'
-                WHERE corpus_id = (
-                    SELECT corpus_id
-                    FROM corpus_metadata
-                    WHERE corpus_name = '{corpus_name}'
-                )
-                AND user_name IN ({user_names_str});
-                """
-                cursor.execute(query)
-                if cursor.rowcount == 0:
-                    return 2
+        
+
+            for user_names in user_name:
+                # Check if the user exists based on the user_name
+                cursor.execute("SELECT user_id FROM udops_users WHERE user_name = %s;", [user_names])
+                user = cursor.fetchone()
+                user_id = user['user_id']
+
+                # Check if the user and corpus already have a permission record in cfg_udops_acl
+                cursor.execute("SELECT * FROM cfg_udops_acl WHERE user_name = %s AND corpus_id = %s;", [user_names, corpus_id])
+                existing_permission = cursor.fetchone()
+
+                if existing_permission is None:
+                    # Insert a new permission record
+                    cursor.execute("INSERT INTO cfg_udops_acl (user_id, user_name, corpus_id, permission) VALUES (%s, %s, %s, %s);",[user_id, user_names, corpus_id, permission])
                 else:
-                    conn.commit()
-                    cursor.close()
-                    return 1
-            else :
-                user_names_str = ", ".join([f"'{name}'" for name in user_name])
-                for user in user_name:
-                    query = f"select user_id from udops_users where user_name = '{user}'"
-                    cursor.execute(query)
-                    user_id = cursor.fetchone()['user_id']
-                    query2 = f"select corpus_id from corpus_metadata where corpus_name = '{corpus_name}'"
-                    cursor.execute(query2)
-                    corpus_id = cursor.fetchone()['corpus_id']
-                    query3 = f"insert into cfg_udops_acl (user_id, user_name , corpus_id , permission) values ('{user_id}','{user}','{corpus_id}','{permission}')"
-                    cursor.execute(query3)
-                    conn.commit()
-                    cursor.close()
-                    return 1
+                    # Update the existing permission
+                    cursor.execute("UPDATE cfg_udops_acl SET permission = %s WHERE user_name = %s AND corpus_id = %s;",[permission, user_names, corpus_id])
 
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+
+            return 1
+        
         except Exception as e:
-            raise e
+            print(e)
 
     def remove_access_corpus(self, user_name, corpus_name, permission):
         try:
@@ -621,5 +611,43 @@ class UserManagementManager:
             conn.commit()
             cursor.close()
             return rows
+        except Exception as e:
+            print(e)
+
+    def user_status(self, github_username, token):
+        try:
+            url = 'https://api.github.com/user'
+            headers = {'Authorization': f'token {token}'}
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                username = response.json()['login']
+                if username==github_username:
+                    cursor = conn.cursor(cursor_factory=RealDictCursor)
+                    query = f"select user_id,user_name,firstname,lastname,email from udops_users where user_name ='{github_username}'"
+                    cursor.execute(query)
+                    rows = cursor.fetchall()
+                    user_id = rows[0]['user_id']
+                    if len(rows) == 0:
+                        cursor.close()
+                        conn.commit()
+                        return 0
+                    else:
+                        query2 = "select admin_user_id from cfg_udops_teams_metadata"
+                        cursor.execute(query2)
+                        rows1 = cursor.fetchall()
+                        arr = []
+                        cursor.close()
+                        conn.commit()
+                        for i in range(len(rows1)):
+                            a = rows1[i]['admin_user_id']
+                            arr.append(a)
+                        if user_id not in arr:
+                            return 1, rows
+                        else:
+                            return 2, rows
+                else:
+                    return 0
+            else:
+                return 0
         except Exception as e:
             print(e)

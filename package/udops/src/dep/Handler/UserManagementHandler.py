@@ -148,3 +148,10 @@ class UserManagementHandler:
             return user.list_user_search(conn,user_name_substring)
         except Exception as e:
             raise e
+
+    def user_status(self, github_username, token):
+        try:
+            user = UserManagementManager()
+            return user.user_status(github_username, token)
+        except Exception as e:
+            raise e

@@ -86,3 +86,7 @@ class UserManagement:
     def list_user_search(self, user_name_substring):
         user = UserManagementHandler()
         return user.list_user_search(user_name_substring)
+
+    def user_status(self,github_username, token):
+        user = UserManagementHandler()
+        return user.user_status(github_username, token)
