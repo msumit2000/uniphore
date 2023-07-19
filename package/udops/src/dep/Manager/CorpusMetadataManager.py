@@ -162,20 +162,23 @@ class CorpusMetadataManager:
     def update_corpus(self,json_loader, conn):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
+            corpus_name = json_loader["corpus_name"]
+#           cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
+            query = f"select * from corpus_metadata where corpus_name='{corpus_name}'"
+            cursor.execute(query)
             rows = cursor.fetchall()
+#            print(len(rows))
             if len(rows) == 0:
                 return 0
             else:
                 for key, value in json_loader.items():
-                    query = f"UPDATE corpus_metadata SET {key}='{value}' where corpus_name ='{json_loader['corpus_name']}'"
+                    cursor = conn.cursor(cursor_factory=RealDictCursor)
+                    query = f"UPDATE corpus_metadata SET {key}='{value}' where corpus_name ='{corpus_name}'"
                     cursor.execute(query)
                     conn.commit()
-                    cursor.close()
                 return 1
         except Exception as e :
             print(e)
-
 
     def update_timestamp(self, conn, args):
         cursor = conn.cursor(cursor_factory=RealDictCursor)

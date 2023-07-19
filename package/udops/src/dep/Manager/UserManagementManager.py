@@ -497,7 +497,7 @@ class UserManagementManager:
                             WHERE user_name NOT IN (
                                 SELECT user_name
                                 FROM cfg_udops_users
-                                WHERE team_id = (
+                                WHERE team_id = ANY (
                                     SELECT team_id
                                     FROM cfg_udops_teams_metadata
                                     WHERE teamname = '{teamname}'
@@ -575,42 +575,42 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = f"""SELECT
-                            t.teamname,
-                            t.permanent_access_token,
-                            t.tenant_id,
-                            (SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) AS admin_user_name,
-                            t.s3_base_path,
-                            ARRAY(
-                                SELECT user_name
-                                FROM cfg_udops_users
-                                WHERE team_id = t.team_id
-                            ) AS users
-                        FROM
-                            cfg_udops_teams_metadata AS t
-                        WHERE
-                            t.teamname ILIKE '%{teamname_substring}%';"""
+            if teamname_substring=="":
+                query=f"SELECT t.teamname, t.permanent_access_token, t.tenant_id, (SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) AS admin_user_name,t.s3_base_path, ARRAY(SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id) AS users FROM cfg_udops_teams_metadata AS t;"
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                conn.commit()
+                cursor.close()
+                return rows
 
-            cursor.execute(query)
-            rows = cursor.fetchall()
-            conn.commit()
-            cursor.close()
-            # conn.close()
-            return rows
+            else:
+
+                query = f"SELECT t.teamname,t.permanent_access_token,t.tenant_id,(SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) AS admin_user_name,t.s3_base_path, ARRAY(SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id ) AS users FROM cfg_udops_teams_metadata AS t WHERE t.teamname ILIKE '%{teamname_substring}%';"
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                conn.commit()
+                cursor.close()
+                return rows
         except Exception as e:
             print(e)
 
     def list_user_search(self, conn, user_name_substring):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = f"""SELECT user_name, firstname, lastname, email
-                        FROM udops_users
-                        WHERE user_name ILIKE '%{user_name_substring}%';"""
-            cursor.execute(query)
-            rows = cursor.fetchall()
-            conn.commit()
-            cursor.close()
-            return rows
+            if user_name_substring == "":
+                query ="SELECT user_name, firstname, lastname, email FROM udops_users;"
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                conn.commit()
+                cursor.close()
+                return rows
+            else:
+                query = f"SELECT user_name, firstname, lastname, email FROM udops_users WHERE user_name ILIKE '%{user_name_substring}%';"
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                conn.commit()
+                cursor.close()
+                return rows
         except Exception as e:
             print(e)
 

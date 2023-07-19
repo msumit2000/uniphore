@@ -4,6 +4,9 @@ import json
 from udops.src.dep.Common.Constants import Constants
 
 from udops.src.dep.config.Connection import *
+from collections import Counter
+
+
 
 connection = Connection()
 
@@ -335,14 +338,24 @@ class DatasetMetadatamanager:
 
     def search_dataset(self,property):
         try:
-            conn = connection.get_connection()
-            cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = f"select dataset_id, dataset_name,corpus_type,corpus_filter from dataset_metadata where corpus_type='{property}';"
-            cursor.execute(query)
-            rows = cursor.fetchall()
-            conn.commit()
-            cursor.close()
-            return rows
+            if property=="":
+                conn = connection.get_connection()
+                cursor = conn.cursor(cursor_factory=RealDictCursor)
+                query = "select * from dataset_metadata"
+                cursor.execute(query)
+                rows= cursor.fetchall()
+                conn.commit()
+                cursor.close()
+                return rows
+            else:
+                conn = connection.get_connection()
+                cursor = conn.cursor(cursor_factory=RealDictCursor)
+                query = f"select dataset_id, dataset_name,corpus_type,corpus_filter from dataset_metadata where corpus_type='{property}';"
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                conn.commit()
+                cursor.close()
+                return rows
         except Exception as e:
             raise e
 
