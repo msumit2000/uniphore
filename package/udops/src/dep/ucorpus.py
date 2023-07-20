@@ -16,7 +16,6 @@ class ucorpus:
 
     def getCorpusMetadata(corpus_name):  # take one argument
         corpus_handler = CorpusHandler()
-        print('*************')
         row=corpus_handler.get_corpus_metadata(corpus_name)
         print(row)
         return row

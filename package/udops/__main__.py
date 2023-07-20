@@ -61,8 +61,7 @@ try:
     @app.command()
     def create_corpus(corpus_name: str = typer.Option(..., "--corpus_name") ,
                       corpustype: str = typer.Option(..., "--corpus_type"),
-                      language : str = typer.Option(..., "--language"), template: str = typer.Option(..., "--template"),
-                      native_schema: str = typer.Option(..., "--native_schema") , common_schema: str = typer.Option(..., "--common"),
+                      language : str = typer.Option(..., "--language"),
                       source:str = typer.Option(..., "--source_url"),
                       source_type:str = typer.Option(..., "--source_type") , vendor :str = typer.Option(..., "--vendor"),
                       domain: Optional[str] =typer.Option(None, "--domain"),
@@ -96,9 +95,6 @@ try:
                     User_Token = input("Enter User Token:") # Partial change for import of data
                     AccessControl().partial_change(Source_tenant,User_Token)
                     if corpus_name == os.path.basename(os.getcwd()):
-                        a = os.path.basename(template)
-                        b = os.path.basename(native_schema)
-                        c = os.path.basename(common_schema)
                         corpus_details = {
                         "corpus_name": corpus_name,
                         "corpus_type": corpustype,
@@ -109,26 +105,9 @@ try:
                         "description": description,
                         "lang_code":lang_code,
                         "acquisition_date": acquisition_date,
-                        "migration_date": migration_date,
-                        "custom_fields": [
-                            {
-                                "field_name": "template_file_path",
-                                "field_value": str(a)
-                            },
-                            {
-                                "field_name": "native_schema",
-                                "field_value": str(b)
-                            },
-                            {
-                                "field_name": "common_schema",
-                                "field_value": "/poc/promise/" + str(c)
-                            }
-                        ]
+                        "migration_date": migration_date
 
                     }
-                        shutil.copy(template,os.getcwd())
-                        shutil.copy(native_schema,os.getcwd())
-                        shutil.copy(common_schema,os.path.dirname(os.path.realpath(__file__)) + "/src/dep/poc/promise/")
                         ucorpus.init(corpus_details,source)
                         corpus_id = authentication.corpus_id(corpus_name)
                         authentication.default_access(corpus_id,user_id)
@@ -138,9 +117,6 @@ try:
                         return "Corpus name and folder name should be same"
                 else:
                     if corpus_name == os.path.basename(os.getcwd()):
-                        a = os.path.basename(template)
-                        b = os.path.basename(native_schema)
-                        c = os.path.basename(common_schema)
                         corpus_details = {
                         "corpus_name": corpus_name,
                         "corpus_type": corpustype,
