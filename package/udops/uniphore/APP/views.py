@@ -70,11 +70,9 @@ class search_corpus(APIView):
                 }
                 return JsonResponse(response_data, safe=False)
             else:
-                json_string = json.dumps(response)
-                data = json.loads(json_string)
                 response_data = {
                 "status": "success",
-                "data": data
+                "data": response
                 }
                 return JsonResponse(response_data, safe=False)
 
