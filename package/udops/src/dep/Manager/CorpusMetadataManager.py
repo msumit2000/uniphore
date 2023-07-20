@@ -253,26 +253,29 @@ class CorpusMetadataManager:
             print(e)
 
     def search_corpus(self, corpus_name, conn):
-            try:
-                if corpus_name=="":
-                    cursor = conn.cursor(cursor_factory=RealDictCursor)
-                    cursor.execute(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , lastupdated_ts , description, acquisition_date (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata;")
-                    rows = cursor.fetchall()
-                    conn.commit()
-                    cursor.close()
-                    return rows
+        try:
+            if corpus_name=="":
+               cursor = conn.cursor(cursor_factory=RealDictCursor)
+               cursor.execute("SELECT corpus_id, corpus_name, corpus_type, language, source_type,migration_date, lastupdated_ts, description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata")
+               rows = cursor.fetchall()
+               conn.commit()
+               cursor.close()
+               return rows
+            else:
+                cursor = conn.cursor(cursor_factory=RealDictCursor)
+                query=f"SELECT corpus_id, corpus_name, corpus_type, language, source_type,migration_date, lastupdated_ts, description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata where corpus_name ='{corpus_name}'"
+
+#                cursor.execute(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type,migration_date, lastupdated_ts, description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata where corpus_nam ='{corpus_name}'")
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                conn.commit()
+                cursor.close()
+                if rows==None:
+                    return 0
                 else:
-                    cursor = conn.cursor(cursor_factory=RealDictCursor)
-                    cursor.execute(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , lastupdated_ts , description, acquisition_date (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata WHERE corpus_name ='{corpus_name}'")
-                    rows = cursor.fetchall()
-                    conn.commit()
-                    cursor.close()
-                    if rows==None:
-                        return 0
-                    else:
-                        return rows
-            except Exception as e:
-                return e
+                    return rows
+        except Exception as e:
+            return e
 
     def summary(self, conn, column):
         try:
