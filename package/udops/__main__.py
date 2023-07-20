@@ -137,7 +137,6 @@ try:
                     else:
                         return "Corpus name and folder name should be same"
                 else:
-                    AccessControl().partial_change(Source_tenant,User_Token)
                     if corpus_name == os.path.basename(os.getcwd()):
                         a = os.path.basename(template)
                         b = os.path.basename(native_schema)
