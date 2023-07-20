@@ -91,50 +91,95 @@ try:
             if team_id==0:
                 print("team not found")
             else:
-                Source_tenant = input("Enter Source Tenant name:")
-                User_Token = input("Enter User Token:") # Partial change for import of data
-                AccessControl().partial_change(Source_tenant,User_Token)
-                if corpus_name == os.path.basename(os.getcwd()):
-                    a = os.path.basename(template)
-                    b = os.path.basename(native_schema)
-                    c = os.path.basename(common_schema)
-                    corpus_details = {
-                    "corpus_name": corpus_name,
-                    "corpus_type": corpustype,
-                    "language": language,
-                    "source_type": source_type,
-                    "vendor": vendor,
-                    "domain": domain,
-                    "description": description,
-                    "lang_code":lang_code,
-                    "acquisition_date": acquisition_date,
-                    "migration_date": migration_date,
-                    "custom_fields": [
-                        {
-                            "field_name": "template_file_path",
-                            "field_value": str(a)
-                        },
-                        {
-                            "field_name": "native_schema",
-                            "field_value": str(b)
-                        },
-                        {
-                            "field_name": "common_schema",
-                            "field_value": "/poc/promise/" + str(c)
-                        }
-                    ]
+                if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
+                    Source_tenant = input("Enter Source Tenant name:")
+                    User_Token = input("Enter User Token:") # Partial change for import of data
+                    AccessControl().partial_change(Source_tenant,User_Token)
+                    if corpus_name == os.path.basename(os.getcwd()):
+                        a = os.path.basename(template)
+                        b = os.path.basename(native_schema)
+                        c = os.path.basename(common_schema)
+                        corpus_details = {
+                        "corpus_name": corpus_name,
+                        "corpus_type": corpustype,
+                        "language": language,
+                        "source_type": source_type,
+                        "vendor": vendor,
+                        "domain": domain,
+                        "description": description,
+                        "lang_code":lang_code,
+                        "acquisition_date": acquisition_date,
+                        "migration_date": migration_date,
+                        "custom_fields": [
+                            {
+                                "field_name": "template_file_path",
+                                "field_value": str(a)
+                            },
+                            {
+                                "field_name": "native_schema",
+                                "field_value": str(b)
+                            },
+                            {
+                                "field_name": "common_schema",
+                                "field_value": "/poc/promise/" + str(c)
+                            }
+                        ]
 
-                }
-                    shutil.copy(template,os.getcwd())
-                    shutil.copy(native_schema,os.getcwd())
-                    shutil.copy(common_schema,os.path.dirname(os.path.realpath(__file__)) + "/src/dep/poc/promise/")
-                    ucorpus.init(corpus_details,source)
-                    corpus_id = authentication.corpus_id(corpus_name)
-                    authentication.default_access(corpus_id,user_id)
-                    authentication.Corpus_team_map(team_id , corpus_id)
-                    AccessControl().retrieve_change()
+                    }
+                        shutil.copy(template,os.getcwd())
+                        shutil.copy(native_schema,os.getcwd())
+                        shutil.copy(common_schema,os.path.dirname(os.path.realpath(__file__)) + "/src/dep/poc/promise/")
+                        ucorpus.init(corpus_details,source)
+                        corpus_id = authentication.corpus_id(corpus_name)
+                        authentication.default_access(corpus_id,user_id)
+                        authentication.Corpus_team_map(team_id , corpus_id)
+                        AccessControl().retrieve_change()
+                    else:
+                        return "Corpus name and folder name should be same"
                 else:
-                    return "Corpus name and folder name should be same"
+                    AccessControl().partial_change(Source_tenant,User_Token)
+                    if corpus_name == os.path.basename(os.getcwd()):
+                        a = os.path.basename(template)
+                        b = os.path.basename(native_schema)
+                        c = os.path.basename(common_schema)
+                        corpus_details = {
+                        "corpus_name": corpus_name,
+                        "corpus_type": corpustype,
+                        "language": language,
+                        "source_type": source_type,
+                        "vendor": vendor,
+                        "domain": domain,
+                        "description": description,
+                        "lang_code":lang_code,
+                        "acquisition_date": acquisition_date,
+                        "migration_date": migration_date,
+                        "custom_fields": [
+                            {
+                                "field_name": "template_file_path",
+                                "field_value": str(a)
+                            },
+                            {
+                                "field_name": "native_schema",
+                                "field_value": str(b)
+                            },
+                            {
+                                "field_name": "common_schema",
+                                "field_value": "/poc/promise/" + str(c)
+                            }
+                        ]
+
+                    }
+                        shutil.copy(template,os.getcwd())
+                        shutil.copy(native_schema,os.getcwd())
+                        shutil.copy(common_schema,os.path.dirname(os.path.realpath(__file__)) + "/src/dep/poc/promise/")
+                        ucorpus.init(corpus_details,source)
+                        corpus_id = authentication.corpus_id(corpus_name)
+                        authentication.default_access(corpus_id,user_id)
+                        authentication.Corpus_team_map(team_id , corpus_id)
+                        AccessControl().retrieve_change()
+                    else:
+                        return "Corpus name and folder name should be same"
+
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
 
