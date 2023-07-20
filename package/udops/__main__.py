@@ -127,26 +127,8 @@ try:
                         "description": description,
                         "lang_code":lang_code,
                         "acquisition_date": acquisition_date,
-                        "migration_date": migration_date,
-                        "custom_fields": [
-                            {
-                                "field_name": "template_file_path",
-                                "field_value": str(a)
-                            },
-                            {
-                                "field_name": "native_schema",
-                                "field_value": str(b)
-                            },
-                            {
-                                "field_name": "common_schema",
-                                "field_value": "/poc/promise/" + str(c)
-                            }
-                        ]
-
-                    }
-                        shutil.copy(template,os.getcwd())
-                        shutil.copy(native_schema,os.getcwd())
-                        shutil.copy(common_schema,os.path.dirname(os.path.realpath(__file__)) + "/src/dep/poc/promise/")
+                        "migration_date": migration_date
+                        }
                         ucorpus.init(corpus_details,source)
                         corpus_id = authentication.corpus_id(corpus_name)
                         authentication.default_access(corpus_id,user_id)
