@@ -109,15 +109,15 @@ class ucorpus:
         return corpus_handler.list_corpus(language , corpus_type ,  source_type)
     
 
-    def language(self,conn):
+    def language(self):
         corpus_handler = CorpusHandler()
         return corpus_handler.language(conn)
     
-    def source_type(self,conn):
+    def source_type(self):
         corpus_handler = CorpusHandler()
         return corpus_handler.source_type(conn)
     
-    def corpus_type(self,conn):
+    def corpus_type(self):
         corpus_handler = CorpusHandler()
         return corpus_handler.corpus_type(conn)
 
