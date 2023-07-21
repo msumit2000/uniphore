@@ -236,9 +236,9 @@ class CorpusMetadataManager:
 
     def list_corpus(self, language , corpus_type , source_type , conn):
         try:
-            lan = ', '.join(language)
-            cor_type = ', '.join(corpus_type)
-            sor_type = ', '.join(source_type) 
+            lan =str(tuple([key for key in language])).replace(',)', ')')
+            cor_type = str(tuple([key for key in corpus_type])).replace(',)', ')')
+            sor_type = str(tuple([key for key in source_type])).replace(',)', ')') 
             print(lan)
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute(
