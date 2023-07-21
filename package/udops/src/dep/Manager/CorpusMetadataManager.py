@@ -236,13 +236,13 @@ class CorpusMetadataManager:
 
     def list_corpus(self, language , corpus_type , source_type , conn):
         try:
-            lan = ', '.join('%'*len(language))  # "?, ?, ?, ... ?"
-            cor_type = ', '.join('%'*len(corpus_type))  # "?, ?, ?, ... ?"
-            sor_type = ', '.join('%'*len(source_type))  # "?, ?, ?, ... ?"
+            lan = ', '.join('%s'*len(language))
+            cor_type = ', '.join('%s'*len(corpus_type)) 
+            sor_type = ', '.join('%s'*len(source_type)) 
             print(lan)
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute(
-                f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , lastupdated_ts , description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata WHERE language IN ({tuple(language)}) and corpus_type in ({tuple(corpus_type)}) and source_type in ({tuple(source_type)})")
+                f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , lastupdated_ts , description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata WHERE language IN ({lan}) and corpus_type in ({cor_type}) and source_type in ({sor_type})")
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
