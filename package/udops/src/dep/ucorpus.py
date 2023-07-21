@@ -104,9 +104,22 @@ class ucorpus:
         corpus_handler = CorpusHandler()
         return corpus_handler.summary(column)
 
-    def list_corpus(self):
+    def list_corpus(self,language , corpus_type ,  source_type):
         corpus_handler = CorpusHandler()
-        return corpus_handler.list_corpus()
+        return corpus_handler.list_corpus(language , corpus_type ,  source_type)
+    
+
+    def language(self,conn):
+        corpus_handler = CorpusHandler()
+        return corpus_handler.language(conn)
+    
+    def source_type(self,conn):
+        corpus_handler = CorpusHandler()
+        return corpus_handler.source_type(conn)
+    
+    def corpus_type(self,conn):
+        corpus_handler = CorpusHandler()
+        return corpus_handler.corpus_type(conn)
 
     def search_corpus(self, corpus_name):
         corpus_handler = CorpusHandler()

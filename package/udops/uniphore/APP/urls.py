@@ -13,6 +13,9 @@ urlpatterns = [
     path('udops/corpus/donut/', views.donut.as_view()),
     path('udops/corpus/summary_custom/',views.summary_custom.as_view()),
     path('udops/corpus/update_custom_field/',views.update_custom_field.as_view()),
+    path('udops/corpus/language/',views.language.as_view()),
+    path('udops/corpus/source_type/',views.source_type.as_view()),
+    path('udops/corpus/corpus_type/',views.corpus_type.as_view()),
         ### dataset API #### 
     path('udops/dataset/count/',views.get_datset_count.as_view()),
     path('udops/dataset/summary/',views.dataset_summary.as_view()),

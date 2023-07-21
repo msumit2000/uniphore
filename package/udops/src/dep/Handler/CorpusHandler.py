@@ -237,12 +237,24 @@ class CorpusHandler:
         corpusmetadatamanager = CorpusMetadataManager()
         return corpusmetadatamanager.summary(conn, column)
 
-    def list_corpus(self):
+    def list_corpus(self , language , corpus_type ,  source_type):
         try:
             corpusMetadataManager = CorpusMetadataManager()
-            return corpusMetadataManager.list_corpus(conn)
+            return corpusMetadataManager.list_corpus(language , corpus_type ,  source_type, conn)
         except Exception as e:
             raise e
+        
+    def language(self,conn):
+        corpusmetadatamanager = CorpusMetadataManager()
+        return corpusmetadatamanager.language(conn)
+    
+    def source_type(self,conn):
+        corpusmetadatamanager = CorpusMetadataManager()
+        return corpusmetadatamanager.source_type(conn)
+    
+    def corpus_type(self,conn):
+        corpusmetadatamanager = CorpusMetadataManager()
+        return corpusmetadatamanager.corpus_type(conn)
 
     def search_corpus(self, corpus_name):
         try:

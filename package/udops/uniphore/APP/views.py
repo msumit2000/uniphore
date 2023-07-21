@@ -47,14 +47,56 @@ class get_corpus_list(APIView):
     permission_classes=([IsAuthenticated])
     def post(self,request):
         if request.method == 'POST':
+            data= json.loads(request.body)
             re = ucorpus()
-            response = re.list_corpus()
+            response = re.list_corpus(data["language"],data["corpus_type"],data["source_type"])
             response_data = {
             "status": "success",
             "failure_error": " ",
             "data": response
             }
             return JsonResponse(response_data, safe=False)
+        
+class language(APIView):
+    permission_classes=([IsAuthenticated])
+    def get(self,request):
+        if request.method == 'GET':
+            re = ucorpus()
+            response = re.language()
+            response_data = {
+            "status": "success",
+            "failure_error": " ",
+            "data": response
+            }
+            return JsonResponse(response_data, safe=False)
+        
+class corpus_type(APIView):
+    permission_classes=([IsAuthenticated])
+    def get(self,request):
+        if request.method == 'GET':
+            re = ucorpus()
+            response = re.corpus_type()
+            response_data = {
+            "status": "success",
+            "failure_error": " ",
+            "data": response
+            }
+            return JsonResponse(response_data, safe=False)
+
+class source_type(APIView):
+    permission_classes=([IsAuthenticated])
+    def get(self,request):
+        if request.method == 'GET':
+            re = ucorpus()
+            response = re.source_type()
+            response_data = {
+            "status": "success",
+            "failure_error": " ",
+            "data": response
+            }
+            return JsonResponse(response_data, safe=False)
+        
+
 
 class search_corpus(APIView):
     permission_classes=([IsAuthenticated])
