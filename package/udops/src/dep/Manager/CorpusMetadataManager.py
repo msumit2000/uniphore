@@ -241,7 +241,7 @@ class CorpusMetadataManager:
             sor_type = tuple(source_type)
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute(
-                f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , lastupdated_ts , description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata WHERE language in {lan} and corpus_type in {cor_type} and source_type in {sor_type}")
+                f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , lastupdated_ts , description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata WHERE language in ({language}) and corpus_type in ({corpus_type}) and source_type in ({source_type})")
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
