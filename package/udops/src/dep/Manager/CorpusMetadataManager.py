@@ -246,7 +246,10 @@ class CorpusMetadataManager:
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
-            return rows
+            if len(rows) == 0:
+                return 0
+            else:
+                return rows
         except Exception as e:
             print(e)
 

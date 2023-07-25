@@ -50,11 +50,19 @@ class get_corpus_list(APIView):
             data= json.loads(request.body)
             re = ucorpus()
             response = re.list_corpus(data["language"],data["corpus_type"],data["source_type"])
-            response_data = {
-            "status": "success",
-            "failure_error": " ",
-            "data": response
-            }
+            if response == 0:
+                response_data = {
+                    "status": "success",
+                    "failure_error": " ",
+                    "data": "Data Not Found"
+                }
+
+            else:
+                response_data = {
+                    "status": "success",
+                    "failure_error": " ",
+                    "data": response
+                }
             return JsonResponse(response_data, safe=False)
         
 class language(APIView):
