@@ -24,3 +24,7 @@ soundfile
 typer
 typing_extensions
 urllib3
+django
+djangorestframework
+django-cors-headers
+djangorestframework-simplejwt
