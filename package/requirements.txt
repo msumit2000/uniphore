@@ -117,16 +117,8 @@ scikit-learn==1.2.2
 scipy==1.10.1
 scmrepo==1.0.3
 SecretStorage==2.3.1
-selinux==3.0
-service-identity==18.1.0
-shortuuid==1.0.11
-shtab==1.6.1
 simplejson==3.16.0
-six==1.14.0
-slip==0.6.5
-slip.dbus==0.6.5
 smmap==5.0.0
-sos==4.4
 soundfile==0.12.1
 soxr==0.3.5
 sqlparse==0.4.4
