@@ -76,11 +76,6 @@ jsonpatch
 jsonpointer
 jsonschema
 keyring
-kombu
-language-selector
-launchpadlib
-lazr.restfulclient
-lazr.uri
 lazy_loader
 librosa
 llvmlite
