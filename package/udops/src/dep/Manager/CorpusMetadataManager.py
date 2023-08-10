@@ -297,7 +297,7 @@ class CorpusMetadataManager:
                return rows
             else:
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
-                query=f"SELECT corpus_id, corpus_name, corpus_type, language, source_type,(SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata WHERE corpus_name ='{corpus_name}'"
+                query=f"SELECT corpus_id, corpus_name, corpus_type, language, source_type,(SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata WHERE corpus_name like '{corpus_name}%'"
 
 #                cursor.execute(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type,migration_date, lastupdated_ts, description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata where corpus_nam ='{corpus_name}'")
                 cursor.execute(query)
