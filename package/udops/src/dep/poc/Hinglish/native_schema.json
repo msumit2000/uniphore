@@ -1,0 +1,50 @@
+{
+    "asr": [
+      {
+        "key": "file",
+        "data_type": "string",
+        "data_class": "Value",
+        "mandatory": true
+      },
+      {
+        "key": "audio",
+        "data_type": "string",
+        "data_class": "Audio",
+        "mandatory": true
+      },
+      {
+        "key": "text",
+        "data_type": "string",
+        "data_class": "Value",
+        "mandatory": true
+      },
+      {
+        "key": "transcription_detail",
+        "data_type": [
+          {
+            "key": "start_time",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "end_time",
+            "data_type": "string",
+            "data_class": "Value"
+          },
+          {
+            "key": "transcription",
+            "data_type": "string",
+            "data_class": "Value"
+          }
+        ],
+        "data_class": "Sequence",
+        "mandatory": true
+      },
+      {
+        "key": "id",
+        "data_type": "string",
+        "data_class": "Value",
+        "mandatory": true
+      }
+    ]
+  }
