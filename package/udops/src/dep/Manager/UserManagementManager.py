@@ -3,11 +3,13 @@ import json
 import requests
 from udops.src.dep.config.Connection import *
 from udops.src.dep.InputProperties import *
+from udops.src.dep.Manager.mount_s3 import *
 from django.db import IntegrityError
-from mount_s3 import mount_s3
+
 
 prop = properties()
 connection = Connection()
+mount = mount_s3()
 conn = connection.get_connection()
 
 
@@ -515,7 +517,7 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            mount_location = mount_s3.mount_s3_bucket(destination_base_path,mount_point=teamname)
+            mount_location = mount.mount_s3_bucket(destination_base_path,mount_point=teamname)
 
             # Retrieve the user_id for the provided admin_user_id from udops_users table
             user_id_query = f"SELECT user_id FROM udops_users WHERE user_name = '{admin_user_name}'"
