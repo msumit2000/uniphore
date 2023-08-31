@@ -425,7 +425,7 @@ class team_upsert(APIView):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
-            response = dataset.update_team(data["permanent_access_token"],data["tenant_id"],data["admin_user_name"],data["s3_base_path"],data["existing_teamname"],data["new_teamname"])
+            response = dataset.update_team(data["permanent_access_token"],data["tenant_id"],data["admin_user_name"],data["s3_base_path"],data["destination_base_path"],data["existing_teamname"],data["new_teamname"])
             response_data = {
             "status":"success",
             "data":response
@@ -618,7 +618,7 @@ class add_team(APIView):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
-            response = dataset.add_team(data["permanent_access_token"],data["tenant_id"],data["admin_user_name"],data["s3_base_path"],data["teamname"])
+            response = dataset.add_team(data["permanent_access_token"],data["tenant_id"],data["admin_user_name"],data["s3_base_path"],data["destination_base_path"],data["teamname"])
             response_data = {
             "status":"success",
             "data":response
