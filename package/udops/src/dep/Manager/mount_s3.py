@@ -10,7 +10,7 @@ class mount_s3:
         os.makedirs(mount_point, exist_ok=True)
 
         # Mount the S3 bucket using s3fs
-        cmd = f"mount-s3 {bucket_name}  {mount_point}"
+        cmd = f"sudo mount-s3 {bucket_name}  {mount_point}"
         os.system(cmd)
 
         return mount_point
