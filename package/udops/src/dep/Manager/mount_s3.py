@@ -11,6 +11,6 @@ class mount_s3:
 
         # Mount the S3 bucket using s3fs
         cmd = f"mount-s3 {bucket_name}  {mount_point}"
-        subprocess.run(cmd, shell=True, check=True)
+        subprocess.run(cmd)
 
         return mount_point
