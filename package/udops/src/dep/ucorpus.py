@@ -4,15 +4,15 @@ import shutil
 from typing import Optional
 import typer
 
+
 class ucorpus:
     def listCorpusNames(filter_value):
-  #      typer.echo("load test")
-#        print(filter_value)
+        #      typer.echo("load test")
+        #        print(filter_value)
         corpus_handler = CorpusHandler()
         response = corpus_handler.list_corpus_names(filter_value)
         #for row in response:
         #    print("Result :", row)
-
 
     def getCorpusMetadata(corpus_name):  # take one argument
         corpus_handler = CorpusHandler()
@@ -71,6 +71,7 @@ class ucorpus:
     def remote(name:str,data: str, gita: str):
         corpus_handler = CorpusHandler()
         corpus_handler.remote_repo(name,data,gita)
+
 
 
     def push(self):

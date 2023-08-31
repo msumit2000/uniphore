@@ -1,28 +1,151 @@
-from udops.src.dep.ucorpus import * 
 from udops.src.dep.udataset import *
 from udops.src.dep.UserManagement import *
-from udops.src.dep.Manager.CorpusMetadataManager import *
-from udops.src.dep.Manager.UserManagementManager import *
-from udops.src.dep.Handler.UserManagementHandler import *
-from udops.src.dep.config.Connection import *
-from udops.src.dep.InputProperties import *
-from rest_framework.decorators import api_view
+from udops.src.dep.corpusGUI import GUI
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-prop=properties()
-connection = Connection()
-conn = connection.get_connection()
 
 
-#Create your views here.
-################# -----------------------------------------------------##################
+class create_corpus(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def post(self,request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            gui = GUI()
+            response = gui.create_corpus(data)
+            if response == 0:
+                return JsonResponse({"status": "error","message":"user not exist"})
+            elif response == 1:
+                return JsonResponse({"status": "success","message":"created successfully"})
+            elif response == 2:
+                return JsonResponse({"status":"error","message":"team not found"})
+            elif response == 3:
+                return JsonResponse({"status":"error","message": "no mount location"})
+            elif response == 4:
+                return JsonResponse({"status":"error","message":"corpus already existed"})
+            else:
+                return JsonResponse({"status": "error", "message": response})
+
+
+class add(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def post(self, request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            gui = GUI()
+            response = gui.add(data)
+            if response == 1:
+                return JsonResponse({"status": "success", "message": "added successfully"})
+            elif response == 2:
+                return JsonResponse({"status":"error" ,"message":"no mount location"})
+            else:
+                return JsonResponse({"status": "error", "message": response})
+
+
+class remote(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def post(self, request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            gui = GUI()
+            response = gui.remote(data)
+            if response == 0:
+                return JsonResponse({"status":"error", "message":"no mount location"})
+            elif response == 1:
+                return JsonResponse({"status":"success", "message": "added successfully"})
+            else:
+                return JsonResponse({"status": "error", "message": response})
+
+
+class commit(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def post(self, request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            gui = GUI()
+            response = gui.commit(data)
+            if response == 0:
+                return JsonResponse({"status": "error", "message": "no mount location"})
+            elif response == 1:
+                return JsonResponse({"status": "success", "message": data['message']})
+            else:
+                return JsonResponse({"status": "error", "message": response})
+
+
+class push(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def post(self, request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            gui = GUI()
+            response = gui.push(data)
+            if response == 0:
+                return JsonResponse({"status":"error","message":"user not exist"})
+            elif response == 1:
+                return JsonResponse({"status": "success","message":"pushed  successfully"})
+            elif response == 2:
+                return JsonResponse({"status":"error","message": "no mount location"})
+            elif response == 3:
+                return JsonResponse({"status":"error","message": "ACCESS DENY"})
+            else:
+                return JsonResponse({"status": "error", "message": response})
+
+
+class clone(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def post(self, request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            gui = GUI()
+            response = gui.clone(data)
+            if response == 0:
+                return JsonResponse({"status": "error", "message": "user not exist"})
+            elif response == 1:
+                return JsonResponse({"status": "success", "message": "cloned  successfully"})
+            elif response == 2:
+                return JsonResponse({"status": "error", "message": "no mount location"})
+            elif response == 3:
+                return JsonResponse({"status": "error", "message": "ACCESS DENY"})
+            else:
+                return JsonResponse({"status": "error", "message": response})
+
+
+class pull(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def post(self, request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            gui = GUI()
+            response = gui.pull(data)
+
+            if response == 0:
+                return JsonResponse({"status": "error", "message": "user not exist"})
+            elif response == 1:
+                return JsonResponse({"status": "success", "message": "pulled  successfully"})
+            elif response == 2:
+                return JsonResponse({"status": "error", "message": "no mount location"})
+            elif response == 3:
+                return JsonResponse({"status": "error", "message": "ACCESS DENY"})
+            else:
+                return JsonResponse({"status": "error", "message": response})
+
+
+#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+
+
 class get_udops_count(APIView):
     permission_classes=([IsAuthenticated])
+
     def get(self,request):
         if request.method == 'GET':
             re = ucorpus()
@@ -32,6 +155,7 @@ class get_udops_count(APIView):
                 "data": response
             }
             return JsonResponse(response_data, safe=False)
+
 
 class summary(APIView):
     permission_classes=([IsAuthenticated])
@@ -43,6 +167,7 @@ class summary(APIView):
             data = json.loads(response)
             return JsonResponse(data, safe=False)
 
+
 class get_corpus_list(APIView):
     permission_classes=([IsAuthenticated])
     def post(self,request):
@@ -50,19 +175,11 @@ class get_corpus_list(APIView):
             data= json.loads(request.body)
             re = ucorpus()
             response = re.list_corpus(data["language"],data["corpus_type"],data["source_type"])
-            if response == 0:
-                response_data = {
-                    "status": "success",
-                    "failure_error": " ",
-                    "data": "Data Not Found"
-                }
-
-            else:
-                response_data = {
-                    "status": "success",
-                    "failure_error": " ",
-                    "data": response
-                }
+            response_data = {
+            "status": "success",
+            "failure_error": " ",
+            "data": response
+            }
             return JsonResponse(response_data, safe=False)
         
 class language(APIView):
@@ -513,6 +630,7 @@ class add_user(APIView):
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
+            dataset = UserManagement()
             response = dataset.add_user(data["user_name"],data["firstname"],data["lastname"],data["email"])
             response_data = {
             "status":"success",

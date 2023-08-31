@@ -1,4 +1,3 @@
-#commit
 from udops.src.dep.ucorpus import ucorpus
 from udops.src.dep.udataset import udataset
 from udops.src.dep.UserAccessControl import AccessControl
@@ -7,7 +6,6 @@ from udops.src.dep.config.teamusermanager import teamusermanager
 from typing import Optional, List
 import re
 import json
-import shutil
 import os
 import typer
 from datetime import datetime
@@ -15,10 +13,11 @@ import configparser
 app = typer.Typer(name="udops",add_completion=False,help="Udops utility")
 
 try:
-########----------- UAC-------------##########
+
+    ########----------- UAC-------------##########
 
     @app.command()
-    def login(token:str,username:str,teamname:str):
+    def login(token:str, username:str,teamname:str):
         Userlog = AccessControl()
         Userlog.login(token,username)
         dvchandler1 = dvchandler()
@@ -96,18 +95,18 @@ try:
                     AccessControl().partial_change(Source_tenant,User_Token)
                     if corpus_name == os.path.basename(os.getcwd()):
                         corpus_details = {
-                        "corpus_name": corpus_name,
-                        "corpus_type": corpustype,
-                        "language": language,
-                        "source_type": source_type,
-                        "vendor": vendor,
-                        "domain": domain,
-                        "description": description,
-                        "lang_code":lang_code,
-                        "acquisition_date": acquisition_date,
-                        "migration_date": migration_date
+                            "corpus_name": corpus_name,
+                            "corpus_type": corpustype,
+                            "language": language,
+                            "source_type": source_type,
+                            "vendor": vendor,
+                            "domain": domain,
+                            "description": description,
+                            "lang_code":lang_code,
+                            "acquisition_date": acquisition_date,
+                            "migration_date": migration_date
 
-                    }
+                               }
                         ucorpus.init(corpus_details,source)
                         corpus_id = authentication.corpus_id(corpus_name)
                         authentication.default_access(corpus_id,user_id)
@@ -132,7 +131,7 @@ try:
                         ucorpus.init(corpus_details,source)
                         corpus_id = authentication.corpus_id(corpus_name)
                         authentication.default_access(corpus_id,user_id)
-                        authentication.Corpus_team_map(team_id , corpus_id)
+                        authentication.Corpus_team_map(team_id, corpus_id)
                         AccessControl().retrieve_change()
                     else:
                         return "Corpus name and folder name should be same"
@@ -179,6 +178,7 @@ try:
     @app.command()
     def remote(name : str, gita: str):
         if re.sub(r'^.*/(.*?)(\.git)?$', r'\1', gita) == os.path.basename(os.getcwd()):
+
             data = teamusermanager().get_s3_path()
             ucorpus.remote(name, data, gita)
         else: 
@@ -192,6 +192,7 @@ try:
     def push(corpus_name):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
+
         def is_file_present(file_name):
             current_directory = os.getcwd()
             directory = os.path.join(current_directory, file_name)
@@ -244,7 +245,6 @@ try:
             ACCESS_TOKEN = config.get('github', 'access_token')
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
-            
             if authentication.authorize_user_clone(user_id,corpus_id)==1:
                 return ucorpus.clone(git)
             else:
@@ -263,6 +263,7 @@ try:
     def pull(corpus_name,folder: Optional[str] =typer.Argument(None)):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
+
         def is_file_present(file_name):            
             return os.path.isfile(file_name)
 
@@ -400,8 +401,6 @@ try:
     def user_authentication(source_dir:str):
 
         pass
-
-
 
 except Exception as e:
     raise e

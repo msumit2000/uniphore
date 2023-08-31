@@ -10,8 +10,6 @@ class User_log:
     def login(self,access_token,username):
         try:
             dir_path = os.path.dirname(os.path.realpath(__file__))
-            file_path = os.path.join(dir_path, 'udops_config')
-
             url = 'https://api.github.com/user'
             headers = {'Authorization': f'token {access_token}'}
             response = requests.get(url, headers=headers)
@@ -34,10 +32,7 @@ class User_log:
                     if 'github' not in config:
                         config.add_section('github')
                     config.set('github', 'ACCESS_TOKEN', access_token)
-
                     with open(dir_path + '/udops_config', 'w') as config_file:
- 
-
                         config.write(config_file)
                     print("login Successfully !!!")
 
@@ -49,21 +44,10 @@ class User_log:
     def logout(self):
         data_to_erase = 'github'
         dir_path = os.path.dirname(os.path.realpath(__file__))
-
-
         with open(dir_path + "/udops_config", 'r') as file:
-
-            
-
-
-
             lines = file.readlines()
 
         modified_lines = [line for line in lines if data_to_erase not in line]
-
-
-
-
         with open(dir_path + "/udops_config", 'w') as file:
             print("Logout Successful")
 

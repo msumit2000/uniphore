@@ -1,9 +1,7 @@
 from psycopg2.extras import RealDictCursor
-import json
 import requests
 from udops.src.dep.config.Connection import *
 from udops.src.dep.InputProperties import *
-from django.db import IntegrityError
 
 prop = properties()
 connection = Connection()
@@ -15,12 +13,9 @@ class UserManagementManager:
 
     def get_user_list(self, conn):
         try:
-
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute("SELECT user_name,firstname,lastname,email FROM udops_users")
             rows = cursor.fetchall()
-            #            print("$$$$$$$$$$$$$$")
-            # print(rows)
             conn.commit()
             cursor.close()
             #  conn.close()
@@ -33,7 +28,6 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             query = f"UPDATE udops_users SET firstname = '{firstname}', lastname = '{lastname}', email = '{email}', user_name='{new_user_name}' where user_name ='{existing_user_name}';"
-
             cursor.execute(query)
             if cursor.rowcount == 0:
                 return 2
@@ -48,13 +42,13 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            # query = f"""SELECT t.teamname,t.permanent_access_token,t.tenant_id,t.admin_user_id,t.s3_base_path, ARRAY(SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id) AS users FROM cfg_udops_teams_metadata AS t;"""
             query = f""" SELECT
                             t.teamname,
                             t.permanent_access_token,
                             t.tenant_id,
                             (SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) AS admin_user_name,
                             t.s3_base_path,
+                            t.s3_destination_path,
                             ARRAY(
                                 SELECT user_name
                                 FROM cfg_udops_users
@@ -73,7 +67,7 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def update_team(self, permanent_access_token, tenant_id, admin_user_name, s3_base_path, existing_teamname,
+    def update_team(self, permanent_access_token, tenant_id, admin_user_name, s3_base_path, s3_destination_path, existing_teamname,
                     new_teamname):
         try:
             conn = connection.get_connection()
@@ -89,8 +83,9 @@ class UserManagementManager:
             admin_user_name = result['user_id']
 
             # Update the cfg_udops_teams_metadata table with the new values
-            query = f"UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}', tenant_id = '{tenant_id}', admin_user_id = '{admin_user_name}', s3_base_path = '{s3_base_path}', teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';"
-
+            query = (f"UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}', "
+                     f"tenant_id = '{tenant_id}', admin_user_id = '{admin_user_name}', s3_base_path = '{s3_base_path}',"
+                     f" s3_destination_path = '{s3_destination_path}',teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';")
             cursor.execute(query)
 
             if cursor.rowcount == 0:
@@ -164,8 +159,6 @@ class UserManagementManager:
             corpus = cursor.fetchone()
             corpus_id = corpus['corpus_id']
 
-        
-
             for user_names in user_name:
                 # Check if the user exists based on the user_name
                 cursor.execute("SELECT user_id FROM udops_users WHERE user_name = %s;", [user_names])
@@ -186,8 +179,6 @@ class UserManagementManager:
             conn.commit()
             cursor.close()
             conn.close()
-
-
             return 1
         
         except Exception as e:
@@ -514,7 +505,7 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def add_team(self, permanent_access_token, tenant_id, admin_user_name, s3_base_path, teamname):
+    def add_team(self, permanent_access_token, tenant_id, admin_user_name, s3_base_path, s3_destination_path, teamname):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -536,9 +527,11 @@ class UserManagementManager:
                 return "Teamname already exists!!!"
 
             # Insert the new team into cfg_udops_teams_metadata table
-            insert_query = f"INSERT INTO cfg_udops_teams_metadata (teamname, permanent_access_token, tenant_id, admin_user_id, s3_base_path) VALUES ('{teamname}', '{permanent_access_token}', '{tenant_id}', '{admin_user_name}', '{s3_base_path}')"
+            insert_query = (f"INSERT INTO cfg_udops_teams_metadata (teamname, permanent_access_token,"
+                            f" tenant_id, admin_user_id, s3_base_path, mount_location) VALUES "
+                            f"('{teamname}', '{permanent_access_token}', '{tenant_id}', '{admin_user_name}', "
+                            f"'{s3_base_path}','{s3_destination_path}')")
             cursor.execute(insert_query)
-
             conn.commit()
             cursor.close()
 
@@ -546,7 +539,7 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def add_user(self, conn, user_name, firstname, lastname, email):
+    def add_user(self, user_name, firstname, lastname, email):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -571,21 +564,26 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def get_team_list_search(self, conn, teamname_substring):
+    def get_team_list_search(self,teamname_substring):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            if teamname_substring=="":
-                query=f"SELECT t.teamname, t.permanent_access_token, t.tenant_id, (SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) AS admin_user_name,t.s3_base_path, ARRAY(SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id) AS users FROM cfg_udops_teams_metadata AS t;"
+            if teamname_substring == "":
+                query = (f"SELECT t.teamname, t.permanent_access_token, t.tenant_id, "
+                         f"(SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) AS admin_user_name,"
+                         f"t.s3_base_path,s3_destination_path, ARRAY(SELECT user_name FROM cfg_udops_users "
+                         f"WHERE team_id = t.team_id) AS users FROM cfg_udops_teams_metadata AS t;")
                 cursor.execute(query)
                 rows = cursor.fetchall()
                 conn.commit()
                 cursor.close()
                 return rows
-
             else:
-
-                query = f"SELECT t.teamname,t.permanent_access_token,t.tenant_id,(SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) AS admin_user_name,t.s3_base_path, ARRAY(SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id ) AS users FROM cfg_udops_teams_metadata AS t WHERE t.teamname ILIKE '%{teamname_substring}%';"
+                query = (f"SELECT t.teamname,t.permanent_access_token,t.tenant_id,"
+                         f"(SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) "
+                         f"AS admin_user_name,t.s3_base_path, s3_destination_path, ARRAY(SELECT user_name FROM cfg_udops"
+                         f"_users WHERE team_id = t.team_id ) AS users FROM cfg_udops_teams_metadata "
+                         f"AS t WHERE t.teamname ILIKE '%{teamname_substring}%';")
                 cursor.execute(query)
                 rows = cursor.fetchall()
                 conn.commit()
@@ -598,7 +596,7 @@ class UserManagementManager:
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             if user_name_substring == "":
-                query ="SELECT user_name, firstname, lastname, email FROM udops_users;"
+                query = "SELECT user_name, firstname, lastname, email FROM udops_users;"
                 cursor.execute(query)
                 rows = cursor.fetchall()
                 conn.commit()

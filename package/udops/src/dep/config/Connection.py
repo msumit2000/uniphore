@@ -2,6 +2,7 @@ import configparser
 import psycopg2
 import os
 
+
 class Connection:
     def get_connection(self):
         try:

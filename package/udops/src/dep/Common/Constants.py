@@ -3,6 +3,9 @@ class Constants:
     select_query = "select * from public.corpus_metadata"
     select_query1 = "select * from corpus_metadata where "
     select_query2 = "select count(*) from corpus_metadata "
+    select_query3 = "select * from corpus_metadata where corpus_name = "
+
+
     # corpus_metadata query
     metadata_select_query = "select * from corpus_metadata where corpus_id='"
     metadata_select_query_type = "select * from corpus_metadata where corpus_type='"
@@ -14,7 +17,7 @@ class Constants:
     Udops_users_update = "Update udops_users set user_name = (%s), firstname = (%s), lastname = (%s), email = (%s) where user_name = '"
 
     # create corpus
-    insert_query_metadata = "insert into corpus_metadata (corpus_name,corpus_type,language,source_type,vendor,domain,description,lang_code,acquisition_date, migration_date) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    insert_query_metadata = "insert into corpus_metadata (corpus_name,corpus_type,language,source_type,vendor,domain,description,lang_code,acquisition_date, migration_date,flag) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     insert_query_custom_field = "insert into corpus_custom_fields (corpus_id,field_name,field_value) values(%s,%s,%s)"
     select_query_create = "select * from corpus_metadata "
     query_metadata="select * from corpus_metadata where corpus_name='"

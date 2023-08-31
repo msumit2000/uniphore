@@ -1,6 +1,5 @@
 from udops.src.dep.Handler.AccessControlHandler import UserAuthenticationHandler
 from udops.src.dep.Handler.UserLogHandler import User_log
-from udops.src.dep.Handler.duplotoken  import *
 from udops.src.dep.config.teamusermanager import *
 
 import requests
