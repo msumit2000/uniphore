@@ -2,7 +2,7 @@
 from udops.src.dep.UIHandler.uiauthentication import authentication
 from udops.src.dep.UIHandler.uihandler import uihandler
 import re
-
+import os
 try:
 
     class GUI:
@@ -19,6 +19,9 @@ try:
                         return 2
                     else:
                         location = auth.get_team_location(data['teamname'])
+                        corpus_name = data['corpus_name']
+                        location = str(location) + "/" + str(corpus_name)
+                        os.makedirs(location, exist_ok=True)
                         if location == 0:
                             return 3
                         else:
@@ -54,6 +57,8 @@ try:
             uih = uihandler()
             auth = authentication()
             location = auth.get_team_location(data["teamname"])
+            corpus_name = data['corpus_name']
+            location = str(location) + "/" + str(corpus_name)
             if location == 0:
                 return 2
             else:
@@ -65,6 +70,8 @@ try:
             if re.sub(r'^.*/(.*?)(\.git)?$', r'\1', data['gita']) == data['name']:
                 auth = authentication()
                 location = auth.get_team_location(data["teamname"])
+                corpus_name = data['name']
+                location = str(location) + "/" + str(corpus_name)
                 if location == 0:
                     return 2
                 else:
@@ -75,6 +82,8 @@ try:
             uih = uihandler()
             auth = authentication()
             location = auth.get_team_location(data["teamname"])
+            corpus_name = data['corpus_name']
+            location = str(location) + "/" + str(corpus_name)
             if location == 0:
                 return 2
             else:
@@ -93,6 +102,8 @@ try:
                     access = auth.authorize_user(user_id, corpus_id, access_type)
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
+                    corpus_name = data['corpus_name']
+                    location = str(location) + "/" + str(corpus_name)
                     if location == 0:
                         return 2
                     else:
@@ -119,6 +130,8 @@ try:
                     access = auth.authorize_user_clone(user_id, corpus_id)
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
+                    corpus_name = data['corpus_name']
+                    location = str(location) + "/" + str(corpus_name)
                     if location == 0:
                         return 2
                     if access == 0:
@@ -148,6 +161,8 @@ try:
                     access = auth.authorize_user(user_id, corpus_id, access_type)
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
+                    corpus_name = data['corpus_name']
+                    location = str(location) + "/" + str(corpus_name)
                     if location == 0:
                         return 2
                     else:

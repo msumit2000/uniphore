@@ -6,7 +6,7 @@ class mount_s3:
         print(mount_point)
         print(type(mount_point))
         print(type(str(mount_point)))
-        mount_point = "/home/siddhant/mount/"+str(mount_point)
+        mount_point = "/home/ubuntu/mount/"+str(mount_point)
         os.makedirs(mount_point, exist_ok=True)
 
         # Mount the S3 bucket using s3fs
