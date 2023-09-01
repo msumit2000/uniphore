@@ -109,8 +109,9 @@ class repomanager:
             s = Repo(location)
             g = git.Repo(location)
             s.push(remote='data')
-            with git.Git().custom_environment(GIT_SSH_COMMAND=git_ssh_cmd):
-                g.git.push("--set-upstream", "origin", "master")
+            print("&&&&&&&&&&&&7")
+            g.git.push("--set-upstream", "origin", "master")
+
             return 1
         except Exception as e:
             error = str(e)
