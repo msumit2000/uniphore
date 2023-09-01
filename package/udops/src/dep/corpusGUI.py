@@ -10,11 +10,15 @@ try:
         def create_corpus(self, data):
             try:
                 auth = authentication()
+                print(f"username-->{data['username']}")
                 user_id = auth.authenticate_user(data['username'])
+                print(f"user_id-->{user_id}")
                 if user_id == 0:
                     return 0
                 else:
                     team_id = auth.get_user_team(data['teamname'])
+                    print(data['teamname'])
+                    print(team_id)
                     if team_id == 0:
                         return 2
                     else:
@@ -42,6 +46,7 @@ try:
                             create_corpus = uih.init(corpus_details, data['source'],location)
                             if create_corpus == 1:
                                 corpus_id = auth.corpus_id(data['corpus_name'])
+                                print(f"corpus_id-->{corpus_id}")
                                 auth.default_acess(corpus_id, user_id)
                                 auth.Corpus_team_map(team_id, corpus_id)
                                 return 1
@@ -98,8 +103,10 @@ try:
                     return 0
                 else:
                     corpus_id = auth.corpus_id(data['corpus_name'])
+                    print(corpus_id)
                     access_type = "write"
                     access = auth.authorize_user(user_id, corpus_id, access_type)
+                    print(f"access-->{access}")
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
                     corpus_name = data['corpus_name']

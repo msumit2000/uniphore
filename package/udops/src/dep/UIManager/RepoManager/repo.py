@@ -5,6 +5,8 @@ import os
 from udops.src.dep.Common.Constants import Constants
 from psycopg2.extras import RealDictCursor
 
+git_ssh_identity_file = os.path.expanduser('~/.ssh/id_rsa')
+git_ssh_cmd = 'ssh -i %s' % git_ssh_identity_file
 
 class repomanager:
     def init(self,location):
@@ -107,7 +109,8 @@ class repomanager:
             s = Repo(location)
             g = git.Repo(location)
             s.push(remote='data')
-            g.git.push("--set-upstream", "origin", "master")
+            with git.Git().custom_environment(GIT_SSH_COMMAND=git_ssh_cmd):
+                g.git.push("--set-upstream", "origin", "master")
             return 1
         except Exception as e:
             error = str(e)
