@@ -1,0 +1,8 @@
+setup.py
+udops/__init__.py
+udops/__main__.py
+udops.egg-info/PKG-INFO
+udops.egg-info/SOURCES.txt
+udops.egg-info/dependency_links.txt
+udops.egg-info/entry_points.txt
+udops.egg-info/top_level.txt
