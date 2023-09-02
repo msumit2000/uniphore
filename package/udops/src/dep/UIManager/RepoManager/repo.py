@@ -8,6 +8,7 @@ from psycopg2.extras import RealDictCursor
 git_ssh_identity_file = os.path.expanduser('~/.ssh/id_rsa')
 git_ssh_cmd = 'ssh -i %s' % git_ssh_identity_file
 
+
 class repomanager:
     def init(self,location):
         try:
@@ -109,15 +110,13 @@ class repomanager:
             s = Repo(location)
             g = git.Repo(location)
             s.push(remote='data')
-            print("&&&&&&&&&&&&7")
             g.git.push("--set-upstream", "origin", "master")
-
             return 1
         except Exception as e:
             error = str(e)
             return error
 
-    def clone(self, corpus_name,args,location,conn):
+    def clone(self,args,location):
         try:
             git.Git(location).clone(args)
             return 1
@@ -128,7 +127,6 @@ class repomanager:
     def pull(self, file,location):
         try:
             s = Repo(location)
-
             s.pull(remote="data", targets=file)
             return 1
         except Exception as e:
