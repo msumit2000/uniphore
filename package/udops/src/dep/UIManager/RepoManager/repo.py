@@ -85,13 +85,13 @@ class repomanager:
 
     def remote(self, name: str, data: str, gita: str, location):
         try:
-            loc ="/home/ubuntu/Desktop/Data_transfer"
-            s = Repo(loc)
+            loc ="/home/ubuntu/Desktop/"
+            # s = Repo(loc)
             g = git.Repo(loc)
-            with s.config.edit() as conf:
-                conf["core"] = {"remote": "data"}
-                conf["remote"]["data"] = {"url": str(data) + '/' + name}
-            g.create_remote('origin', str(gita))
+            # with s.config.edit() as conf:
+            #     conf["core"] = {"remote": "data"}
+            #     conf["remote"]["data"] = {"url": str(data) + '/' + name}
+            # g.create_remote('origin', str(gita))
             g.git.add('--all')
             return 1
         except Exception as e:
@@ -100,7 +100,7 @@ class repomanager:
 
     def commit(self, message, location):
         try:
-            loc ="/home/ubuntu/Desktop/Data_transfer"
+            loc ="/home/ubuntu/Desktop/"
             g = git.Repo(loc)
             g.git.add('--all')
             g.git.commit('-m', message)
@@ -111,8 +111,8 @@ class repomanager:
 
     def push(self,location):
         try:
-            loc = loc ="/home/ubuntu/Desktop/Data_transfer"
-            s = Repo(loc)
+            loc = loc ="/home/ubuntu/Desktop/"
+           # s = Repo(loc)
             g = git.Repo(loc)
             s.push(remote='data')
           #  g.git.push("--set-upstream", "origin", "master")
