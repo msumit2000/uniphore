@@ -1,6 +1,6 @@
 import os.path
 #from dvc.repo import Repo
-from git import Repo
+import git
 import os
 from udops.src.dep.Common.Constants import Constants
 from psycopg2.extras import RealDictCursor
