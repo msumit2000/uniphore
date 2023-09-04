@@ -5,9 +5,6 @@ import os
 from udops.src.dep.Common.Constants import Constants
 from psycopg2.extras import RealDictCursor
 
-git_ssh_identity_file = os.path.expanduser('~/.ssh/id_rsa')
-git_ssh_cmd = 'ssh -i %s' % git_ssh_identity_file
-
 
 class repomanager:
     def init(self,location):
@@ -28,8 +25,8 @@ class repomanager:
     #     try:
     #         os.chdir(location)
     #         git.Repo.init(location)
-    #         s = Repo(location)
-    #         s.get_url(target)
+    #         #s = Repo(location)
+    #        # s.get_url(target)
     #         return 1
     #     except Exception as e:
     #         error = str(e)
@@ -112,9 +109,9 @@ class repomanager:
     def push(self,location):
         try:
             loc = loc ="/home/ubuntu/Desktop/"
-            s = Repo(loc)
+           # s = Repo(loc)
             g = git.Repo(loc)
-            s.push(remote='data')
+            #s.push(remote='data')
           #  g.git.push("--set-upstream", "origin", "master")
 
             # origin = g.repo.remote(name='origin')
