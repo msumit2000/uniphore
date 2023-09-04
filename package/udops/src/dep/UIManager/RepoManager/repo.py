@@ -63,9 +63,10 @@ class repomanager:
 
     def add_(self, target,location):
         try:
+            print(f"location---->{location}")
             os.chdir(location)
             s = Repo(location)
-            g =git.Repo(target)
+            g = git.Repo(target)
 
             s.add(
                 targets=target,
@@ -74,6 +75,7 @@ class repomanager:
                 #fname=None,
                 to_remote=False,
             )
+
             g.git.add('--all')
             return 1
         except Exception as e:
