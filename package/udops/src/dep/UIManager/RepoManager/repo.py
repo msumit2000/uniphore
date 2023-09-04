@@ -65,10 +65,10 @@ class repomanager:
         try:
             os.chdir(location)
             s = Repo(location)
-            g =git.Repo(target)
+            g =git.Repo(location)
             g.git.add('--all')
             s.add(
-                targets=location,
+                targets=target,
                # recursive=False,
                 no_commit=False,
                 #fname=None,
