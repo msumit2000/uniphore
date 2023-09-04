@@ -66,7 +66,7 @@ class repomanager:
             print(f"location---->{location}")
             os.chdir(location)
             s = Repo(location)
-            g = git.Repo(target)
+            g = git.Repo(location)
 
             s.add(
                 targets=target,
