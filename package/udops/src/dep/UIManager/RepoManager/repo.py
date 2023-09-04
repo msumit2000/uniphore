@@ -109,9 +109,10 @@ class repomanager:
 
     def push(self,location):
         try:
-
+            print(f"location--->{location}")
             s = Repo(location)
             g = git.Repo(location)
+            print(f"g-->{g}")
             s.push(remote='data')
             g.git.push("--set-upstream", "origin", "master")
             #repo.index.commit(commit_message)
