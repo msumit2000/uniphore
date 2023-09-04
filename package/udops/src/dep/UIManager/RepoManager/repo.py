@@ -112,7 +112,7 @@ class repomanager:
             s = Repo(location)
             g = git.Repo(location)
             s.push(remote='data')
-            g.git.push("--set-upstream", "origin", "master")
+          #  g.git.push("--set-upstream", "origin", "master")
 
             origin = repo.remote(name='origin')
             origin.push("master")

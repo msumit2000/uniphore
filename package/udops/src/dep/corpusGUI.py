@@ -120,13 +120,15 @@ try:
                         if access == 0:
                             return 3
                         else:
+                            print(f"push_location--> {uih.push(location)}")
                             if uih.push(location) == 1:
                                 return 1
                             else:
                                 return uih.push(location)
 
             except Exception as e:
-                return e
+                error = str(e)
+                return error
 
         def clone(self, data):
             try:
