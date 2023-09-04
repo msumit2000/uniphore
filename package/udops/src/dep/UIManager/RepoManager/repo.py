@@ -110,17 +110,15 @@ class repomanager:
         try:
             loc = loc ="/home/ubuntu/Desktop/"
            # s = Repo(loc)
-            #g = git.Repo(loc)
+            g = git.Repo(loc)
             #s.push(remote='data')
-          #  g.git.push("--set-upstream", "origin", "master")
-            repo = Repo(loc)
+            g.git.push("--set-upstream", "origin", "master")
+            #repo = Repo(loc)
             #repo.git.add(all=True)
            # commit_message= "second commit"
             #repo.index.commit(commit_message)
-          #  origin = repo.remote(name='origin')
-
-            repo.push("master")
             #g.git.push("--set-upstream", "origin", "master")
+
             return 1
         except Exception as e:
             error = str(e)
