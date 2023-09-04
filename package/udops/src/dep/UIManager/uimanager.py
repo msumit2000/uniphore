@@ -27,17 +27,17 @@ class uimanager:
             repo = repomanager()
             in_it = repo.init(location)
             if in_it == 1:
-                url_get = repo.get_url(target, location)
-                if url_get == 1:
-                    corpus_create = repo.create_corpus(json_loader, conn)
-                    if corpus_create == 1:
-                        return 1
-                    elif corpus_create == 2:
-                        return 2
-                    else:
-                        return corpus_create
+                #url_get = repo.get_url(target, location)
+                #if url_get == 1:
+                corpus_create = repo.create_corpus(json_loader, conn)
+                if corpus_create == 1:
+                    return 1
+                elif corpus_create == 2:
+                    return 2
                 else:
-                    return url_get
+                    return corpus_create
+                # else:
+                #     return url_get
             else:
                 return in_it
         except Exception as e:

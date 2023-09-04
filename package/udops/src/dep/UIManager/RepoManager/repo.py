@@ -23,16 +23,16 @@ class repomanager:
             error = str(e)
             return error
 
-    def get_url(self, target,location):
-        try:
-            os.chdir(location)
-            git.Repo.init(location)
-            s = Repo(location)
-            s.get_url(target)
-            return 1
-        except Exception as e:
-            error = str(e)
-            return error
+    # def get_url(self, target,location):
+    #     try:
+    #         os.chdir(location)
+    #         git.Repo.init(location)
+    #         s = Repo(location)
+    #         s.get_url(target)
+    #         return 1
+    #     except Exception as e:
+    #         error = str(e)
+    #         return error
 
     def create_corpus(self, json_loader, conn):
         try:
@@ -111,6 +111,10 @@ class repomanager:
             g = git.Repo(location)
             s.push(remote='data')
             g.git.push("--set-upstream", "origin", "master")
+
+            origin = repo.remote(name='origin')
+            origin.push("master")
+
             return 1
         except Exception as e:
             error = str(e)
