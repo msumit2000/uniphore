@@ -13,6 +13,7 @@ class repomanager:
     def init(self,location):
         try:
             os.chdir(location)
+            print(f"location---->{location}")
             git.Repo.init(location)
             Repo.init(
                 location,
@@ -67,15 +68,16 @@ class repomanager:
     def add_(self, target,location):
         try:
             os.chdir(location)
-            s = Repo(location)
-            git.Repo(location)
-            s.add(
-                targets=target,
-               # recursive=False,
-                no_commit=False,
-                #fname=None,
-                to_remote=False,
-            )
+            #s = Repo(location)
+            g =git.Repo(location)
+            g.git.add('--all')
+            # s.add(
+            #     targets=target,
+            #    # recursive=False,
+            #     no_commit=False,
+            #     #fname=None,
+            #     to_remote=False,
+            # )
             return 1
         except Exception as e:
             error = str(e)
