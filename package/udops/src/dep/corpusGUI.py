@@ -1,6 +1,7 @@
 # commit
 from udops.src.dep.UIHandler.uiauthentication import authentication
 from udops.src.dep.UIHandler.uihandler import uihandler
+from udops.src.dep.config.teamusermanager import teamusermanager
 import re
 import os
 try:
@@ -75,12 +76,13 @@ try:
             if re.sub(r'^.*/(.*?)(\.git)?$', r'\1', data['gita']) == data['name']:
                 auth = authentication()
                 location = auth.get_team_location(data["teamname"])
+                s3data = teamusermanager().get_s3_path()
                 corpus_name = data['name']
                 location = str(location) + "/" + str(corpus_name)
                 if location == 0:
                     return 2
                 else:
-                    return uih.remote(data['name'], data['data'], data['gita'], location)
+                    return uih.remote(data['name'], s3data, data['gita'], location)
 
         # def commit(self, teamname,message: str):
         def commit(self, data):
