@@ -114,9 +114,9 @@ class repomanager:
             #s.push(remote='data')
           #  g.git.push("--set-upstream", "origin", "master")
 
-            # origin = g.repo.remote(name='origin')
-            # origin.push("master")
-            g.git.push("--set-upstream", "origin", "master")
+            origin = g.repo.remote(name='origin')
+            origin.push("master")
+            #g.git.push("--set-upstream", "origin", "master")
             return 1
         except Exception as e:
             error = str(e)
