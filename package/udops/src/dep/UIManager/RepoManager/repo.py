@@ -63,12 +63,12 @@ class repomanager:
 
     def add_(self, target,location):
         try:
-            os.chdir(target)
+            os.chdir(location)
             s = Repo(location)
             g =git.Repo(target)
             g.git.add('--all')
             s.add(
-                targets=target,
+                targets=location,
                # recursive=False,
                 no_commit=False,
                 #fname=None,
@@ -81,8 +81,8 @@ class repomanager:
 
     def remote(self, name: str, data: str, gita: str, location):
         try:
-            s = Repo(loc)
-            g = git.Repo(loc)
+            s = Repo(location)
+            g = git.Repo(location)
             with s.config.edit() as conf:
                 conf["core"] = {"remote": "data"}
                 conf["remote"]["data"] = {"url": str(data) + '/' + name}
@@ -107,7 +107,7 @@ class repomanager:
     def push(self,location):
         try:
 
-            s = Repo(loc)
+            s = Repo(location)
             g = git.Repo(location)
             s.push(remote='data')
             g.git.push("--set-upstream", "origin", "master")
