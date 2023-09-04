@@ -99,11 +99,13 @@ try:
                 uih = uihandler()
                 auth = authentication()
                 user_id = auth.authenticate_user(data['username'])
+                print()
                 if user_id == 0:
                     return 0
                 else:
                     corpus_id = auth.corpus_id(data['corpus_name'])
-                    print(corpus_id)
+
+                    print(f"corpus_id--->{corpus_id}")
                     access_type = "write"
                     access = auth.authorize_user(user_id, corpus_id, access_type)
                     print(f"access-->{access}")
@@ -111,6 +113,7 @@ try:
                     location = auth.get_team_location(data["teamname"])
                     corpus_name = data['corpus_name']
                     location = str(location) + "/" + str(corpus_name)
+                    print(f"location---->{location}")
                     if location == 0:
                         return 2
                     else:
