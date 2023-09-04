@@ -36,3 +36,7 @@ class uihandler:
         uim = uimanager()
         return uim.pull(audio,location)
 
+    def get_s3_path(self,teamname,username):
+        uim = uimanager()
+        return uim.get_s3_path(teamname,username)
+

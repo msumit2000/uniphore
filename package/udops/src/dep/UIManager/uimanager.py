@@ -95,4 +95,18 @@ class uimanager:
             error = str(e)
             return error
 
+    def get_s3_path(self,teamname,username):
+        config = configparser.ConfigParser()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        cursor.execute("select team_id from cfg_udops_teams_metadata where teamname = '{}';".format(teamname))
+        cursor.execute("select user_id from cfg_udops_users where user_name = '{}' and team_id = (select team_id from cfg_udops_teams_metadata where teamname = '{}');".format(username,teamname))
+        rows2 = cursor.fetchone()
+        if rows2 != '':
+            cursor.execute("select s3_base_path from cfg_udops_teams_metadata where teamname = '{}';".format(teamname))
+            s3 = cursor.fetchone()
+            return s3['s3_base_path']
+        else:
+            raise('User doesnt have permission for the team')
+
+
     

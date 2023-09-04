@@ -76,7 +76,7 @@ try:
             if re.sub(r'^.*/(.*?)(\.git)?$', r'\1', data['gita']) == data['name']:
                 auth = authentication()
                 location = auth.get_team_location(data["teamname"])
-                s3data = teamusermanager().get_s3_path()
+                s3data = uih.get_s3_path(data["teamname"],data["username"])
                 corpus_name = data['name']
                 location = str(location) + "/" + str(corpus_name)
                 if location == 0:
