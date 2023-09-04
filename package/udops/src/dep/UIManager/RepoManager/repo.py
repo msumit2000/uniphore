@@ -67,9 +67,9 @@ class repomanager:
 
     def add_(self, target,location):
         try:
-            os.chdir(location)
+            os.chdir(target)
             #s = Repo(location)
-            g =git.Repo(location)
+            g =git.Repo(target)
             g.git.add('--all')
             # s.add(
             #     targets=target,
