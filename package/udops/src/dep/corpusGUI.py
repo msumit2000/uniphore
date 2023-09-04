@@ -149,14 +149,14 @@ try:
                     if access == 0:
                         return 3
                     else:
-                        if uih.clone(data['corpus_name'],data['gita'],location) == 1:
+                        if uih.clone(data['gita'],location) == 1:
                             flag = uih.update_flag(data['corpus_name'])
                             if flag == 1:
                                 return 1
                             else:
                                 return flag
                         else:
-                            return uih.clone(data['corpus_name'],data['gita'],location)
+                            return uih.clone(data['gita'],location)
             except Exception as a:
                 return a
 

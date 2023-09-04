@@ -78,10 +78,10 @@ class uimanager:
             error = str(e)
             return error
 
-    def clone(self,corpus_name,arg,location):
+    def clone(self,arg,location):
         try:
             repo = repomanager()
-            return repo.clone(corpus_name,arg,location,conn)
+            return repo.clone(arg,location)
         except Exception as e:
             error = str(e)
             return error

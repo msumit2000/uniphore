@@ -28,9 +28,9 @@ class uihandler:
         uim = uimanager()
         return uim.push(location)
 
-    def clone(self,corpus_name,args:str,location):
+    def clone(self,args:str,location):
         uim = uimanager()
-        return uim.clone(corpus_name,args,location)
+        return uim.clone(args,location)
 
     def pull(self,audio,location):
         uim = uimanager()
