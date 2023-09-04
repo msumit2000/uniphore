@@ -1,6 +1,6 @@
 import os.path
 from dvc.repo import Repo
-import git
+from git import Repo
 import os
 from udops.src.dep.Common.Constants import Constants
 from psycopg2.extras import RealDictCursor
@@ -114,7 +114,7 @@ class repomanager:
             s.push(remote='data')
           #  g.git.push("--set-upstream", "origin", "master")
 
-            origin = repo.remote(name='origin')
+            origin = g.repo.remote(name='origin')
             origin.push("master")
 
             return 1
