@@ -230,7 +230,7 @@ class search_corpus(APIView):
             data = json.loads(request.body)
             re = ucorpus()
             response = re.search_corpus(data['corpus_name'])
-            if response==0:
+            if response == 0:
                 response_data = {
                     "status": "failure",
                     "failure_error": "corpus do not exits!!!",
