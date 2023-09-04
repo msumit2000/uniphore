@@ -1,6 +1,6 @@
 import os.path
-from dvc.repo import Repo
-import git
+#from dvc.repo import Repo
+from git import Repo
 import os
 from udops.src.dep.Common.Constants import Constants
 from psycopg2.extras import RealDictCursor
@@ -110,11 +110,14 @@ class repomanager:
         try:
             loc = loc ="/home/ubuntu/Desktop/"
            # s = Repo(loc)
-            g = git.Repo(loc)
+            #g = git.Repo(loc)
             #s.push(remote='data')
           #  g.git.push("--set-upstream", "origin", "master")
-
-            origin = g.repo.remote(name='origin')
+            repo = Repo(loc)
+            repo.git.add(all=True)
+            commit_meassage= "second commit"
+            repo.index.commit(commit_message)
+            origin = repo.remote(name='origin')
             origin.push("master")
             #g.git.push("--set-upstream", "origin", "master")
             return 1
