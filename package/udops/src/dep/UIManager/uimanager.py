@@ -22,7 +22,7 @@ class uimanager:
             error = str(e)
             return error
 
-    def create_corpus(self, json_loader, target, location):
+    def create_corpus(self, json_loader, location):
         try:
             repo = repomanager()
             print(f"location--{location}")
