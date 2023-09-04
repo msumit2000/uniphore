@@ -65,8 +65,8 @@ class repomanager:
         try:
             os.chdir(location)
             s = Repo(location)
-            g =git.Repo(location)
-            g.git.add('--all')
+            g =git.Repo(target)
+
             s.add(
                 targets=target,
                # recursive=False,
@@ -74,6 +74,7 @@ class repomanager:
                 #fname=None,
                 to_remote=False,
             )
+            g.git.add('--all')
             return 1
         except Exception as e:
             error = str(e)
