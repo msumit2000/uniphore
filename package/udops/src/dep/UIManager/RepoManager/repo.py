@@ -112,7 +112,7 @@ class repomanager:
     def push(self,location):
         try:
             loc = loc ="/home/ubuntu/Desktop/"
-           # s = Repo(loc)
+            s = Repo(loc)
             g = git.Repo(loc)
             s.push(remote='data')
           #  g.git.push("--set-upstream", "origin", "master")
