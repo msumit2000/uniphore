@@ -114,11 +114,12 @@ class repomanager:
             #s.push(remote='data')
           #  g.git.push("--set-upstream", "origin", "master")
             repo = Repo(loc)
-            repo.git.add(all=True)
-            commit_message= "second commit"
-            repo.index.commit(commit_message)
-            origin = repo.remote(name='origin')
-            origin.push("master")
+            #repo.git.add(all=True)
+           # commit_message= "second commit"
+            #repo.index.commit(commit_message)
+          #  origin = repo.remote(name='origin')
+
+            repo.push("master")
             #g.git.push("--set-upstream", "origin", "master")
             return 1
         except Exception as e:
