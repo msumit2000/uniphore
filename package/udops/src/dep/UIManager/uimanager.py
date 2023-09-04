@@ -25,11 +25,13 @@ class uimanager:
     def create_corpus(self, json_loader, target, location):
         try:
             repo = repomanager()
+            print(f"location--{location}")
             in_it = repo.init(location)
             if in_it == 1:
                 #url_get = repo.get_url(target, location)
                 #if url_get == 1:
                 corpus_create = repo.create_corpus(json_loader, conn)
+                print(f"create_corpus--->{corpus_create}")
                 if corpus_create == 1:
                     return 1
                 elif corpus_create == 2:

@@ -43,7 +43,7 @@ try:
                                 "flag":data['flag']
                             }
                             uih = uihandler()
-                            create_corpus = uih.init(corpus_details, data['source'],location)
+                            create_corpus = uih.init(corpus_details, location)
                             if create_corpus == 1:
                                 corpus_id = auth.corpus_id(data['corpus_name'])
                                 print(f"corpus_id-->{corpus_id}")

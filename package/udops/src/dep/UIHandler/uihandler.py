@@ -7,10 +7,10 @@ class uihandler:
         uim = uimanager()
         return uim.update_flag(corpus_name)
 
-    def init(self, file, target,location):
+    def init(self,file, location):
         uim = uimanager()
         corpus_properties = file
-        return uim.create_corpus(corpus_properties, target, location)
+        return uim.create_corpus(corpus_properties, location)
 
     def add(self,target: str,location):
         uim = uimanager()
