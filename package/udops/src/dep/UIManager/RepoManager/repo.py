@@ -115,7 +115,7 @@ class repomanager:
           #  g.git.push("--set-upstream", "origin", "master")
             repo = Repo(loc)
             repo.git.add(all=True)
-            commit_meassage= "second commit"
+            commit_message= "second commit"
             repo.index.commit(commit_message)
             origin = repo.remote(name='origin')
             origin.push("master")
