@@ -49,6 +49,7 @@ urlpatterns = [
     path('udops/team/existing_users/', views.existing_users.as_view()),
     path('udops/team/not_existing_users/', views.not_existing_users.as_view()),
     path('udops/team/add_team/', views.add_team.as_view()),
+    path('udops/team/delete_team/', views.delete_team.as_view()),
     path('udops/user/add_user/', views.add_user.as_view()),
     path('udops/team/list_search_team/', views.get_team_list_search.as_view()),
     path('udops/user/list_search_user/', views.list_user_search.as_view()),

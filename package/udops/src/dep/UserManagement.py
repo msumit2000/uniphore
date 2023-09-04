@@ -75,6 +75,10 @@ class UserManagement:
         user = UserManagementHandler()
         return user.add_team(permanent_access_token, tenant_id, admin_user_name, s3_base_path,destination_base_path, teamname)
 
+    def delete_team(self, teamname):
+        user = UserManagementHandler()
+        return user.delete_team(teamname)
+
     def add_user(self, user_name, firstname, lastname, email):
         user = UserManagementHandler()
         return user.add_user(user_name, firstname, lastname, email)

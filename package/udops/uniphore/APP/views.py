@@ -612,8 +612,10 @@ class not_existing_users(APIView):
             }
             return JsonResponse(response_data, safe=False)
 
+
 class add_team(APIView):
     permission_classes=([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
@@ -624,6 +626,28 @@ class add_team(APIView):
             "data":response
             }
             return JsonResponse(response_data, safe=False)
+
+
+class delete_team(APIView):
+    permission_classes=([IsAuthenticated])
+
+    def post(self,request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            dataset = UserManagement()
+            response = dataset.delete_team(data["teamname"])
+            if response == 1:
+                response_data = {
+                    "status":"success",
+                    "data":"delete successfully !!!"
+                }
+                return JsonResponse(response_data, safe=False)
+            else:
+                response_data = {
+                    "status": "ERRoR",
+                    "data": response
+                }
+                return JsonResponse(response_data, safe=False)
 
 class add_user(APIView):
     permission_classes=([IsAuthenticated])

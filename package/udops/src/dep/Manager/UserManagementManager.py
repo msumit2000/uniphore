@@ -1,10 +1,8 @@
 from psycopg2.extras import RealDictCursor
-import json
 import requests
 from udops.src.dep.config.Connection import *
 from udops.src.dep.InputProperties import *
 from udops.src.dep.Manager.mount_s3 import *
-from django.db import IntegrityError
 
 
 prop = properties()
@@ -517,34 +515,48 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            mount_location = mount.mount_s3_bucket(destination_base_path,mount_point=teamname)
-
             # Retrieve the user_id for the provided admin_user_id from udops_users table
             user_id_query = f"SELECT user_id FROM udops_users WHERE user_name = '{admin_user_name}'"
             cursor.execute(user_id_query)
             result = cursor.fetchone()
             if result is None:
                 return "Admin user not found!!!"
+            else:
+                admin_user_name = result['user_id']
+                print(f"admin_user_name--->{admin_user_name}")
 
-            admin_user_name = result['user_id']
+                # Check if the teamname already exists
+                team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' LIMIT 1"
+                cursor.execute(team_query)
+                result = cursor.fetchone()
+                if result is not None:
+                    return "Teamname already exists!!!"
+                else:
+                    mount_location = mount.mount_s3_bucket(destination_base_path, mount_point=teamname)
+                    print(f"mount_location--->{mount_location}")
+                # Insert the new team into cfg_udops_teams_metadata table
+                    insert_query = (f"INSERT INTO cfg_udops_teams_metadata (teamname, permanent_access_token,"
+                                    f" tenant_id, admin_user_id, s3_base_path, destination_base_path,"
+                                    f" mount_location) VALUES "
+                                    f"('{teamname}', '{permanent_access_token}', '{tenant_id}', '{admin_user_name}', "
+                                    f"'{s3_base_path}','{destination_base_path}','{mount_location}')")
+                    cursor.execute(insert_query)
+                    conn.commit()
+                    cursor.close()
+                    message = "Team added successfully !!!"
+                    print(f"message--->{message}")
+                    return message
+        except Exception as e:
+            raise e
 
-            # Check if the teamname already exists
-            team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' LIMIT 1"
-            cursor.execute(team_query)
-            result = cursor.fetchone()
-            if result is not None:
-                return "Teamname already exists!!!"
-
-            # Insert the new team into cfg_udops_teams_metadata table
-            insert_query = (f"INSERT INTO cfg_udops_teams_metadata (teamname, permanent_access_token,"
-                            f" tenant_id, admin_user_id, s3_base_path, destination_base_path, mount_location) VALUES "
-                            f"('{teamname}', '{permanent_access_token}', '{tenant_id}', '{admin_user_name}', "
-                            f"'{s3_base_path}','{destination_base_path}','{mount_location}')")
-            cursor.execute(insert_query)
+    def delete_team(self,teamname):
+        try:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"DELETE FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' ";
+            cursor.execute(query)
             conn.commit()
             cursor.close()
-
-            return "Team added successfully !!!"
+            return 1
         except Exception as e:
             raise e
 

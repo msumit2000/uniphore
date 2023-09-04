@@ -128,6 +128,13 @@ class UserManagementHandler:
         except Exception as e:
             raise e
 
+    def delete_team(self,teamname):
+        try:
+            user = UserManagementManager()
+            return user.delete_team(teamname)
+        except Exception as e:
+            raise e
+
     def add_user(self, user_name, firstname, lastname, email):
         try:
             user = UserManagementManager()
