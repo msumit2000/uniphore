@@ -90,7 +90,7 @@ class UserManagementManager:
             admin_user_name = result['user_id']
 
             # Update the cfg_udops_teams_metadata table with the new values
-            query = f"UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}', tenant_id = '{tenant_id}', admin_user_id = '{admin_user_name}', s3_base_path = '{s3_base_path}', destination_base_path = '{destination_base_path}' teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';"
+            query = f"UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}', tenant_id = '{tenant_id}', admin_user_id = '{admin_user_name}', s3_base_path = '{s3_base_path}', destination_base_path = '{destination_base_path}', teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';"
 
             cursor.execute(query)
 

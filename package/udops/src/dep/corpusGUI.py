@@ -104,7 +104,6 @@ try:
                     return 0
                 else:
                     corpus_id = auth.corpus_id(data['corpus_name'])
-
                     print(f"corpus_id--->{corpus_id}")
                     access_type = "write"
                     access = auth.authorize_user(user_id, corpus_id, access_type)
@@ -114,17 +113,19 @@ try:
                     corpus_name = data['corpus_name']
                     location = str(location) + "/" + str(corpus_name)
                     print(f"location---->{location}")
+
                     if location == 0:
                         return 2
                     else:
                         if access == 0:
                             return 3
                         else:
-                            print(f"push_location--> {uih.push(location)}")
-                            if uih.push(location) == 1:
+                            h = uih.push(location)
+                            print(f"push_location--> {h}")
+                            if h == 1:
                                 return 1
                             else:
-                                return uih.push(location)
+                                return h
 
             except Exception as e:
                 error = str(e)
@@ -172,7 +173,9 @@ try:
                     access_type = "write"
                     access = auth.authorize_user(user_id, corpus_id, access_type)
                     auth = authentication()
+                    print(f"access--->{access}")
                     location = auth.get_team_location(data["teamname"])
+                    print(f"new_location--->{location}")
                     corpus_name = data['corpus_name']
                     location = str(location) + "/" + str(corpus_name)
                     if location == 0:
