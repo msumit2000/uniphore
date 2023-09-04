@@ -1,5 +1,5 @@
 import os.path
-#from dvc.repo import Repo
+from dvc.repo import Repo
 import git
 import os
 from udops.src.dep.Common.Constants import Constants
@@ -10,7 +10,6 @@ class repomanager:
     def init(self,location):
         try:
             os.chdir(location)
-            print(f"location---->{location}")
             git.Repo.init(location)
             Repo.init(
                 location,
@@ -65,16 +64,16 @@ class repomanager:
     def add_(self, target,location):
         try:
             os.chdir(target)
-            #s = Repo(location)
+            s = Repo(location)
             g =git.Repo(target)
             g.git.add('--all')
-            # s.add(
-            #     targets=target,
-            #    # recursive=False,
-            #     no_commit=False,
-            #     #fname=None,
-            #     to_remote=False,
-            # )
+            s.add(
+                targets=target,
+               # recursive=False,
+                no_commit=False,
+                #fname=None,
+                to_remote=False,
+            )
             return 1
         except Exception as e:
             error = str(e)
@@ -82,13 +81,12 @@ class repomanager:
 
     def remote(self, name: str, data: str, gita: str, location):
         try:
-            loc ="/home/ubuntu/Desktop/"
-            # s = Repo(loc)
+            s = Repo(loc)
             g = git.Repo(loc)
-            # with s.config.edit() as conf:
-            #     conf["core"] = {"remote": "data"}
-            #     conf["remote"]["data"] = {"url": str(data) + '/' + name}
-            # g.create_remote('origin', str(gita))
+            with s.config.edit() as conf:
+                conf["core"] = {"remote": "data"}
+                conf["remote"]["data"] = {"url": str(data) + '/' + name}
+            g.create_remote('origin', str(gita))
             g.git.add('--all')
             return 1
         except Exception as e:
@@ -97,8 +95,8 @@ class repomanager:
 
     def commit(self, message, location):
         try:
-            loc ="/home/ubuntu/Desktop/"
-            g = git.Repo(loc)
+
+            g = git.Repo(location)
             g.git.add('--all')
             g.git.commit('-m', message)
             return 1
@@ -108,14 +106,11 @@ class repomanager:
 
     def push(self,location):
         try:
-            loc = loc ="/home/ubuntu/Desktop/"
-           # s = Repo(loc)
-            g = git.Repo(loc)
-            #s.push(remote='data')
+
+            s = Repo(loc)
+            g = git.Repo(location)
+            s.push(remote='data')
             g.git.push("--set-upstream", "origin", "master")
-            #repo = Repo(loc)
-            #repo.git.add(all=True)
-           # commit_message= "second commit"
             #repo.index.commit(commit_message)
             #g.git.push("--set-upstream", "origin", "master")
 
