@@ -12,12 +12,13 @@ class repomanager:
             print(f"location_init----{location}")
             os.chdir(location)
 
-            repo = git.Repo.init(location)
+           # repo = git.Repo.init(location)
             print("git initialized")
             Repo.init(
                 location,
                 force=True,
             )
+            print("33333333333333333S")
             return 1
 
         except Exception as e:
