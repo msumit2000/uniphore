@@ -45,7 +45,6 @@ class repomanager:
             corpus_name = json_loader["corpus_name"]
             cursor.execute(Constants.select_query3 + f"'{corpus_name}'")
             rows = cursor.fetchall()
-
             if len(rows) == 0:
                 cursor.execute(
                     Constants.insert_query_metadata,
@@ -63,11 +62,9 @@ class repomanager:
 
     def add_(self, target,location):
         try:
-            print(f"location---->{location}")
             os.chdir(location)
             s = Repo(location)
             g = git.Repo(location)
-
             s.add(
                 targets=target,
                # recursive=False,
@@ -75,7 +72,6 @@ class repomanager:
                 #fname=None,
                 to_remote=False,
             )
-
             g.git.add('--all')
             return 1
         except Exception as e:
@@ -109,15 +105,10 @@ class repomanager:
 
     def push(self,location):
         try:
-            print(f"location--->{location}")
             s = Repo(location)
             g = git.Repo(location)
-            print(f"g-->{g}")
             s.push(remote='data')
             g.git.push("--set-upstream", "origin", "master")
-            #repo.index.commit(commit_message)
-            #g.git.push("--set-upstream", "origin", "master")
-
             return 1
         except Exception as e:
             error = str(e)

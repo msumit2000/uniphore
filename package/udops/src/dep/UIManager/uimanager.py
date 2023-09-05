@@ -28,18 +28,13 @@ class uimanager:
             print(f"location--{location}")
             in_it = repo.init(location)
             if in_it == 1:
-                #url_get = repo.get_url(target, location)
-                #if url_get == 1:
                 corpus_create = repo.create_corpus(json_loader, conn)
-                print(f"create_corpus--->{corpus_create}")
                 if corpus_create == 1:
                     return 1
                 elif corpus_create == 2:
                     return 2
                 else:
                     return corpus_create
-                # else:
-                #     return url_get
             else:
                 return in_it
         except Exception as e:
@@ -96,10 +91,10 @@ class uimanager:
             return error
 
     def get_s3_path(self,teamname,username):
-        config = configparser.ConfigParser()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute("select team_id from cfg_udops_teams_metadata where teamname = '{}';".format(teamname))
-        cursor.execute("select user_id from cfg_udops_users where user_name = '{}' and team_id = (select team_id from cfg_udops_teams_metadata where teamname = '{}');".format(username,teamname))
+        cursor.execute("select user_id from cfg_udops_users where user_name = '{}' "
+                       "and team_id = (select team_id from cfg_udops_teams_metadata where teamname = '{}');".format(username,teamname))
         rows2 = cursor.fetchone()
         if rows2 != '':
             cursor.execute("select s3_base_path from cfg_udops_teams_metadata where teamname = '{}';".format(teamname))
