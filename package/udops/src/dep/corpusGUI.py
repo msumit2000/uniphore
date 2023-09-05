@@ -76,7 +76,7 @@ try:
                 if location == 0:
                     return 2
                 else:
-                    return uih.remote(data['name'], s3data, data['gita'], location)
+                    return uih.remote(data['corpus_name'], s3data, data['gita'], location)
 
         # def commit(self, teamname,message: str):
         def commit(self, data):
