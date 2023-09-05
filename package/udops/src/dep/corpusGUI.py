@@ -22,6 +22,7 @@ try:
                         corpus_name = data['corpus_name']
                         location = str(location) + "/" + str(corpus_name)
                         os.makedirs(location, exist_ok=True)
+                        print(f"location-->{location}")
                         if location == 0:
                             return 3
                         else:
@@ -39,6 +40,7 @@ try:
                                 "flag":data['flag']
                             }
                             uih = uihandler()
+                            print("**********************************")
                             create_corpus = uih.init(corpus_details, location)
                             if create_corpus == 1:
                                 corpus_id = auth.corpus_id(data['corpus_name'])
