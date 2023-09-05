@@ -43,11 +43,11 @@ class uiauthentication:
         cursor.execute(query)
         rows = cursor.fetchone()
         try:
-            access = rows['permission']
-            if access == 'read' or access == 'write':
-                return 1
-            else:
+            if rows is None:
                 return 0
+            else:
+                return 1
+
         except Exception as e:
             error = str(e)
             return error

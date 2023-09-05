@@ -126,28 +126,31 @@ try:
                 uih = uihandler()
                 auth = authentication()
                 user_id = auth.authenticate_user(data['username'])
+                print("user_id")
                 if user_id == 0:
                     return 0
                 else:
                     corpus_id = auth.corpus_id(data['corpus_name'])
                     access = auth.authorize_user_clone(user_id, corpus_id)
+                    print(f"access---> {access}")
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
                     corpus_name = data['corpus_name']
                     location = str(location) + "/" + str(corpus_name)
                     if location == 0:
                         return 2
-                    if access == 0:
-                        return 3
                     else:
-                        if uih.clone(data['gita'],location) == 1:
-                            flag = uih.update_flag(data['corpus_name'])
-                            if flag == 1:
-                                return 1
-                            else:
-                                return flag
+                        if access == 0:
+                            return 3
                         else:
-                            return uih.clone(data['gita'],location)
+                            if uih.clone(data['gita'],location) == 1:
+                                flag = uih.update_flag(data['corpus_name'])
+                                if flag == 1:
+                                    return 1
+                                else:
+                                    return flag
+                            else:
+                                return uih.clone(data['gita'],location)
             except Exception as a:
                 return a
 
