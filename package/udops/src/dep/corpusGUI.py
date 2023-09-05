@@ -19,10 +19,11 @@ try:
                         return 2
                     else:
                         location = auth.get_team_location(data['teamname'])
+                        print(f"location_comesfrom_team-->{location}")
                         corpus_name = data['corpus_name']
                         location = str(location) + "/" + str(corpus_name)
                         os.makedirs(location, exist_ok=True)
-                        print(f"location-->{location}")
+                        print(f"location after corpus>{location}")
                         if location == 0:
                             return 3
                         else:

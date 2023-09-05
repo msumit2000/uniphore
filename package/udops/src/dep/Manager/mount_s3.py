@@ -3,7 +3,7 @@ import subprocess
 class mount_s3:
     def mount_s3_bucket(self,bucket_name, mount_point):
 
-        mount_point = "/home/user/mount/"+str(mount_point)
+        mount_point = "/home/ubuntu/mount/"+str(mount_point)
         print(f"mount_point-->{mount_point}")
         os.makedirs(mount_point, exist_ok=True)
         print("------------------")
