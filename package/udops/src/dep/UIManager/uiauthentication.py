@@ -45,7 +45,7 @@ class uiauthentication:
         print(f"rows---->{rows}")
 
         try:
-            if len(rows) == 0:
+            if rows is None:
                 return 0
             else:
                 return 1
