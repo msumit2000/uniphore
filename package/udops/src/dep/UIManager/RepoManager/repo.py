@@ -10,15 +10,15 @@ class repomanager:
     def init(self,location):
         try:
             print(f"location_init----{location}")
-            os.chdir(location)
+            loc = "/home/ubuntu/mount/new_team/Anjali/sumit/"
+            os.chdir(loc)
 
-            git.Repo.init(location)
+            git.Repo.init(loc)
             print("git initialized")
-            # Repo.init(
-            #     location,
-            #     force=True,
-            # )
-            # print("33333333333333333S")
+            Repo.init(
+                loc,
+                force=True,
+            )
             return 1
 
         except Exception as e:
