@@ -10,7 +10,7 @@ class repomanager:
     def init(self,location):
         try:
             os.chdir(location)
-            #git.Repo.init(location)
+            git.Repo.init(location)
             Repo.init(
                 location,
                 force=True
@@ -18,7 +18,8 @@ class repomanager:
             return 1
         except Exception as e:
             error = str(e)
-            return error
+            print(error)
+            return 1
 
     # def get_url(self, target,location):
     #     try:
