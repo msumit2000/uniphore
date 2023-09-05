@@ -42,12 +42,13 @@ class uiauthentication:
         query = f"select permission from cfg_udops_acl where user_id ={user_id} AND corpus_id={corpus_id};"
         cursor.execute(query)
         rows = cursor.fetchone()
+        print(f"rows---->{rows}")
+
         try:
-            if rows is None:
+            if len(rows) == 0:
                 return 0
             else:
                 return 1
-
         except Exception as e:
             error = str(e)
             return error

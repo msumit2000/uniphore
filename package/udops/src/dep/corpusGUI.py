@@ -126,11 +126,13 @@ try:
                 uih = uihandler()
                 auth = authentication()
                 user_id = auth.authenticate_user(data['username'])
-                print("user_id")
+
+                print(f"user_id-->{user_id}")
                 if user_id == 0:
                     return 0
                 else:
                     corpus_id = auth.corpus_id(data['corpus_name'])
+                    print(f"corpus_id--->{corpus_id}")
                     access = auth.authorize_user_clone(user_id, corpus_id)
                     print(f"access---> {access}")
                     auth = authentication()
