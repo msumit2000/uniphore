@@ -9,6 +9,7 @@ from psycopg2.extras import RealDictCursor
 class repomanager:
     def init(self,location):
         try:
+            print(f"location_init----{location}")
             os.chdir(location)
             git.Repo.init(location)
             Repo.init(
@@ -18,6 +19,7 @@ class repomanager:
             return 1
         except Exception as e:
             error = str(e)
+            print(error)
             return error
 
     # def get_url(self, target,location):
