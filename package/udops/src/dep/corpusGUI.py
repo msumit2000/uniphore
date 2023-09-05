@@ -67,11 +67,11 @@ try:
         # def remote(self,teamname:str, name: str, data: str, gita: str):
         def remote(self, data):
             uih = uihandler()
-            if re.sub(r'^.*/(.*?)(\.git)?$', r'\1', data['gita']) == data['name']:
+            if re.sub(r'^.*/(.*?)(\.git)?$', r'\1', data['gita']) == data['corpus_name']:
                 auth = authentication()
                 location = auth.get_team_location(data["teamname"])
                 s3data = uih.get_s3_path(data["teamname"],data["username"])
-                corpus_name = data['name']
+                corpus_name = data['corpus_name']
                 location = str(location) + "/" + str(corpus_name)
                 if location == 0:
                     return 2
