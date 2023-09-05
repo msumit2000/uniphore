@@ -7,18 +7,18 @@ from psycopg2.extras import RealDictCursor
 
 
 class repomanager:
-    # def init(self,location):
-    #     try:
-    #         os.chdir(location)
-    #         git.Repo.init(location)
-    #         # Repo.init(
-    #         #     location,
-    #         #     force=True
-    #         # )
-    #         return 1
-    #     except Exception as e:
-    #         error = str(e)
-    #         return error
+    def init(self,location):
+        try:
+            os.chdir(location)
+            #git.Repo.init(location)
+            Repo.init(
+                location,
+                force=True
+            )
+            return 1
+        except Exception as e:
+            error = str(e)
+            return error
 
     # def get_url(self, target,location):
     #     try:
