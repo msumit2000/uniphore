@@ -10,13 +10,12 @@ class repomanager:
     def init(self,location):
         try:
             print(f"location_init----{location}")
-            loc = "/home/ubuntu/mount/new_team/Anjali/sumit/"
-            os.chdir(loc)
+            os.chdir(location)
+            git.Repo.init(location)
 
-            git.Repo.init(loc)
             print("git initialized")
             Repo.init(
-                loc,
+                location,
                 force=True,
             )
             return 1
@@ -27,7 +26,9 @@ class repomanager:
             return error
 
     # def get_url(self, target,location):
-    #     try:
+    #     try:ls
+
+
     #         os.chdir(location)
     #         git.Repo.init(location)
     #         #s = Repo(location)
