@@ -1,6 +1,5 @@
 import os
 import subprocess
-import goo
 class mount_s3:
     def mount_s3_bucket(self,bucket_name, mount_point):
 
