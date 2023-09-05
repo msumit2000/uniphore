@@ -301,7 +301,7 @@ class CorpusMetadataManager:
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
                 query=(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type,"
                        f"flag, lastupdated_ts FROM corpus_metadata"
-                       f" WHERE corpus_name ilike '{corpus_name}'")
+                       f" WHERE corpus_name ILIKE '%{corpus_name}%'")
                 cursor.execute(query)
                 rows = cursor.fetchall()
                 conn.commit()
