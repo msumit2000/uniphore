@@ -11,10 +11,10 @@ class repomanager:
         try:
             os.chdir(location)
             git.Repo.init(location)
-            Repo.init(
-                location,
-                force=True
-            )
+            # Repo.init(
+            #     location,
+            #     force=True
+            # )
             return 1
         except Exception as e:
             error = str(e)
