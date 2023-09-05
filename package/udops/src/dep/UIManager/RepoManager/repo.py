@@ -18,8 +18,7 @@ class repomanager:
             return 1
         except Exception as e:
             error = str(e)
-            print(error)
-            return 1
+            return error
 
     # def get_url(self, target,location):
     #     try:
