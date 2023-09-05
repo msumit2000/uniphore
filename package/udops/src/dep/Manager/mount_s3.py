@@ -9,9 +9,14 @@ class mount_s3:
         os.makedirs(mount_point, exist_ok=True)
         print("------------------")
         #Mount the S3 bucket using s3fs
-        cmd = f"mount-s3 {bucket_name}  {mount_point}"
+       # cmd = f"mount-s3 {bucket_name}  {mount_point}"
+        # subprocess.run(["mount-s3", bucket_name,  mount_point])
 
-        subprocess.run(["mount-s3", bucket_name,  mount_point])
+        cmd = ["goofys", bucket_name, mount_point, "-o", "allow_other"]
+        subprocess.run(cmd, check=True)
+
+
+
 
         # cmd = f"s3fs {bucket_name} {mount_point} -o allow_other -o umask=022"
         # subprocess.run(cmd, shell=True, check=True)
