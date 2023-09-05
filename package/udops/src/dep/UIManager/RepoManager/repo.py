@@ -12,7 +12,8 @@ class repomanager:
             os.chdir(location)
             git.Repo.init(location)
             Repo.init(
-                location
+                location,
+                force=True
             )
             return 1
         except Exception as e:
