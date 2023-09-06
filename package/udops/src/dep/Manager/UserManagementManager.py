@@ -533,6 +533,7 @@ class UserManagementManager:
                 if result is not None:
                     return "Teamname already exists!!!"
                 else:
+
                     mount_location = mount.mount_s3_bucket(destination_base_path, mount_point=teamname)
                     print(f"mount_location--->{mount_location}")
                 # Insert the new team into cfg_udops_teams_metadata table
@@ -561,7 +562,7 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def add_user(self, conn, user_name, firstname, lastname, email):
+    def add_user(self,user_name, firstname, lastname, email):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
