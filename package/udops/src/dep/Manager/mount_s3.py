@@ -11,7 +11,7 @@ class mount_s3:
        # cmd = f"mount-s3 {bucket_name}  {mount_point}"
         #subprocess.run(["mount-s3", bucket_name,  mount_point])
 
-        command = f"s3fs {bucket_name} {mount_point}"
+        command = f"s3fs {bucket_name}:/Anjali/sumit {mount_point}"
         subprocess.run(command, shell=True, check=True)
 
         return mount_point
