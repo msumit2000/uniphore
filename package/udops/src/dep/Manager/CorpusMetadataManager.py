@@ -291,16 +291,21 @@ class CorpusMetadataManager:
         try:
             if corpus_name == "":
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
-                cursor.execute("SELECT corpus_id, corpus_name, corpus_type, language, source_type,"
-                               "flag, lastupdated_ts FROM corpus_metadata")
+                cursor.execute("SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
+                               "flag, lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata"
+                               " tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta"
+                               " WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM"
+                               " corpus_metadata")
                 rows = cursor.fetchall()
                 conn.commit()
                 cursor.close()
                 return rows
             else:
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
-                query=(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type,"
-                       f"flag, lastupdated_ts FROM corpus_metadata"
+                query=(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
+                       f"flag, lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata "
+                       f"tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta "
+                       f"WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata"
                        f" WHERE corpus_name ILIKE '%{corpus_name}%'")
                 cursor.execute(query)
                 rows = cursor.fetchall()
