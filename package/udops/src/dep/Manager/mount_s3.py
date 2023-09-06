@@ -4,7 +4,7 @@ class mount_s3:
     def mount_s3_bucket(self,destination_base_path, mount_point):
         # slicing of bucket name
         path  = destination_base_path.replace("s3://", "")
-        first_index = s3_path.find("/")
+        first_index = path.find("/")
         if first_index != -1:
             bucket_name = path[:first_index] + ":/" + path[first_index + 1:]
         print(f"bucket_name---> {bucket_name}")
