@@ -16,7 +16,8 @@ class mount_s3:
 
             mount_point = "/home/ubuntu/mount/"+str(mount_point)
             os.makedirs(mount_point, exist_ok=True)
-
+            print(f"bucketname--->{bucket_name}")
+            print(f"mount_point--->{mount_point}")
             command = f"s3fs {bucket_name} {mount_point}"
             subprocess.run(command, shell=True, check=True)
             return mount_point
