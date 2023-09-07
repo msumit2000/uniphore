@@ -87,7 +87,7 @@ class repomanager:
             g = git.Repo(location)
             with s.config.edit() as conf:
                 conf["core"] = {"remote": "data"}
-                conf["remote"]["data"] = {"url": str(data) + '/' + name}
+                conf["remote"]["data"] = {"url": str(data) + 'remote/' + name}
             g.create_remote('origin', str(gita))
             g.git.add('--all')
             return 1
