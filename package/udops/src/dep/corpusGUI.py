@@ -19,11 +19,9 @@ try:
                         return 2
                     else:
                         location = auth.get_team_location(data['teamname'])
-                        print(f"location_comesfrom_team-->{location}")
                         corpus_name = data['corpus_name']
                         location = str(location) + "/" + str(corpus_name)
                         os.makedirs(location, exist_ok=True)
-                        print(f"location after corpus>{location}")
                         if location == 0:
                             return 3
                         else:
@@ -41,7 +39,6 @@ try:
                                 "flag":data['flag']
                             }
                             uih = uihandler()
-                            print("**********************************")
                             create_corpus = uih.init(corpus_details, location)
                             if create_corpus == 1:
                                 corpus_id = auth.corpus_id(data['corpus_name'])
@@ -130,14 +127,11 @@ try:
                 auth = authentication()
                 user_id = auth.authenticate_user(data['username'])
 
-                print(f"user_id-->{user_id}")
                 if user_id == 0:
                     return 0
                 else:
                     corpus_id = auth.corpus_id(data['corpus_name'])
-                    print(f"corpus_id--->{corpus_id}")
                     access = auth.authorize_user_clone(user_id, corpus_id)
-                    print(f"access---> {access}")
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
                     corpus_name = data['corpus_name']

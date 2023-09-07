@@ -323,13 +323,11 @@ class CorpusMetadataManager:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             col = column
             query1 = f"select DISTINCT {col} from corpus_metadata"
-            # query = "select DISTINCT language from corpus_metadata"
             cursor.execute(query1)
             rows = cursor.fetchall()
             col_list = [dictionary[col] for dictionary in rows]
             dict = {}
-            # query = " SELECT COUNT(*) FROM corpus_metadata WHERE vendor = %s "
-            # print(query)
+
             for i in range(len(col_list)):
                 data = col_list[i]
                 query = f"SELECT COUNT(*) FROM corpus_metadata WHERE {col} = '{data}'"

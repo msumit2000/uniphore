@@ -9,10 +9,8 @@ from psycopg2.extras import RealDictCursor
 class repomanager:
     def init(self,location):
         try:
-            print(f"location_init----{location}")
             os.chdir(location)
             git.Repo.init(location)
-
             print("git initialized")
             Repo.init(
                 location,
@@ -27,8 +25,6 @@ class repomanager:
 
     # def get_url(self, target,location):
     #     try:ls
-
-
     #         os.chdir(location)
     #         git.Repo.init(location)
     #         #s = Repo(location)

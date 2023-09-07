@@ -535,7 +535,6 @@ class UserManagementManager:
                 else:
 
                     mount_location = mount.mount_s3_bucket(destination_base_path, mount_point=teamname)
-                    print(f"mount_location--->{mount_location}")
                 # Insert the new team into cfg_udops_teams_metadata table
                     insert_query = (f"INSERT INTO cfg_udops_teams_metadata (teamname, permanent_access_token,"
                                     f" tenant_id, admin_user_id, s3_base_path, destination_base_path,"
@@ -546,7 +545,6 @@ class UserManagementManager:
                     conn.commit()
                     cursor.close()
                     message = "Team added successfully !!!"
-                    print(f"message--->{message}")
                     return message
         except Exception as e:
             raise e

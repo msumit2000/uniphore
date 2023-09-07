@@ -7,7 +7,6 @@ connection = Connection()
 conn = connection.get_connection()
 
 
-
 class uimanager:
 
     def update_flag(self,corpus_name):
@@ -25,12 +24,9 @@ class uimanager:
     def create_corpus(self, json_loader, location):
         try:
             repo = repomanager()
-
             in_it = repo.init(location)
-            print(f"value of init-->{in_it}")
             if in_it == 1:
                 corpus_create = repo.create_corpus(json_loader, conn)
-                print(f"value of corpus_create-->{corpus_create}")
                 if corpus_create == 1:
                     return 1
                 elif corpus_create == 2:
