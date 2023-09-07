@@ -9,18 +9,6 @@ conn = connection.get_connection()
 
 class uimanager:
 
-    def update_flag(self,corpus_name):
-        try:
-            cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = f"update corpus_metadata set flag = 1 where corpus_name = '{corpus_name}'"
-            cursor.execute(query)
-            conn.commit()
-            cursor.close()
-            return 1
-        except Exception as e:
-            error = str(e)
-            return error
-
     def create_corpus(self, json_loader, location):
         try:
             repo = repomanager()

@@ -43,7 +43,7 @@ class repomanager:
             data = json_loader["corpus_name"], json_loader["corpus_type"], json_loader["language"], json_loader[
                 "source_type"], \
                 json_loader["vendor"], json_loader["domain"], json_loader["description"], json_loader["lang_code"], \
-                json_loader["acquisition_date"], json_loader["migration_date"], json_loader["flag"]
+                json_loader["acquisition_date"], json_loader["migration_date"]
 
             corpus_name = json_loader["corpus_name"]
             cursor.execute(Constants.select_query3 + f"'{corpus_name}'")

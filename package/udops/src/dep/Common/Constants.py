@@ -17,7 +17,9 @@ class Constants:
     Udops_users_update = "Update udops_users set user_name = (%s), firstname = (%s), lastname = (%s), email = (%s) where user_name = '"
 
     # create corpus
-    insert_query_metadata = "insert into corpus_metadata (corpus_name,corpus_type,language,source_type,vendor,domain,description,lang_code,acquisition_date, migration_date,flag) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    insert_query_metadata = ("insert into corpus_metadata (corpus_name,corpus_type,"
+                             "language,source_type,vendor,domain,description,lang_code,"
+                             "acquisition_date, migration_date) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")
     insert_query_custom_field = "insert into corpus_custom_fields (corpus_id,field_name,field_value) values(%s,%s,%s)"
     select_query_create = "select * from corpus_metadata "
     query_metadata="select * from corpus_metadata where corpus_name='"

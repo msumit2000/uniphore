@@ -242,7 +242,7 @@ class CorpusMetadataManager:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute(
                 f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , "
-                f"flag,lastupdated_ts , description, acquisition_date, (SELECT teamname FROM "
+                f"lastupdated_ts , description, acquisition_date, (SELECT teamname FROM "
                 f"cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM "
                 f"cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS "
                 f"teamname FROM corpus_metadata WHERE language in {lan} and corpus_type in {cor_type} "
@@ -292,7 +292,7 @@ class CorpusMetadataManager:
             if corpus_name == "":
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
                 cursor.execute("SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
-                               "flag, lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata"
+                               "lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata"
                                " tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta"
                                " WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM"
                                " corpus_metadata")
@@ -303,7 +303,7 @@ class CorpusMetadataManager:
             else:
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
                 query=(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
-                       f"flag, lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata "
+                       f"lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata "
                        f"tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta "
                        f"WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata"
                        f" WHERE corpus_name ILIKE '%{corpus_name}%'")

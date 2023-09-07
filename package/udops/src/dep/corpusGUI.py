@@ -35,8 +35,7 @@ try:
                                 "description": data['description'],
                                 "lang_code": data['lang_code'],
                                 "acquisition_date": data['acquisition_date'],
-                                "migration_date": data['migration_date'],
-                                "flag":data['flag']
+                                "migration_date": data['migration_date']
                             }
                             uih = uihandler()
                             create_corpus = uih.init(corpus_details, location)
@@ -143,11 +142,7 @@ try:
                             return 3
                         else:
                             if uih.clone(data['gita'],location) == 1:
-                                flag = uih.update_flag(data['corpus_name'])
-                                if flag == 1:
-                                    return 1
-                                else:
-                                    return flag
+                                return 1
                             else:
                                 return uih.clone(data['gita'],location)
             except Exception as a:

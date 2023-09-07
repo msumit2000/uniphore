@@ -3,10 +3,6 @@ from udops.src.dep.UIManager.uimanager import uimanager
 
 class uihandler:
 
-    def update_flag(self, corpus_name):
-        uim = uimanager()
-        return uim.update_flag(corpus_name)
-
     def init(self,file, location):
         uim = uimanager()
         corpus_properties = file
