@@ -512,7 +512,7 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def add_team(self, permanent_access_token, tenant_id, admin_user_name, s3_base_path,destination_base_path, teamname):
+    def add_team(self, permanent_access_token, tenant_id, admin_user_name, s3_base_path, destination_base_path, teamname):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -537,7 +537,7 @@ class UserManagementManager:
                     mount_location = mount.mount_s3_bucket(destination_base_path, mount_point=teamname)
                 # Insert the new team into cfg_udops_teams_metadata table
                     insert_query = (f"INSERT INTO cfg_udops_teams_metadata (teamname, permanent_access_token,"
-                                    f" tenant_id, admin_user_id, s3_base_path, destination_base_path,"
+                                    f" tenant_id, admin_user_id, s3_base_path, s3_destination_path,"
                                     f" mount_location) VALUES "
                                     f"('{teamname}', '{permanent_access_token}', '{tenant_id}', '{admin_user_name}', "
                                     f"'{s3_base_path}','{destination_base_path}','{mount_location}')")
