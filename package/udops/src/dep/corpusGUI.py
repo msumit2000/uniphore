@@ -162,10 +162,8 @@ try:
                     return 0
                 else:
                     corpus_id = auth.corpus_id(data['corpus_name'])
-                    print(corpus_id)
                     access_type = "write"
                     access = auth.authorize_user(user_id, corpus_id, access_type)
-                    print(f"access--{access}")
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
                     corpus_name = data['corpus_name']

@@ -26,9 +26,7 @@ class uiauthentication:
             query = f"select permission from cfg_udops_acl where user_id ={user_id} AND corpus_id={corpus_id};"
             cursor.execute(query)
             rows = cursor.fetchone()
-            print(f"rows--->{rows}")
             access = rows['permission']
-            print(f"access-->{access}")
             if access != access_type:
                 return 0
             else:
