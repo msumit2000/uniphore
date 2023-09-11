@@ -305,77 +305,77 @@ class update_custom_field(APIView):
 ####################### Dataset API #####################################
 
 
-
-class get_datset_count(APIView):
-    permission_classes=([IsAuthenticated])
-    def get(self,request):
-        if request.method == 'GET':
-            dataset = udataset()
-            response = dataset.get_counts()
-            response_data = {
-                "status": "success",
-                "data": response
-            }
-            return JsonResponse(response_data, safe=False)
-
-class dataset_summary(APIView):
-    permission_classes=([IsAuthenticated])
-    def post(self,request):
-        if request.method == 'POST':
-            data= json.loads(request.body)
-            dataset = udataset()
-            response = dataset.get_summary(data["dataset_name"])
-            d = {
-                "status" : "success / failed",
-                "failure_error" : "",
-                "data" : {
-                    "corpusSummary" : response
-                }
-                }
-            json_string = json.dumps(d)
-            data = json.loads(json_string)
-            return JsonResponse(data, safe=False)
-        
-
-
-class dataset_list(APIView):
-    permission_classes=([IsAuthenticated])
-    def get(self,request):
-        if request.method == 'GET':
-            dataset = udataset()
-            response = dataset.get_list()
-            return JsonResponse(response,safe=False)
-
-
-class dataset_search(APIView):
-    permission_classes=([IsAuthenticated])
-    def post(self,request):
-        if request.method == 'POST':
-            dataset = udataset()
-            data = json.loads(request.body)
-            response = dataset.search_dataset(data["property"])
-            return JsonResponse(response,safe=False)
-
-class update_dataset(APIView):
-    permission_classes=([IsAuthenticated])
-    def post(self,request):
-        if request.method == 'POST':
-            data = json.loads(request.body)
-            dataset = udataset()
-            response = dataset.update(data["dataset_name"],data["corpus_filter"])
-            if response==1:
-                return JsonResponse({"status": "updated successfully !!!"}, safe=False)
-            else:
-                return JsonResponse({"status": "failed"}, safe=False)
-
-class dataset_corpus_list(APIView):
-    permission_classes=([IsAuthenticated])
-    def post(self,request):
-        if request.method=='POST':
-            data = json.loads(request.body)
-            dataset = udataset()
-            response = dataset.dataset_corpus_list(data["dataset_name"])
-            return JsonResponse(response,safe=False)
+#
+# class get_datset_count(APIView):
+#     permission_classes=([IsAuthenticated])
+#     def get(self,request):
+#         if request.method == 'GET':
+#             dataset = udataset()
+#             response = dataset.get_counts()
+#             response_data = {
+#                 "status": "success",
+#                 "data": response
+#             }
+#             return JsonResponse(response_data, safe=False)
+#
+# class dataset_summary(APIView):
+#     permission_classes=([IsAuthenticated])
+#     def post(self,request):
+#         if request.method == 'POST':
+#             data= json.loads(request.body)
+#             dataset = udataset()
+#             response = dataset.get_summary(data["dataset_name"])
+#             d = {
+#                 "status" : "success / failed",
+#                 "failure_error" : "",
+#                 "data" : {
+#                     "corpusSummary" : response
+#                 }
+#                 }
+#             json_string = json.dumps(d)
+#             data = json.loads(json_string)
+#             return JsonResponse(data, safe=False)
+#
+#
+#
+# class dataset_list(APIView):
+#     permission_classes=([IsAuthenticated])
+#     def get(self,request):
+#         if request.method == 'GET':
+#             dataset = udataset()
+#             response = dataset.get_list()
+#             return JsonResponse(response,safe=False)
+#
+#
+# class dataset_search(APIView):
+#     permission_classes=([IsAuthenticated])
+#     def post(self,request):
+#         if request.method == 'POST':
+#             dataset = udataset()
+#             data = json.loads(request.body)
+#             response = dataset.search_dataset(data["property"])
+#             return JsonResponse(response,safe=False)
+#
+# class update_dataset(APIView):
+#     permission_classes=([IsAuthenticated])
+#     def post(self,request):
+#         if request.method == 'POST':
+#             data = json.loads(request.body)
+#             dataset = udataset()
+#             response = dataset.update(data["dataset_name"],data["corpus_filter"])
+#             if response==1:
+#                 return JsonResponse({"status": "updated successfully !!!"}, safe=False)
+#             else:
+#                 return JsonResponse({"status": "failed"}, safe=False)
+#
+# class dataset_corpus_list(APIView):
+#     permission_classes=([IsAuthenticated])
+#     def post(self,request):
+#         if request.method=='POST':
+#             data = json.loads(request.body)
+#             dataset = udataset()
+#             response = dataset.dataset_corpus_list(data["dataset_name"])
+#             return JsonResponse(response,safe=False)
 
 ###################### User Management API #####################################
 

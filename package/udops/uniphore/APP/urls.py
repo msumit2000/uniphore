@@ -25,12 +25,12 @@ urlpatterns = [
     path('udops/corpus/source_type/', views.source_type.as_view()),
     path('udops/corpus/corpus_type/', views.corpus_type.as_view()),
     ### dataset API ####
-    path('udops/dataset/count/', views.get_datset_count.as_view()),
-    path('udops/dataset/summary/', views.dataset_summary.as_view()),
-    path('udops/dataset/list/', views.dataset_list.as_view()),
-    path('udops/dataset/search/', views.dataset_search.as_view()),
-    path('udops/dataset/update/', views.update_dataset.as_view()),
-    path('udops/dataset/corpus_list/', views.dataset_corpus_list.as_view()),
+    # path('udops/dataset/count/', views.get_datset_count.as_view()),
+    # path('udops/dataset/summary/', views.dataset_summary.as_view()),
+    # path('udops/dataset/list/', views.dataset_list.as_view()),
+    # path('udops/dataset/search/', views.dataset_search.as_view()),
+    # path('udops/dataset/update/', views.update_dataset.as_view()),
+    # path('udops/dataset/corpus_list/', views.dataset_corpus_list.as_view()),
     ### user management API ###
     path('udops/user/list/', views.list_user.as_view()),
     path('udops/user/upsert_user/', views.upsert_user.as_view()),
