@@ -596,7 +596,7 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def get_team_list_search(self, conn, teamname_substring):
+    def get_team_list_search(self,teamname_substring):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
