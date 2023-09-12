@@ -434,9 +434,11 @@ class UserManagementManager:
                     accessible_teams.append(teamname)
             print("*************************")
             print(accessible_teams)
-            result =[]
-            for team in teamname:
 
+            result = []
+
+            for team in teamname:
+                a = team
                 # Check if the given teamname exists in cfg_udops_teams_metadata
                 # team_query = f"SELECT COUNT(*) FROM cfg_udops_teams_metadata WHERE teamname = %s"
                 # cursor.execute(team_query, (teamname,))
@@ -446,20 +448,24 @@ class UserManagementManager:
                 #     return 4
                 # else:
 
-                if team in accessible_teams:
+                if a in accessible_teams:
                     result.append(team)
+                    print("$$$$$$")
+                    print(f"team--->{team}")
                 else:
                     # Check if the user_name is associated with the given teamname
                     user_query = (f"SELECT COUNT(*) FROM cfg_udops_users WHERE user_name = %s AND"
                                   f" team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = %s)")
                     cursor.execute(user_query, (user_name, team))
                     user_exists = cursor.fetchone()
+                    print("@@@@@@@@@@@@@@@@")
+                    print(f"userexist--->{user_exists}")
                     if not user_exists[0]:
                         return 3
                     else:
                         # Get the team_id for the given teamname
                         team_query = f"SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = %s"
-                        cursor.execute(team_query, (teamname,))
+                        cursor.execute(team_query, (team,))
                         team_id = cursor.fetchone()
 
                         # if not team_id:
