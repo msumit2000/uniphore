@@ -307,7 +307,7 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def get_list_teams_write(self, user_name, team_name):
+    def get_list_teams_write(self, user_name):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor()
@@ -324,9 +324,7 @@ class UserManagementManager:
                 team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN (SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')"
                 cursor.execute(team_query)
                 teamnames = [row[0] for row in cursor.fetchall()]
-
                 accessible_teams = []
-
                 for teamname in teamnames:
                     # Fetch all the corpus_ids associated with the teamname
                     corpus_query = f"SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl WHERE team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}')"
@@ -343,54 +341,7 @@ class UserManagementManager:
                     if num_corpuses == len(corpus_ids):
                         accessible_teams.append(teamname)
 
-                        if team_name in accessible_teams:
-                            return 0, accessible_teams
-                        else:
-                            return 1,accessible_teams
-
-        except Exception as e:
-            raise e
-
-    def is_present_teams_write(self, user_name, team_name):
-        try:
-            conn = connection.get_connection()
-            cursor = conn.cursor()
-
-            # Check if the user_name exists in cfg_udops_users
-            user_query = f"SELECT COUNT(*) FROM cfg_udops_users WHERE user_name = '{user_name}'"
-            cursor.execute(user_query)
-            user_exists = cursor.fetchone()
-
-            if not user_exists[0]:
-                return "Invalid user_name."
-            else:
-                # Fetch all the teamnames for the user_name
-                team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN (SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')"
-                cursor.execute(team_query)
-                teamnames = [row[0] for row in cursor.fetchall()]
-
-                accessible_teams = []
-
-                for teamname in teamnames:
-                    # Fetch all the corpus_ids associated with the teamname
-                    corpus_query = f"SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl WHERE team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}')"
-                    cursor.execute(corpus_query)
-                    corpus_ids = cursor.fetchall()
-
-                    # Check if the user_name has permission for all the corpus_ids
-                    acl_query = f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' AND corpus_id = ANY(%s) AND permission ='write'"
-                    cursor.execute(acl_query, (corpus_ids,))
-                    num_corpuses = cursor.fetchone()[0]
-                    conn.commit()
-                    cursor.close()
-
-                    if num_corpuses == len(corpus_ids):
-                        accessible_teams.append(teamname)
-
-                        if team_name in accessible_teams:
-                            return 0
-                        else:
-                            return 1
+            return accessible_teams
 
         except Exception as e:
             raise e
@@ -459,20 +410,50 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'write'
-            for teamname in teamname:
-                # Check if the given teamname exists in cfg_udops_teams_metadata
-                team_query = f"SELECT COUNT(*) FROM cfg_udops_teams_metadata WHERE teamname = %s"
-                cursor.execute(team_query, (teamname,))
-                team_exists = cursor.fetchone()
 
-                if not team_exists[0]:
-                    return 4
+            team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
+                          f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
+            cursor.execute(team_query)
+            teamnames = [row[0] for row in cursor.fetchall()]  # it gives the list of teams associated with username
+            accessible_teams = []
+            for teamname in teamnames:
+                # Fetch all the corpus_ids associated with the teamname
+                corpus_query = (f"SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl WHERE "
+                                f"team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE"
+                                f" teamname = '{teamname}')")
+
+                cursor.execute(corpus_query)
+                corpus_ids = cursor.fetchall()
+                # Check if the user_name has permission for all the corpus_ids
+                acl_query = (f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' "
+                             f"AND corpus_id = ANY(%s) AND permission ='write'")
+                cursor.execute(acl_query, (corpus_ids,))
+
+                num_corpuses = cursor.fetchone()[0]
+                if num_corpuses == len(corpus_ids):
+                    accessible_teams.append(teamname)
+            print("*************************")
+            print(accessible_teams)
+            result =[]
+            for team in teamname:
+
+                # Check if the given teamname exists in cfg_udops_teams_metadata
+                # team_query = f"SELECT COUNT(*) FROM cfg_udops_teams_metadata WHERE teamname = %s"
+                # cursor.execute(team_query, (teamname,))
+                # team_exists = cursor.fetchone()
+                #
+                # if not team_exists[0]:
+                #     return 4
+                # else:
+
+                if team in accessible_teams:
+                    result.append(team)
                 else:
                     # Check if the user_name is associated with the given teamname
-                    user_query = f"SELECT COUNT(*) FROM cfg_udops_users WHERE user_name = %s AND team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = %s)"
-                    cursor.execute(user_query, (user_name, teamname))
+                    user_query = (f"SELECT COUNT(*) FROM cfg_udops_users WHERE user_name = %s AND"
+                                  f" team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = %s)")
+                    cursor.execute(user_query, (user_name, team))
                     user_exists = cursor.fetchone()
-
                     if not user_exists[0]:
                         return 3
                     else:
@@ -481,8 +462,8 @@ class UserManagementManager:
                         cursor.execute(team_query, (teamname,))
                         team_id = cursor.fetchone()
 
-                        if not team_id:
-                            return 2
+                        # if not team_id:
+                        #     return 2
 
                         # Get the corpus_id values associated with the team
                         corpus_query = f"SELECT corpus_id FROM cfg_udops_teams_acl WHERE team_id = %s"
@@ -492,23 +473,27 @@ class UserManagementManager:
                         # Insert or update records in cfg_udops_acl table
                         for corpus_id in corpus_ids:
                             # Check if the entry already exists in cfg_udops_acl
-                            existing_query = f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = %s AND corpus_id = %s"
+                            existing_query = (f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = %s "
+                                              f"AND corpus_id = %s")
                             cursor.execute(existing_query, (user_name, corpus_id[0]))
                             existing_entry = cursor.fetchone()
 
                             if existing_entry[0]:
                                 # Update the permission for the existing entry
-                                update_query = f"UPDATE cfg_udops_acl SET permission = %s WHERE user_name = %s AND corpus_id = %s"
+                                update_query = (f"UPDATE cfg_udops_acl SET permission = %s WHERE user_name = %s "
+                                                f"AND corpus_id = %s")
                                 cursor.execute(update_query, (permission, user_name, corpus_id[0]))
+
                             else:
                                 # Insert a new record
-                                insert_query = f"INSERT INTO cfg_udops_acl (user_name, corpus_id, permission) VALUES (%s, %s, %s)"
+                                insert_query = (f"INSERT INTO cfg_udops_acl (user_name, corpus_id, permission)"
+                                                f" VALUES (%s, %s, %s)")
                                 cursor.execute(insert_query, (user_name, corpus_id[0], permission))
 
-            conn.commit()
-            cursor.close()
+                        conn.commit()
+                        cursor.close()
 
-            return 1
+                return result
         except Exception as e:
             print(e)
 

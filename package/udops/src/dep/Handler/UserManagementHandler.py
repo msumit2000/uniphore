@@ -85,10 +85,10 @@ class UserManagementHandler:
         except Exception as e:
             raise e
 
-    def get_list_teams_write(self,user_name,teamname):
+    def get_list_teams_write(self,user_name):
         try:
             user = UserManagementManager()
-            return user.get_list_teams_write(user_name,teamname)
+            return user.get_list_teams_write(user_name)
         except Exception as e:
             raise e
 
@@ -148,12 +148,6 @@ class UserManagementHandler:
         except Exception as e:
             raise e
 
-    def is_present_teams_write(self, user_name, team_name):
-        try:
-            user = UserManagementManager()
-            return user.is_present_teams_write(user_name, team_name)
-        except Exception as e:
-            raise e
     def list_user_search(self, user_name_substring):
         try:
             user = UserManagementManager()

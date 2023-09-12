@@ -543,7 +543,7 @@ class get_list_teams_write(APIView):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
-            response = dataset.get_list_teams_write(data["user_name"],data["teamname"])
+            response = dataset.get_list_teams_write(data["user_name"])
             json_string = json.dumps(response)
             data = json.loads(json_string)
             response_data = {
@@ -552,28 +552,9 @@ class get_list_teams_write(APIView):
             }
             return JsonResponse(response_data, safe=False)
 
-class is_present_teams_write(APIView):
-
-    permission_classes = ([IsAuthenticated])
-
-    def post(self,request):
-        if request.method == 'POST':
-            data = json.loads(request.body)
-            dataset = UserManagement()
-            response = dataset.is_present_teams_write(data["user_name"],data["teamname"])
-            if response==0:
-                response_data = {
-                    "message":"already presented"
-                }
-            else:
-                response_data = {
-                    "message": "continue"
-                }
-
-            return JsonResponse(response_data, safe=False)
-
 
 class grant_team_pemission_read(APIView):
+
     permission_classes=([IsAuthenticated])
     def post(self,request):
         if request.method == 'POST':
@@ -598,6 +579,8 @@ class grant_team_pemission_write(APIView):
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.grant_team_pemission_write(data["user_name"],data["teamname"])
+            print("!!!!!!!!!!!!!!!!!")
+            print(response)
             if response==1:
                 return JsonResponse({"status": "Permission Granted Successfully !!!"}, safe=False)
             elif response==2:
