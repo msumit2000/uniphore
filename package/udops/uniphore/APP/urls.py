@@ -44,7 +44,6 @@ urlpatterns = [
     path('udops/user/corpus_access_list_read/', views.grant_corpus_list_read.as_view()),
     path('udops/user/list_teams_read/', views.get_list_teams_read.as_view()),
     path('udops/user/list_teams_write/', views.get_list_teams_write.as_view()),
-    path('udops/user/is_present_teams_write/', views.is_present_teams_write.as_view()),
     path('udops/user/team_permission_read/', views.grant_team_pemission_read.as_view()),
     path('udops/user/team_permission_write/', views.grant_team_pemission_write.as_view()),
     path('udops/team/existing_users/', views.existing_users.as_view()),
