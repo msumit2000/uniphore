@@ -307,7 +307,7 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def get_list_teams_write(self, user_name):
+    def get_list_teams_write(self, user_name, team_name):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor()
@@ -337,14 +337,17 @@ class UserManagementManager:
                     acl_query = f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' AND corpus_id = ANY(%s) AND permission ='write'"
                     cursor.execute(acl_query, (corpus_ids,))
                     num_corpuses = cursor.fetchone()[0]
+                    conn.commit()
+                    cursor.close()
 
                     if num_corpuses == len(corpus_ids):
                         accessible_teams.append(teamname)
 
-            conn.commit()
-            cursor.close()
+                        if team_name in accessible_teams:
+                            return 1, accessible_teams
+                        else:
+                            return accessible_teams
 
-            return accessible_teams
         except Exception as e:
             raise e
 

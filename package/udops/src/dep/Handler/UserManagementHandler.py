@@ -85,13 +85,12 @@ class UserManagementHandler:
         except Exception as e:
             raise e
 
-    def get_list_teams_write(self,user_name):
+    def get_list_teams_write(self,user_name,teamname):
         try:
             user = UserManagementManager()
-            return user.get_list_teams_write(user_name)
+            return user.get_list_teams_write(user_name,teamname)
         except Exception as e:
             raise e
-
 
     def grant_team_pemission_read(self,user_name,teamname):
         try:

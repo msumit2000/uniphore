@@ -457,8 +457,11 @@ class remove_users_team(APIView):
             else:
                 return JsonResponse({"status": "Teamname is not valid!!!!!"}, safe=False)
 
+
 class grant_corpus(APIView):
-    permission_classes=([IsAuthenticated])
+
+    permission_classes = ([IsAuthenticated])
+
     def post(self,request):
         if request.method=='POST':
             data = json.loads(request.body)
@@ -485,6 +488,7 @@ class remove_user_corpus(APIView):
 
 class grant_corpus_list_write(APIView):
     permission_classes=([IsAuthenticated])
+
     def post(self,request):
         if request.method=='POST':
             data = json.loads(request.body)
@@ -493,8 +497,8 @@ class grant_corpus_list_write(APIView):
             json_string = json.dumps(response)
             data = json.loads(json_string)
             response_data = {
-            "status": "success",
-            "data": data
+                "status": "success",
+                "data": data
             }
             return JsonResponse(response_data, safe=False)
 
@@ -508,41 +512,45 @@ class grant_corpus_list_read(APIView):
             json_string = json.dumps(response)
             data = json.loads(json_string)
             response_data = {
-            "status": "success",
-            "data": data
+                "status": "success",
+                "data": data
             }
             return JsonResponse(response_data, safe=False)
 
 
 class get_list_teams_read(APIView):
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
+
     def post(self,request):
-        if request.method=='POST':
+        if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.get_list_teams_read(data["user_name"])
             json_string = json.dumps(response)
             data = json.loads(json_string)
             response_data = {
-            "status": "success",
-            "data": data
+                "status": "success",
+                "data": data
             }
             return JsonResponse(response_data, safe=False)
 
 
 class get_list_teams_write(APIView):
-    permission_classes=([IsAuthenticated])
+
+    permission_classes = ([IsAuthenticated])
+
     def post(self,request):
-        if request.method=='POST':
+        if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
-            response = dataset.get_list_teams_write(data["user_name"])
+            response = dataset.get_list_teams_write(data["user_name"],data["teamname"])
             json_string = json.dumps(response)
             data = json.loads(json_string)
             response_data = {
-            "status": "success",
-            "data": data
+                "status": "success",
+                "data": data
             }
+            print(data)
             return JsonResponse(response_data, safe=False)
 
 
@@ -582,8 +590,10 @@ class grant_team_pemission_write(APIView):
             else:
                 return JsonResponse({"status": "failed"}, safe=False)
 
+
 class existing_users(APIView):
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
+
     def post(self,request):
         if request.method=='POST':
             data = json.loads(request.body)
@@ -597,8 +607,10 @@ class existing_users(APIView):
             }
             return JsonResponse(response_data, safe=False)
 
+
 class not_existing_users(APIView):
     permission_classes=([IsAuthenticated])
+
     def post(self,request):
         if request.method=='POST':
             data = json.loads(request.body)
@@ -649,34 +661,40 @@ class delete_team(APIView):
                 }
                 return JsonResponse(response_data, safe=False)
 
+
 class add_user(APIView):
     permission_classes=([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.add_user(data["user_name"],data["firstname"],data["lastname"],data["email"])
             response_data = {
-            "status":"success",
-            "data":response
+                "status":"success",
+                "data":response
             }
             return JsonResponse(response_data, safe=False)
 
+
 class get_team_list_search(APIView):
     permission_classes=([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.get_team_list_search(data["teamname_substring"])
             response_data = {
-            "status":"success",
-            "data":response
+                "status":"success",
+                "data":response
             }
             return JsonResponse(response_data, safe=False)
 
+
 class list_user_search(APIView):
     permission_classes=([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
