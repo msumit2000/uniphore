@@ -3,7 +3,7 @@ import os
 from udops.src.dep.config.Connection import *
 from udops.src.dep.InputProperties import *
 
-prop=properties()
+prop = properties()
 connection = Connection()
 conn = connection.get_connection()
 
@@ -11,7 +11,7 @@ class UserManagementHandler:
     def get_user_list(self):
         try:
             user = UserManagementManager()
-            return user.get_user_list(conn)
+            return user.get_user_list()
         except Exception as e:
             raise e
 
@@ -25,7 +25,7 @@ class UserManagementHandler:
     def get_team_list(self):
         try:
             user = UserManagementManager()
-            return user.get_team_list(conn)
+            return user.get_team_list()
         except Exception as e:
             raise e
 
@@ -67,28 +67,28 @@ class UserManagementHandler:
     def access_corpus_list_write(self,corpus_name):
         try:
             user = UserManagementManager()
-            return user.access_corpus_list_write(conn,corpus_name)
+            return user.access_corpus_list_write(corpus_name)
         except Exception as e:
             raise e
 
     def access_corpus_list_read(self,corpus_name):
         try:
             user = UserManagementManager()
-            return user.access_corpus_list_read(conn,corpus_name)
+            return user.access_corpus_list_read(corpus_name)
         except Exception as e:
             raise e
 
     def get_list_teams_read(self,user_name):
         try:
             user = UserManagementManager()
-            return user.get_list_teams_read(conn,user_name)
+            return user.get_list_teams_read(user_name)
         except Exception as e:
             raise e
 
     def get_list_teams_write(self,user_name):
         try:
             user = UserManagementManager()
-            return user.get_list_teams_write(conn,user_name)
+            return user.get_list_teams_write(user_name)
         except Exception as e:
             raise e
 
@@ -96,28 +96,28 @@ class UserManagementHandler:
     def grant_team_pemission_read(self,user_name,teamname):
         try:
             user = UserManagementManager()
-            return user.grant_team_pemission_read(conn,user_name,teamname)
+            return user.grant_team_pemission_read(user_name,teamname)
         except Exception as e:
             raise e
 
     def grant_team_pemission_write(self,user_name,teamname):
         try:
             user = UserManagementManager()
-            return user.grant_team_pemission_write(conn,user_name,teamname)
+            return user.grant_team_pemission_write(user_name,teamname)
         except Exception as e:
             raise e
 
     def existing_users(self,teamname):
         try:
             user = UserManagementManager()
-            return user.existing_users(conn,teamname)
+            return user.existing_users(teamname)
         except Exception as e:
             raise e
 
     def not_existing_users(self,teamname):
         try:
             user = UserManagementManager()
-            return user.not_existing_users(conn,teamname)
+            return user.not_existing_users(teamname)
         except Exception as e:
             raise e
 
@@ -138,21 +138,21 @@ class UserManagementHandler:
     def add_user(self, user_name, firstname, lastname, email):
         try:
             user = UserManagementManager()
-            return user.add_user(conn,user_name, firstname, lastname, email)
+            return user.add_user(user_name, firstname, lastname, email)
         except Exception as e:
             raise e
 
     def get_team_list_search(self, teamname_substring):
         try:
             user = UserManagementManager()
-            return user.get_team_list_search(conn,teamname_substring)
+            return user.get_team_list_search(teamname_substring)
         except Exception as e:
             raise e
 
     def list_user_search(self, user_name_substring):
         try:
             user = UserManagementManager()
-            return user.list_user_search(conn,user_name_substring)
+            return user.list_user_search(user_name_substring)
         except Exception as e:
             raise e
 

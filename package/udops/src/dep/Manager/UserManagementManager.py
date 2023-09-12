@@ -8,15 +8,15 @@ from udops.src.dep.Manager.mount_s3 import *
 prop = properties()
 connection = Connection()
 mount = mount_s3()
-conn = connection.get_connection()
+#conn = connection.get_connection()
 
 
 class UserManagementManager:
     ########################### User Management #######################
 
-    def get_user_list(self, conn):
+    def get_user_list(self):
         try:
-
+            conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute("SELECT user_name,firstname,lastname,email FROM udops_users")
             rows = cursor.fetchall()
@@ -34,7 +34,6 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             query = f"UPDATE udops_users SET firstname = '{firstname}', lastname = '{lastname}', email = '{email}', user_name='{new_user_name}' where user_name ='{existing_user_name}';"
-
             cursor.execute(query)
             if cursor.rowcount == 0:
                 return 2
@@ -45,7 +44,7 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def get_team_list(self, conn):
+    def get_team_list(self):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -221,9 +220,9 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def access_corpus_list_write(self, conn, corpus_name):
+    def access_corpus_list_write(self,corpus_name):
         try:
-
+            conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
             query = f'''SELECT user_name
@@ -244,9 +243,9 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def access_corpus_list_read(self, conn, corpus_name):
+    def access_corpus_list_read(self, corpus_name):
         try:
-
+            conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
             query = f'''SELECT user_name
@@ -267,10 +266,11 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def get_list_teams_read(self, conn, user_name):
+    def get_list_teams_read(self, user_name):
         try:
-            cursor = conn.cursor()
 
+            conn = connection.get_connection()
+            cursor = conn.cursor()
             # Check if the user_name exists in cfg_udops_users
             user_query = f"SELECT COUNT(*) FROM cfg_udops_users WHERE user_name = '{user_name}'"
             cursor.execute(user_query)
@@ -307,8 +307,9 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def get_list_teams_write(self, conn, user_name):
+    def get_list_teams_write(self, user_name):
         try:
+            conn = connection.get_connection()
             cursor = conn.cursor()
 
             # Check if the user_name exists in cfg_udops_users
@@ -347,8 +348,10 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def grant_team_pemission_read(self, conn, user_name, teamname):
+    def grant_team_pemission_read(self,user_name, teamname):
         try:
+
+            conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'read'
             for teamname in teamname:
@@ -404,8 +407,9 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def grant_team_pemission_write(self, conn, user_name, teamname):
+    def grant_team_pemission_write(self, user_name, teamname):
         try:
+            conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'write'
             for teamname in teamname:
@@ -461,9 +465,9 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def existing_users(self, conn, teamname):
+    def existing_users(self, teamname):
         try:
-
+            conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
             query = f"""
@@ -486,9 +490,9 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def not_existing_users(self, conn, teamname):
+    def not_existing_users(self, teamname):
         try:
-
+            conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
             query = f"""
@@ -554,6 +558,7 @@ class UserManagementManager:
 
     def delete_team(self,teamname):
         try:
+            conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             query = f"DELETE FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' ";
             cursor.execute(query)
@@ -619,8 +624,9 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def list_user_search(self, conn, user_name_substring):
+    def list_user_search(self,user_name_substring):
         try:
+            conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             if user_name_substring == "":
                 query ="SELECT user_name, firstname, lastname, email FROM udops_users;"
@@ -647,6 +653,7 @@ class UserManagementManager:
             if response.status_code == 200:
                 username = response.json()['login']
                 if username==github_username:
+                    conn = connection.get_connection()
                     cursor = conn.cursor(cursor_factory=RealDictCursor)
                     query = f"select user_id,user_name,firstname,lastname,email from udops_users where user_name ='{github_username}'"
                     cursor.execute(query)
