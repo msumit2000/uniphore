@@ -544,6 +544,8 @@ class get_list_teams_write(APIView):
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.get_list_teams_write(data["user_name"],data["teamname"])
+            print("@@@@@@@@@@@@@@@@@2")
+            print(response)
             json_string = json.dumps(response)
             data = json.loads(json_string)
             response_data = {
@@ -678,7 +680,7 @@ class add_user(APIView):
 
 
 class get_team_list_search(APIView):
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
 
     def post(self,request):
         if request.method == 'POST':
@@ -693,7 +695,7 @@ class get_team_list_search(APIView):
 
 
 class list_user_search(APIView):
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
 
     def post(self,request):
         if request.method == 'POST':

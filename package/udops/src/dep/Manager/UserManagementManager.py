@@ -344,9 +344,9 @@ class UserManagementManager:
                         accessible_teams.append(teamname)
 
                         if team_name in accessible_teams:
-                            return 1, accessible_teams
+                            return 0, accessible_teams
                         else:
-                            return accessible_teams
+                            return 1,accessible_teams
 
         except Exception as e:
             raise e
