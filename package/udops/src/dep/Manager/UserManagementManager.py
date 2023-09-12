@@ -448,9 +448,8 @@ class UserManagementManager:
                 #     return 4
                 # else:
 
-                if a in accessible_teams:
+                if a not in accessible_teams:
                     result.append(team)
-                    print("$$$$$$")
                     print(f"team--->{team}")
                 else:
                     # Check if the user_name is associated with the given teamname
