@@ -55,6 +55,10 @@ class UserManagement:
         user = UserManagementHandler()
         return user.get_list_teams_write(user_name,teamname)
 
+    def is_present_teams_write(self, user_name, teamname):
+        user = UserManagementHandler()
+        return user.is_present_teams_write(user_name, teamname)
+
     def grant_team_pemission_read(self, user_name, teamname):
         user = UserManagementHandler()
         return user.grant_team_pemission_read(user_name, teamname)

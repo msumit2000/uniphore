@@ -544,15 +544,32 @@ class get_list_teams_write(APIView):
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.get_list_teams_write(data["user_name"],data["teamname"])
-            print("@@@@@@@@@@@@@@@@@2")
-            print(response)
             json_string = json.dumps(response)
             data = json.loads(json_string)
             response_data = {
                 "status": "success",
                 "data": data
             }
-            print(data)
+            return JsonResponse(response_data, safe=False)
+
+class is_present_teams_write(APIView):
+
+    permission_classes = ([IsAuthenticated])
+
+    def post(self,request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            dataset = UserManagement()
+            response = dataset.is_present_teams_write(data["user_name"],data["teamname"])
+            if response==0:
+                response_data = {
+                    "message":"already presented"
+                }
+            else:
+                response_data = {
+                    "message": "continue"
+                }
+
             return JsonResponse(response_data, safe=False)
 
 

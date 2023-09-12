@@ -351,6 +351,50 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
+    def is_present_teams_write(self, user_name, team_name):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor()
+
+            # Check if the user_name exists in cfg_udops_users
+            user_query = f"SELECT COUNT(*) FROM cfg_udops_users WHERE user_name = '{user_name}'"
+            cursor.execute(user_query)
+            user_exists = cursor.fetchone()
+
+            if not user_exists[0]:
+                return "Invalid user_name."
+            else:
+                # Fetch all the teamnames for the user_name
+                team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN (SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')"
+                cursor.execute(team_query)
+                teamnames = [row[0] for row in cursor.fetchall()]
+
+                accessible_teams = []
+
+                for teamname in teamnames:
+                    # Fetch all the corpus_ids associated with the teamname
+                    corpus_query = f"SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl WHERE team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}')"
+                    cursor.execute(corpus_query)
+                    corpus_ids = cursor.fetchall()
+
+                    # Check if the user_name has permission for all the corpus_ids
+                    acl_query = f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' AND corpus_id = ANY(%s) AND permission ='write'"
+                    cursor.execute(acl_query, (corpus_ids,))
+                    num_corpuses = cursor.fetchone()[0]
+                    conn.commit()
+                    cursor.close()
+
+                    if num_corpuses == len(corpus_ids):
+                        accessible_teams.append(teamname)
+
+                        if team_name in accessible_teams:
+                            return 0
+                        else:
+                            return 1
+
+        except Exception as e:
+            raise e
+
     def grant_team_pemission_read(self,user_name, teamname):
         try:
 
