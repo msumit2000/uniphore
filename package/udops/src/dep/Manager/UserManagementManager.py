@@ -111,7 +111,7 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             query = (f"SELECT  user_name FROM cfg_udops_users WHERE "
-                     f"team_id = ( SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}'")
+                     f"team_id = ( SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}')")
             cursor.execute(query)
             rows = cursor.fetchall()
             print(rows)
