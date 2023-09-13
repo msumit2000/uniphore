@@ -356,20 +356,15 @@ class UserManagementManager:
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
             cursor.execute(team_query)
-            print(f"teamname argument--->{teamname}")
             teamnames = [row[0] for row in cursor.fetchall()]  # it gives the list of teams associated with username
-            print(f"teamnames where user is associated--->{teamnames}")
             user_team = []  # it will store the teamname who don't have user access.
 
             for name in teamname:
                 t = name
                 if t not in teamnames:
                     user_team.append(t)
-            print(f"user_team---->{user_team}")
 
             remain = [x for x in teamname if x not in user_team]
-            print(f"remain---->{remain}")
-
             # this will gve list of team where user have read access
             accessible_teams = []
             for team_name in teamnames:
@@ -434,21 +429,26 @@ class UserManagementManager:
 
     def grant_team_pemission_write(self, user_name, teamname):
         try:
-
-
             conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'write'
 
-
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
             cursor.execute(team_query)
-
             teamnames = [row[0] for row in cursor.fetchall()]  # it gives the list of teams associated with username
-            accessible_teams = []
+            user_team = []  # it will store the teamname who don't have user access.
 
+            for name in teamname:
+                t = name
+                if t not in teamnames:
+                    user_team.append(t)
+
+            remain = [x for x in teamname if x not in user_team]
+            # this will gve list of team where user have read access
+            accessible_teams = []
             for team_name in teamnames:
+
                 # Fetch all the corpus_ids associated with the teamname
                 corpus_query = (f"SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl WHERE "
                                 f"team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE"
@@ -467,28 +467,14 @@ class UserManagementManager:
                     accessible_teams.append(team_name)
 
             result = []
-
-            for team in teamname:
+            for team in remain:
                 a = team
                 if a in accessible_teams:
                     result.append(team)
                 else:
-                    # Check if the user_name is associated with the given teamname
-                    # user_query = (f"SELECT COUNT(*) FROM cfg_udops_users WHERE user_name = %s AND"
-                    #               f" team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = %s)")
-                    # cursor.execute(user_query, (user_name, team))
-                    # user_exists = cursor.fetchone()
-                    # if not user_exists[0]:
-                    #     return 3
-                    # else:
-                    # Get the team_id for the given teamname
                     team_query = f"SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = %s"
                     cursor.execute(team_query, (team,))
                     team_id = cursor.fetchone()
-
-                    # if not team_id:
-                    #     return 2
-                    # Get the corpus_id values associated with the team
 
                     corpus_query = f"SELECT corpus_id FROM cfg_udops_teams_acl WHERE team_id = %s"
                     cursor.execute(corpus_query, (team_id[0],))
@@ -514,10 +500,10 @@ class UserManagementManager:
                                             f" VALUES (%s, %s, %s)")
                             cursor.execute(insert_query, (user_name, corpus_id[0], permission))
 
-                    conn.commit()
-                    cursor.close()
+            conn.commit()
+            cursor.close()
 
-            return result
+            return result, user_team
         except Exception as e:
             print(e)
 
