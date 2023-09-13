@@ -86,9 +86,17 @@ class UserManagementHandler:
             raise e
 
     def get_list_teams_write(self,user_name):
+
         try:
             user = UserManagementManager()
             return user.get_list_teams_write(user_name)
+        except Exception as e:
+            raise e
+
+    def remove_access_team(self, user_name, teamname, permission):
+        try:
+            user = UserManagementManager()
+            return user.remove_access_team(user_name,teamname,permission)
         except Exception as e:
             raise e
 

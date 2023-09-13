@@ -46,6 +46,7 @@ urlpatterns = [
     path('udops/user/list_teams_write/', views.get_list_teams_write.as_view()),
     path('udops/user/team_permission_read/', views.grant_team_pemission_read.as_view()),
     path('udops/user/team_permission_write/', views.grant_team_pemission_write.as_view()),
+    path('udops/user/remove_team_access_permission/', views.remove_access_team.as_view()),
     path('udops/team/existing_users/', views.existing_users.as_view()),
     path('udops/team/not_existing_users/', views.not_existing_users.as_view()),
     path('udops/team/add_team/', views.add_team.as_view()),

@@ -577,6 +577,20 @@ class grant_team_pemission_write(APIView):
             return JsonResponse({"status": "success", "data":response}, safe=False)
 
 
+class remove_access_team(APIView):
+    permission_classes = ([IsAuthenticated])
+
+    def post(self,request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            dataset = UserManagement()
+            response = dataset.remove_access_team(data["user_name"],data["teamname"],data['permission'])
+            if response == 1:
+                return JsonResponse({"status": "success", "message":"removed successfully"}, safe=False)
+            else:
+                return JsonResponse({"status": "failed", "message":response}, safe=False)
+
+
 class existing_users(APIView):
     permission_classes = ([IsAuthenticated])
 

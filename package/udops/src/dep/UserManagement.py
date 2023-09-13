@@ -63,6 +63,13 @@ class UserManagement:
         user = UserManagementHandler()
         return user.grant_team_pemission_write(user_name, teamname)
 
+    def remove_access_team(self, user_name, teamname, permission):
+        try:
+            user = UserManagementHandler()
+            return user.remove_access_team(user_name, teamname, permission)
+        except Exception as e:
+            raise e
+
     def existing_users(self, teamname):
         user = UserManagementHandler()
         return user.existing_users(teamname)

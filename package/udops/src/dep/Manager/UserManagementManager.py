@@ -507,6 +507,21 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
+    def remove_access_team(self, user_name, teamname, permission):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = (f"DELETE FROM cfg_udops_acl WHERE user_name = '{user_name} AND permission = '{permission}' "
+                     f"AND corpus_id IN (SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl "
+                     f"WHERE team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname ='{teamname}'))")
+            cursor.execute(query)
+            conn.commit()
+            cursor.close()
+            return 1
+        except Exception as e:
+            error = str(e)
+            return error
+
     def existing_users(self, teamname):
         try:
             conn = connection.get_connection()
@@ -725,3 +740,6 @@ class UserManagementManager:
                 return 0
         except Exception as e:
             print(e)
+
+
+
