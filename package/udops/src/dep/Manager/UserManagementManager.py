@@ -150,7 +150,8 @@ class UserManagementManager:
                         return "User added successfully !!!"
 
         except Exception as e:
-            return e
+            error = str(e)
+            return error
 
     def delete_user(self, user_name, teamname):
         try:
