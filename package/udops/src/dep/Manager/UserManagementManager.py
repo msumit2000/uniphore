@@ -114,6 +114,7 @@ class UserManagementManager:
                      f"team_id = ( SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}') )AS usernames")
             cursor.execute(query)
             rows = cursor.fetchall()
+            print(f"rows---->{rows}")
 
             if teamname in rows:
                 return 0
