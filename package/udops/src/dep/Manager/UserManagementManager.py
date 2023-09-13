@@ -110,35 +110,42 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-
-            # Check if the user_name exists in the udops_users table
-            check_query = f"SELECT user_id, user_name FROM udops_users WHERE user_name = '{user_name}'"
-            cursor.execute(check_query)
+            query = (f"SELECT ARRAY( SELECT user_name FROM cfg_udops_users WHERE "
+                     f"team_id = ( SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}') )AS usernames")
+            cursor.execute(query)
             rows = cursor.fetchall()
 
-            if len(rows) == 0:
-                # User not present in udops_users table, raise an error
-                cursor.close()
-                conn.commit()
-                return "Invalid Username!!!!"
+            if teamname in rows:
+                return 0
             else:
-                # Insert the new user into cfg_udops_users table
-                user_id = rows[0]['user_id']
-                query1 = f"SELECT team_id,tenant_id FROM cfg_udops_teams_metadata  WHERE teamname = '{teamname}'"
-                cursor.execute(query1)
-                rows1 = cursor.fetchall()
-                if len(rows1) == 0:
-                    conn.commit()
+                # Check if the user_name exists in the udops_users table
+                check_query = f"SELECT user_id, user_name FROM udops_users WHERE user_name = '{user_name}'"
+                cursor.execute(check_query)
+                rows = cursor.fetchall()
+
+                if len(rows) == 0:
+                    # User not present in udops_users table, raise an error
                     cursor.close()
-                    return "Invalid teamname!!!"
+                    conn.commit()
+                    return "Invalid Username!!!!"
                 else:
-                    team_id = rows1[0]['team_id']
-                    tenant_id = rows1[0]['tenant_id']
-                    query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({user_id},'{user_name}',{team_id},'{tenant_id}')"
-                    cursor.execute(query)
-                    conn.commit()
-                    cursor.close()
-                    return "User added successfully !!!"
+                    # Insert the new user into cfg_udops_users table
+                    user_id = rows[0]['user_id']
+                    query1 = f"SELECT team_id,tenant_id FROM cfg_udops_teams_metadata  WHERE teamname = '{teamname}'"
+                    cursor.execute(query1)
+                    rows1 = cursor.fetchall()
+                    if len(rows1) == 0:
+                        conn.commit()
+                        cursor.close()
+                        return "Invalid teamname!!!"
+                    else:
+                        team_id = rows1[0]['team_id']
+                        tenant_id = rows1[0]['tenant_id']
+                        query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({user_id},'{user_name}',{team_id},'{tenant_id}')"
+                        cursor.execute(query)
+                        conn.commit()
+                        cursor.close()
+                        return "User added successfully !!!"
 
         except Exception as e:
             return e

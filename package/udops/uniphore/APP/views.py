@@ -432,17 +432,26 @@ class team_upsert(APIView):
             }
             return JsonResponse(response_data, safe=False)
 
+
 class add_users_team(APIView):
     permission_classes=([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.add_users_team(data["user_name"],data["teamname"])
-            response_data = {
-            "status":"success",
-            "data":response
-            }
+            if response == 0:
+                response_data = {
+                    "status":"error",
+                    "data":"user already existed"
+                    }
+            else:
+                response_data = {
+                    "status": "success",
+                    "data": response
+                }
+
             return JsonResponse(response_data, safe=False)
 
 class remove_users_team(APIView):
