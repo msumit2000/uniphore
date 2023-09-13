@@ -356,19 +356,19 @@ class UserManagementManager:
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
             cursor.execute(team_query)
-
+            print(f"teamname argument--->{teamname}")
             teamnames = [row[0] for row in cursor.fetchall()]  # it gives the list of teams associated with username
-            print(f"teamnames--->{teamnames}")
+            print(f"teamnames where user is associated--->{teamnames}")
             user_team = []  # it will store the teamname who don't have user access.
 
             for name in teamname:
                 t = name
-                if t in teamnames:
+                if t not in teamnames:
                     user_team.append(t)
             print(f"user_team---->{user_team}")
 
             remain = [x for x in user_team if x not in teamname]
-            print(f"result---->{remain}")
+            print(f"remain---->{remain}")
 
             # this will gve list of team where user have read access
             accessible_teams = []
