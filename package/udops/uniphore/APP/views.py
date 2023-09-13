@@ -579,18 +579,9 @@ class grant_team_pemission_write(APIView):
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.grant_team_pemission_write(data["user_name"],data["teamname"])
-            print("!!!!!!!!!!!!!!!!!")
             print(response)
-            if response==1:
-                return JsonResponse({"status": "Permission Granted Successfully !!!"}, safe=False)
-            elif response==2:
-                return JsonResponse({"status": "No team found with the teamname !!!"}, safe=False)
-            elif response==3:
-                return JsonResponse({"status": "The user does not have access to the team !!!"}, safe=False)
-            elif response==4:
-                return JsonResponse({"status": "Invalid teamname !!!"}, safe=False)
-            else:
-                return JsonResponse({"status": "failed"}, safe=False)
+
+            return JsonResponse({"status": "success", "data":response}, safe=False)
 
 
 class existing_users(APIView):
