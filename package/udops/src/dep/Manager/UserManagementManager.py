@@ -114,9 +114,10 @@ class UserManagementManager:
                      f"team_id = ( SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}') )AS usernames")
             cursor.execute(query)
             rows = cursor.fetchall()
-            print(f"rows---->{rows}")
+            row = rows['username']
+            print(f"rows---->{row}")
 
-            if teamname in rows:
+            if teamname in row:
                 return 0
             else:
                 # Check if the user_name exists in the udops_users table
