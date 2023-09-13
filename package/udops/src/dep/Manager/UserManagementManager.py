@@ -327,12 +327,14 @@ class UserManagementManager:
                 accessible_teams = []
                 for teamname in teamnames:
                     # Fetch all the corpus_ids associated with the teamname
-                    corpus_query = f"SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl WHERE team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}')"
+                    corpus_query = (f"SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl WHERE "
+                                    f"team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}')")
                     cursor.execute(corpus_query)
                     corpus_ids = cursor.fetchall()
 
                     # Check if the user_name has permission for all the corpus_ids
-                    acl_query = f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' AND corpus_id = ANY(%s) AND permission ='write'"
+                    acl_query = (f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' AND "
+                                 f"corpus_id = ANY(%s) AND permission ='write'")
                     cursor.execute(acl_query, (corpus_ids,))
                     num_corpuses = cursor.fetchone()[0]
 
@@ -511,7 +513,7 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = (f"DELETE FROM cfg_udops_acl WHERE user_name = '{user_name} AND permission = '{permission}' "
+            query = (f"DELETE FROM cfg_udops_acl WHERE username ='{user_name}' AND permission = '{permission}' "
                      f"AND corpus_id IN (SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl "
                      f"WHERE team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname ='{teamname}'))")
             cursor.execute(query)
