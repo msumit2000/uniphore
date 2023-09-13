@@ -555,31 +555,24 @@ class get_list_teams_write(APIView):
 
 class grant_team_pemission_read(APIView):
 
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.grant_team_pemission_read(data["user_name"],data["teamname"])
-            if response==1:
-                return JsonResponse({"status": "Permission Granted Successfully !!!"}, safe=False)
-            elif response==2:
-                return JsonResponse({"status": "No team found with the teamname !!!"}, safe=False)
-            elif response==3:
-                return JsonResponse({"status": "The user does not have access to the team !!!"}, safe=False)
-            elif response==4:
-                return JsonResponse({"status": "Invalid teamname !!!"}, safe=False)
-            else:
-                return JsonResponse({"status": "failed"}, safe=False)
+            return JsonResponse({"status": "success", "data": response}, safe=False)
+
 
 class grant_team_pemission_write(APIView):
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.grant_team_pemission_write(data["user_name"],data["teamname"])
-            print(response)
 
             return JsonResponse({"status": "success", "data":response}, safe=False)
 
