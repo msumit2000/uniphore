@@ -110,10 +110,15 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = (f"SELECT  user_name FROM cfg_udops_users WHERE "
-                     f"team_id = ( SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}')")
+            query1 = f"SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}'"
+            cursor.execute(query1)
+            team= cursor.fetchone()
+            team_id = team['team_id']
+            print(f"team_id---->{team_id}")
+
+            query = f"SELECT  user_name FROM cfg_udops_users WHERE team_id = {team_id}"
             cursor.execute(query)
-            rows = cursor.fetchone()
+            rows = cursor.fetchall()
             print(f"rows______>{rows}")
             row = rows['user_name']
             print(f"rows---->{row}")
