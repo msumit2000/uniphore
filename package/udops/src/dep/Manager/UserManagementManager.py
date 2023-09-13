@@ -335,11 +335,11 @@ class UserManagementManager:
                     acl_query = f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' AND corpus_id = ANY(%s) AND permission ='write'"
                     cursor.execute(acl_query, (corpus_ids,))
                     num_corpuses = cursor.fetchone()[0]
-                    conn.commit()
-                    cursor.close()
 
                     if num_corpuses == len(corpus_ids):
                         accessible_teams.append(teamname)
+                conn.commit()
+                cursor.close()
 
             return accessible_teams
 
@@ -347,7 +347,6 @@ class UserManagementManager:
             raise e
 
     def grant_team_pemission_read(self,user_name, teamname):
-
 
         try:
 
