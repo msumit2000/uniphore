@@ -113,7 +113,8 @@ class UserManagementManager:
             query = (f"SELECT ARRAY( SELECT user_name FROM cfg_udops_users WHERE "
                      f"team_id = ( SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}') )AS usernames")
             cursor.execute(query)
-            rows = cursor.fetchall()
+            rows = cursor.fetchone()
+            print(rows)
             row = rows['username']
             print(f"rows---->{row}")
 
