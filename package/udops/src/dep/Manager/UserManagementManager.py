@@ -358,9 +358,22 @@ class UserManagementManager:
             cursor.execute(team_query)
 
             teamnames = [row[0] for row in cursor.fetchall()]  # it gives the list of teams associated with username
-            accessible_teams = []
+            print(f"teamnames--->{teamnames}")
+            user_team = []  # it will store the teamname who don't have user access.
 
+            for name in teamname:
+                t = name
+                if t in teamnames:
+                    user_team.append(t)
+            print(f"user_team---->{user_team}")
+
+            remain = [x for x in user_team if x not in teamname]
+            print(f"result---->{remain}")
+
+            # this will gve list of team where user have read access
+            accessible_teams = []
             for team_name in teamnames:
+
                 # Fetch all the corpus_ids associated with the teamname
                 corpus_query = (f"SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl WHERE "
                                 f"team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE"
@@ -379,14 +392,11 @@ class UserManagementManager:
                     accessible_teams.append(team_name)
 
             result = []
-
-            for team in teamname:
+            for team in remain:
                 a = team
                 if a in accessible_teams:
                     result.append(team)
-
                 else:
-
                     team_query = f"SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = %s"
                     cursor.execute(team_query, (team,))
                     team_id = cursor.fetchone()
@@ -418,15 +428,18 @@ class UserManagementManager:
                     conn.commit()
                     cursor.close()
 
-            return result
+            return result, user_team
         except Exception as e:
             print(e)
 
     def grant_team_pemission_write(self, user_name, teamname):
         try:
+
+
             conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'write'
+
 
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
