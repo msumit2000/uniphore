@@ -425,8 +425,8 @@ class UserManagementManager:
                                             f" VALUES (%s, %s, %s)")
                             cursor.execute(insert_query, (user_name, corpus_id[0], permission))
 
-                    conn.commit()
-                    cursor.close()
+            conn.commit()
+            cursor.close()
 
             return result, user_team
         except Exception as e:
