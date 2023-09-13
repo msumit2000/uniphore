@@ -513,7 +513,7 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = (f"DELETE FROM cfg_udops_acl WHERE username ='{user_name}' AND permission = '{permission}' "
+            query = (f"DELETE FROM cfg_udops_acl WHERE user_name ='{user_name}' AND permission = '{permission}' "
                      f"AND corpus_id IN (SELECT DISTINCT corpus_id FROM cfg_udops_teams_acl "
                      f"WHERE team_id = (SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname ='{teamname}'))")
             cursor.execute(query)
