@@ -367,7 +367,7 @@ class UserManagementManager:
                     user_team.append(t)
             print(f"user_team---->{user_team}")
 
-            remain = [x for x in user_team if x not in teamname]
+            remain = [x for x in teamname if x not in user_team]
             print(f"remain---->{remain}")
 
             # this will gve list of team where user have read access
