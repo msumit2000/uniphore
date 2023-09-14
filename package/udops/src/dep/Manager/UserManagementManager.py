@@ -118,12 +118,13 @@ class UserManagementManager:
             query = f"SELECT  user_name FROM cfg_udops_users WHERE team_id = {team_id}"
             cursor.execute(query)
             rows = cursor.fetchall()
+
             print(f"rows--->{rows}")
 
-            usernames = [d[0][1] for d in rows]
-            print(f"usernames---> {usernames}")
+            values = [list(row.values())[0] for row in rows]
+            print(f"usernames---> {values}")
 
-            if user_name in usernames:
+            if user_name in values:
                 return 1
 
             else:
