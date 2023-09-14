@@ -35,7 +35,7 @@ class ucorpus:
         corpus_handler = CorpusHandler()
         corpus_handler.corpus_custom_fields(corpusname , kv_pairs)
      
-    def list_corpus(self):
+    def list_commit_(self):
         corpus_handler = CorpusHandler()
         corpus_handler.list_commits()
 

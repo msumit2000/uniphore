@@ -235,22 +235,49 @@ class CorpusMetadataManager:
             print(e)
 
     def list_corpus(self, language, corpus_type, source_type, conn):
+        # try:
+        #     lan = tuple(language)
+        #     print(lan)
+        #     cor_type = tuple(corpus_type)
+        #     sor_type = tuple(source_type)
+        #     cursor = conn.cursor(cursor_factory=RealDictCursor)
+        #     cursor.execute(
+        #         f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , "
+        #         f"lastupdated_ts , description, acquisition_date, (SELECT teamname FROM "
+        #         f"cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM "
+        #         f"cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS "
+        #         f"teamname FROM corpus_metadata WHERE language in {lan} and corpus_type in {cor_type} "
+        #         f"and source_type in {sor_type}")
+        #     rows = cursor.fetchall()
+        #     conn.commit()
+        #     cursor.close()
+        #     return rows
+        # except Exception as e:
+        #     print(e)
+
         try:
-            lan = tuple(language)
-            cor_type = tuple(corpus_type)
-            sor_type = tuple(source_type)
+            lan = language
+            cor_type = corpus_type
+            sor_type = source_type
+
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute(
-                f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date , "
-                f"lastupdated_ts , description, acquisition_date, (SELECT teamname FROM "
-                f"cfg_udops_teams_metadata tm WHERE tm.team_id IN ( SELECT team_id FROM "
-                f"cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id )) AS "
-                f"teamname FROM corpus_metadata WHERE language in {lan} and corpus_type in {cor_type} "
-                f"and source_type in {sor_type}")
+
+            query = (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type,"
+                     f" migration_date ,lastupdated_ts , description, acquisition_date, "
+                     f"(SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id "
+                     f"IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta."
+                     f"corpus_id = corpus_metadata.corpus_id )) AS teamname FROM "
+                     f"corpus_metadata WHERE language IN (SELECT * FROM unnest(%s)) and "
+                     f"corpus_type IN (SELECT * FROM unnest(%s)) and source_type IN (SELECT * FROM unnest(%s))")
+
+            cursor.execute(query, (lan, cor_type, sor_type))
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
-            return rows
+            if len(rows) == 0:
+                return 0
+            else:
+                return rows
         except Exception as e:
             print(e)
 

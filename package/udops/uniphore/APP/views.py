@@ -172,13 +172,13 @@ class get_corpus_list(APIView):
     permission_classes=([IsAuthenticated])
     def post(self,request):
         if request.method == 'POST':
-            data= json.loads(request.body)
+            data = json.loads(request.body)
             re = ucorpus()
             response = re.list_corpus(data["language"],data["corpus_type"],data["source_type"])
             response_data = {
-            "status": "success",
-            "failure_error": " ",
-            "data": response
+                "status": "success",
+                "failure_error": " ",
+                "data": response
             }
             return JsonResponse(response_data, safe=False)
         
