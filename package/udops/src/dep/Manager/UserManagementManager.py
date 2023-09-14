@@ -120,16 +120,12 @@ class UserManagementManager:
             cursor.execute(query)
             rows = cursor.fetchall()
 
-            row = []
-            for i in rows:
-                name = rows[i]['user_name']
-                i += 1
-                row.append(name)
+            usernames = [d[0][1] for d in rows]
+            print(f"usernames---> {usernames}")
 
-            print(f"rows---->{row}")
+            if user_name in usernames:
+                return 1
 
-            if teamname in row:
-                return 0
             else:
                 # Check if the user_name exists in the udops_users table
                 check_query = f"SELECT user_id, user_name FROM udops_users WHERE user_name = '{user_name}'"
