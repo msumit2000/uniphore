@@ -441,7 +441,7 @@ class add_users_team(APIView):
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.add_users_team(data["user_name"],data["teamname"])
-            if response == 0:
+            if response == 1:
                 response_data = {
                     "status":"error",
                     "data":"user already existed"

@@ -115,10 +115,10 @@ class UserManagementManager:
             team = cursor.fetchone()
             team_id = team['team_id']
 
-
             query = f"SELECT  user_name FROM cfg_udops_users WHERE team_id = {team_id}"
             cursor.execute(query)
             rows = cursor.fetchall()
+            print(f"rows--->{rows}")
 
             usernames = [d[0][1] for d in rows]
             print(f"usernames---> {usernames}")
