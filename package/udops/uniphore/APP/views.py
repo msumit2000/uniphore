@@ -441,12 +441,11 @@ class add_users_team(APIView):
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.add_users_team(data["user_name"],data["teamname"])
-            print("----------------")
             print(response)
             if response == 1:
                 response_data = {
                     "status":"error",
-                    "data":"user already existed"
+                    "data":"user already exist"
                     }
             else:
                 response_data = {
@@ -456,8 +455,11 @@ class add_users_team(APIView):
 
             return JsonResponse(response_data, safe=False)
 
+
 class remove_users_team(APIView):
+
     permission_classes=([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)

@@ -119,14 +119,10 @@ class UserManagementManager:
             cursor.execute(query)
             rows = cursor.fetchall()
 
-            print(f"rows--->{rows}")
-
             values = [list(row.values())[0] for row in rows]
-            print(f"usernames---> {values}")
 
             if user_name in values:
                 return 1
-
             else:
                 # Check if the user_name exists in the udops_users table
                 check_query = f"SELECT user_id, user_name FROM udops_users WHERE user_name = '{user_name}'"
