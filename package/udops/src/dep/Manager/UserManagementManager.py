@@ -89,7 +89,7 @@ class UserManagementManager:
                 return "Invalid admin user_name !!!"
 
             user_id = result['user_id']
-
+            print(f"user-id------->{user_id}")
             # Update the cfg_udops_teams_metadata table with the new values
             query = (f" UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}',"
                      f" tenant_id = '{tenant_id}', s3_base_path = '{s3_base_path}', "
@@ -100,6 +100,8 @@ class UserManagementManager:
             query1 = f"select team_id from cfg_udops_teams_metadata where teamname = '{new_teamname}'"
             cursor.execute(query1)
             row1 = cursor.fetchall()
+            print(f"row1--->{row1}")
+
             team_id = row1['team_id']
 
             query2 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_user_id) "
@@ -623,12 +625,11 @@ class UserManagementManager:
                 else:
 
                     mount_location = mount.mount_s3_bucket(destination_base_path, mount_point=teamname)
-                    print(f"mount_location---->{mount_location}")
 
                 # Insert the new team into cfg_udops_teams_metadata table
-                    insert_query = (f" INSERT INTO cfg_udops_teams_metadata (teamname, permanent_access_token,"
+                    insert_query = (f" INSERT INTO cfg_udops_teams_metadata (teamname, admin_user_id ,permanent_access_token,"
                                     f" tenant_id,  s3_base_path, s3_destination_path,"
-                                    f" mount_location) VALUES ('{teamname}', '{permanent_access_token}', '{tenant_id}',"
+                                    f" mount_location) VALUES ('{teamname}', {admin_id},'{permanent_access_token}', '{tenant_id}',"
                                     f"'{s3_base_path}','{destination_base_path}','{mount_location}')")
 
                     cursor.execute(insert_query)
@@ -636,10 +637,7 @@ class UserManagementManager:
                     query1 = f"select team_id from cfg_udops_teams_metadata where teamname='{teamname}'"
                     cursor.execute(query1)
                     row = cursor.fetchone()
-                    print(f"row--->{row}")
                     team_id = row['team_id']
-                    print(f"teamid--->{team_id}")
-                    print(f"admin_user_id---->{admin_id}")
 
                     insert_query1 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_id)"
                                      f"VALUES ({team_id},{admin_id})")
