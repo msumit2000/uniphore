@@ -99,7 +99,7 @@ class UserManagementManager:
 
             query1 = f"select team_id from cfg_udops_teams_metadata where teamname = '{new_teamname}'"
             cursor.execute(query1)
-            row1 = cursor.fetchall()
+            row1 = cursor.fetchone()
             print(f"row1--->{row1}")
 
             team_id = row1['team_id']
