@@ -613,7 +613,7 @@ class UserManagementManager:
             if result is None:
                 return "Admin user not found!!!"
             else:
-                admin_user_name = result['user_id']
+                admin_user_id = result['user_id']
                 # Check if the teamname already exists
                 team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' LIMIT 1"
                 cursor.execute(team_query)
@@ -639,9 +639,10 @@ class UserManagementManager:
                     print(f"row--->{row}")
                     team_id = row['team_id']
                     print(f"teamid--->{team_id}")
+                    print(f"admin_user_id---->{admin_user_id}")
 
                     insert_query1 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_user_id)"
-                                     f"VALUES ({team_id},{user_id})")
+                                     f"VALUES ({team_id},{admin_user_id})")
                     cursor.execute(insert_query1)
                     conn.commit()
                     cursor.close()
