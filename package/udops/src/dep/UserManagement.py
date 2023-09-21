@@ -23,12 +23,12 @@ class UserManagement:
         return user.update_team(permanent_access_token, tenant_id, admin_user_name, s3_base_path,destination_base_path, existing_teamname,
                                 new_teamname)
 
-    # def update_admin(self,user_name, teamname):
-    #     try:
-    #         user = UserManagementManager()
-    #         return user.update_admin(user_name, teamname)
-    #     except Exception as e:
-    #         raise e
+    def update_admin(self,user_name, teamname):
+        try:
+            user = UserManagementManager()
+            return user.update_admin(user_name, teamname)
+        except Exception as e:
+            raise e
 
     def add_users_team(self, user_name, teamname):
         user = UserManagementHandler()
