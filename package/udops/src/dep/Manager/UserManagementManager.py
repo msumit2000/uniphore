@@ -625,14 +625,16 @@ class UserManagementManager:
                     mount_location = mount.mount_s3_bucket(destination_base_path, mount_point=teamname)
                 # Insert the new team into cfg_udops_teams_metadata table
                     insert_query = (f"INSERT INTO cfg_udops_teams_metadata (teamname, permanent_access_token,"
-                                    f" tenant_id, admin_user_id, s3_base_path, s3_destination_path,"
+                                    f" tenant_id,  s3_base_path, s3_destination_path,"
                                     f" mount_location) VALUES "
-                                    f"('{teamname}', '{permanent_access_token}', '{tenant_id}', '{admin_user_name}', "
+                                    f"('{teamname}', '{permanent_access_token}', '{tenant_id}', "
                                     f"'{s3_base_path}','{destination_base_path}','{mount_location}')")
+
                     cursor.execute(insert_query)
 
                     query1 = f"select team_id from cfg_udops_teams_metadata where teamname='{teamname}'"
                     row = cursor.execute(query1)
+                    print(f"row--->{row}")
                     team_id = row['team_id']
                     print(f"teamid--->{team_id}")
 
