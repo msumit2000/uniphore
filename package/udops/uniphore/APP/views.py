@@ -435,28 +435,28 @@ class team_upsert(APIView):
             return JsonResponse(response_data, safe=False)
 
 
-class usert_admin(APIView):
-    permission_classes = ([IsAuthenticated])
-
-    def post(self, request):
-        if request.method == 'POST':
-            data = json.loads(request.body)
-            dataset = UserManagement()
-            response = dataset.update_admin(data['user_name'],data['teamname'])
-            if response==1:
-                response_data = {
-                    "status": "success",
-                    "data": response
-                }
-                return JsonResponse(response_data, safe=False)
-
-            else:
-                response_data = {
-                    "status": "error",
-                    "data": response
-                }
-                return JsonResponse(response_data, safe=False)
-
+# class upsert_admin(APIView):
+#     permission_classes = ([IsAuthenticated])
+#
+#     def post(self, request):
+#         if request.method == 'POST':
+#             data = json.loads(request.body)
+#             dataset = UserManagement()
+#             response = dataset.update_admin(data['user_name'],data['teamname'])
+#             if response==1:
+#                 response_data = {
+#                     "status": "success",
+#                     "data": response
+#                 }
+#                 return JsonResponse(response_data, safe=False)
+#
+#             else:
+#                 response_data = {
+#                     "status": "error",
+#                     "data": response
+#                 }
+#                 return JsonResponse(response_data, safe=False)
+#
 
 
 class add_users_team(APIView):

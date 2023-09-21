@@ -36,7 +36,7 @@ urlpatterns = [
     path('udops/user/upsert_user/', views.upsert_user.as_view()),
     path('udops/team/list/', views.team_list.as_view()),
     path('udops/team/upsert/', views.team_upsert.as_view()),
-    path('udops/team/admin_upsert/', views.usert_admin.as_view()),
+    # path('udops/team/admin_upsert/', views.usert_admin.as_view()),
 
     path('udops/team/add_users_team/', views.add_users_team.as_view()),
     path('udops/team/remove_users/', views.remove_users_team.as_view()),

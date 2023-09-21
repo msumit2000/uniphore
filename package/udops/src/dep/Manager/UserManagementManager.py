@@ -105,29 +105,42 @@ class UserManagementManager:
         except Exception as e:
             raise e
 
-    def update_admin(self, username, teamname):
-        try:
-            conn = connection.get_connection()
-            cursor = conn.cursor(cursor_factory=RealDictCursor)
-
-            query = f"select team_id from cfg_udops_teams_metadata where teamname = '{teamname}'"
-            cursor.execute(query)
-            row = cursor.fetchone()
-            team_id = row['team_id']
-
-            query1 = f"select user_id from udops_users where user_name = {username}"
-            cursor.execute(query1)
-            row1 = cursor.fetchone()
-            user_id = row1['user_id']
-
-            query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id)"
-                      f"VALUES  ({team_id},{user_id})")
-            cursor.execute(query2)
-
-            return 1
-        except Exception as e:
-            error = str(e)
-            return error
+    # def update_admin(self, username, teamname):
+    #     try:
+    #         conn = connection.get_connection()
+    #         cursor = conn.cursor(cursor_factory=RealDictCursor)
+    #
+    #         userid = []
+    #         for user in username:
+    #             q = f"select user_id from udops_users where user_name = '{user}'"
+    #             cursor.execute(q)
+    #             row = cursor.fetchone['user_id']
+    #             user_id = row['user_id']
+    #             userid.append(user_id)
+    #
+    #         query = f"select team_id from cfg_udops_teams_metadata where teamname = '{teamname}'"
+    #         cursor.execute(query)
+    #         row = cursor.fetchone()
+    #         team_id = row['team_id']
+    #
+    #         que1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
+    #         cursor.execute(que1)
+    #         row1 = cursor.fetchall()
+    #         teamnames = [row1[0] for row1 in cursor.fetchall()]
+    #
+    #         query1 = f"select user_id from udops_users where user_name = {username}"
+    #         cursor.execute(query1)
+    #         row1 = cursor.fetchone()
+    #         user_id = row1['user_id']
+    #
+    #         query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id)"
+    #                   f"VALUES  ({team_id},{user_id})")
+    #         cursor.execute(query2)
+    #
+    #         return 1
+    #     except Exception as e:
+    #         error = str(e)
+    #         return error
 
     def add_users_team(self, user_name, teamname):
         try:
