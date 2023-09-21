@@ -89,24 +89,12 @@ class UserManagementManager:
                 return "Invalid admin user_name !!!"
 
             user_id = result['user_id']
-            print(f"user-id------->{user_id}")
             # Update the cfg_udops_teams_metadata table with the new values
             query = (f" UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}',"
                      f" tenant_id = '{tenant_id}', s3_base_path = '{s3_base_path}', "
                      f" s3_destination_path = '{destination_base_path}',"
                      f" teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';")
             cursor.execute(query)
-
-            query1 = f"select team_id from cfg_udops_teams_metadata where teamname = '{new_teamname}'"
-            cursor.execute(query1)
-            row1 = cursor.fetchone()
-            print(f"row1--->{row1}")
-
-            team_id = row1['team_id']
-
-            query2 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_id) "
-                      f"VALUES ({team_id},{user_id})")
-            cursor.execute(query2)
 
             if cursor.rowcount == 0:
                 return "existing_teamname not found!!!"
@@ -116,6 +104,30 @@ class UserManagementManager:
                 return "Update successful!!!"
         except Exception as e:
             raise e
+
+    def update_admin(self, username, teamname):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+            query = f"select team_id from cfg_udops_teams_metadata where teamname = '{teamname}'"
+            cursor.execute(query)
+            row = cursor.fetchone()
+            team_id = row['team_id']
+
+            query1 = f"select user_id from udops_users where user_name = {username}"
+            cursor.execute(query1)
+            row1 = cursor.fetchone()
+            user_id = row1['user_id']
+
+            query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id)"
+                      f"VALUES  ({team_id},{user_id})")
+            cursor.execute(query2)
+
+            return 1
+        except Exception as e:
+            error = str(e)
+            return error
 
     def add_users_team(self, user_name, teamname):
         try:
@@ -692,10 +704,11 @@ class UserManagementManager:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             if teamname_substring=="":
                 query=(f"SELECT t.teamname, t.permanent_access_token, t.tenant_id, "
-                       f"(SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) "
+                       f"(SELECT user_name FROM udops_users WHERE user_id = cfg_udops_teams_admin.admin_id) "
                        f"AS admin_user_name,t.s3_base_path,t.s3_destination_path, ARRAY(SELECT "
                        f"user_name FROM cfg_udops_users WHERE team_id = t.team_id) AS users FROM "
                        f"cfg_udops_teams_metadata AS t;")
+
                 cursor.execute(query)
                 rows = cursor.fetchall()
                 conn.commit()
