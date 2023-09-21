@@ -83,19 +83,28 @@ class UserManagementManager:
             # Retrieve the user_id for the provided admin_user_id from udops_users table
             user_id_query = f"SELECT user_id FROM udops_users WHERE user_name = '{admin_user_name}'"
             cursor.execute(user_id_query)
+
             result = cursor.fetchone()
             if result is None:
                 return "Invalid admin user_name !!!"
 
-            admin_user_name = result['user_id']
+            user_id = result['user_id']
 
             # Update the cfg_udops_teams_metadata table with the new values
-            query = (f"UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}',"
-                     f" tenant_id = '{tenant_id}', admin_user_id = '{admin_user_name}',"
-                     f" s3_base_path = '{s3_base_path}', s3_destination_path = '{destination_base_path}',"
+            query = (f" UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}',"
+                     f" tenant_id = '{tenant_id}', s3_base_path = '{s3_base_path}', "
+                     f" s3_destination_path = '{destination_base_path}',"
                      f" teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';")
-
             cursor.execute(query)
+
+            query1 = f"select team_id from cfg_udops_teams_metadata where teamname = '{new_teamname}'"
+            cursor.execute(query1)
+            row1 = cursor.fetchall()
+            team_id = row1['team_id']
+
+            query2 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_user_id) "
+                      f"VALUES ({team_id},{user_id})")
+            cursor.execute(query2)
 
             if cursor.rowcount == 0:
                 return "existing_teamname not found!!!"
@@ -597,15 +606,14 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             # Retrieve the user_id for the provided admin_user_id from udops_users table
-            user_id_query = f"SELECT user_id FROM udops_users WHERE user_name = '{admin_user_name}'"
-            cursor.execute(user_id_query)
+            user_id = f"SELECT user_id FROM udops_users WHERE user_name = '{admin_user_name}'"
+
+            cursor.execute(user_id)
             result = cursor.fetchone()
             if result is None:
                 return "Admin user not found!!!"
             else:
                 admin_user_name = result['user_id']
-                print(f"admin_user_name--->{admin_user_name}")
-
                 # Check if the teamname already exists
                 team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' LIMIT 1"
                 cursor.execute(team_query)
@@ -622,6 +630,15 @@ class UserManagementManager:
                                     f"('{teamname}', '{permanent_access_token}', '{tenant_id}', '{admin_user_name}', "
                                     f"'{s3_base_path}','{destination_base_path}','{mount_location}')")
                     cursor.execute(insert_query)
+
+                    query1 = f"select team_id from cfg_udops_teams_metadata where teamname='{teamname}'"
+                    row = cursor.execute(query1)
+                    team_id = row['team_id']
+                    print(f"teamid--->{team_id}")
+
+                    insert_query1 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_user_id)"
+                                     f"VALUES ({team_id},{user_id})")
+                    cursor.execute(insert_query1)
                     conn.commit()
                     cursor.close()
                     message = "Team added successfully !!!"
@@ -633,7 +650,7 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = f"DELETE FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' ";
+            query = f"DELETE FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' "
             cursor.execute(query)
             conn.commit()
             cursor.close()
