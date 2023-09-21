@@ -104,7 +104,7 @@ class UserManagementManager:
 
             team_id = row1['team_id']
 
-            query2 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_user_id) "
+            query2 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_id) "
                       f"VALUES ({team_id},{user_id})")
             cursor.execute(query2)
 
