@@ -55,7 +55,6 @@ class UserManagementManager:
                             t.teamname,
                             t.permanent_access_token,
                             t.tenant_id,
-                            (SELECT ARRAY_AGG(user_name) FROM udops_users WHERE user_id = t.admin_user_id) AS user_names,
                             (SELECT ARRAY_AGG(user_name) FROM udops_users WHERE user_id IN (
                                 SELECT admin_id FROM cfg_udops_teams_admin WHERE team_id = t.team_id
                             )) AS admin_user_names,
