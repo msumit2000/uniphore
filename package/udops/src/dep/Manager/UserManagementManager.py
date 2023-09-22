@@ -71,7 +71,7 @@ class UserManagementManager:
                                         SELECT team_id
                                         FROM cfg_udops_teams_metadata        
                                     )
-                                ) AS admin_user
+                                )  
                         FROM
                             cfg_udops_teams_metadata AS t;
                     """
