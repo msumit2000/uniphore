@@ -111,7 +111,7 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-
+            print(f"Username---> {username}")
             # list of user id from username --> udops_user
             userid = []
             for user in username:
@@ -137,12 +137,12 @@ class UserManagementManager:
             print(row1)
 
             # check weather admin_id is present in user_id array.
-            array1 = []
-            for id1 in userid:
-                if id1 in row1:
-                    array1.append(id1)
-                else:
-                    pass
+            # array1 = []
+            # for id1 in userid:
+            #     if id1 in row1:
+            #         array1.append(id1)
+            #     else:
+            #         pass
                     # query1 = f"select user_id from udops_users where user_name = {username}"
                     # cursor.execute(query1)
                     # row1 = cursor.fetchone()
@@ -152,7 +152,7 @@ class UserManagementManager:
                     #           f"VALUES  ({team_id},{id1})")
                     # cursor.execute(query2)
 
-            return array1
+            return 1
         except Exception as e:
             error = str(e)
             return error
