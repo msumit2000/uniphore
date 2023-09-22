@@ -4,11 +4,9 @@ from udops.src.dep.config.Connection import *
 from udops.src.dep.InputProperties import *
 from udops.src.dep.Manager.mount_s3 import *
 
-
 prop = properties()
 connection = Connection()
 mount = mount_s3()
-#conn = connection.get_connection()
 
 
 class UserManagementManager:
@@ -20,11 +18,8 @@ class UserManagementManager:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute("SELECT user_name,firstname,lastname,email FROM udops_users")
             rows = cursor.fetchall()
-            #            print("$$$$$$$$$$$$$$")
-            # print(rows)
             conn.commit()
             cursor.close()
-            #  conn.close()
             return rows
         except Exception as e:
             print(e)
@@ -95,6 +90,26 @@ class UserManagementManager:
                 return "Update successful!!!"
         except Exception as e:
             raise e
+
+    def remove_admin(self,user_name,teamname):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"select user_id from udops_users where user_name='{user_name} "
+            cursor.execute(query)
+            row = cursor.fetchone()
+            admin_id = row['user_id']
+            query1 = f"select team_id from cfg_udops_teams_metadata where teamname ='{teamname}"
+            cursor.execute(query1)
+            row = cursor.fetchone()
+            team_id = row['team_id']
+            query3 = f"DELETE from cfg_udops_teams_admin where team_id = {team_id} AND admin_id = {admin_id}"
+            cursor.execute(query3)
+            conn.commit()
+            cursor.close()
+            return 1
+        except Exception as e:
+            return e
 
     def update_admin(self, username, teamname):
         try:

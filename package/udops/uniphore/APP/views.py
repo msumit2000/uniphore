@@ -458,6 +458,24 @@ class upsert_admin(APIView):
                 return JsonResponse(response_data, safe=False)
 
 
+class remove_admin(APIView):
+
+    permission_classes = ([IsAuthenticated])
+
+    def post(self, request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            dataset = UserManagement()
+            dataset.remove_admin(data['user_name'],data['teamname'])
+
+            response_data = {
+                "status": "success",
+                "message": "delete successfully"
+            }
+            return JsonResponse(response_data, safe=False)
+
+
+
 
 class add_users_team(APIView):
     permission_classes=([IsAuthenticated])
