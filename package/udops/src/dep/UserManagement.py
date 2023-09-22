@@ -40,7 +40,7 @@ class UserManagement:
     def list_admin(self,teamname):
         try:
             user = UserManagementManager()
-            return user.remove_admin(teamname)
+            return user.list_admin(teamname)
         except Exception as e:
             raise e
 

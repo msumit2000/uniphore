@@ -47,7 +47,7 @@ class UserManagementHandler:
     def list_admin(self,teamname):
         try:
             user = UserManagementManager()
-            return user.update_admin(teamname)
+            return user.list_admin(teamname)
         except Exception as e:
             raise e
 
