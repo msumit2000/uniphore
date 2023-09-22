@@ -117,7 +117,7 @@ class UserManagementManager:
             for user in username:
                 q = f"select user_id from udops_users where user_name = '{user}'"
                 cursor.execute(q)
-                row = cursor.fetchone['user_id']
+                row = cursor.fetchone()
                 user_id = row['user_id']
                 userid.append(user_id)
 
