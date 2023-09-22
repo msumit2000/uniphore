@@ -111,22 +111,16 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            print(f"Username---> {username}")
-            print(type(username))
+
             # list of user id from username --> udops_user
             userid = []
             for user in username:
-                print(f"user---->{user}")
                 q = f"select user_id from udops_users where user_name = '{user}'"
-                print(f"query-->{q}")
                 cursor.execute(q)
-
                 row = cursor.fetchone()
-                print(f"row--->{row}")
                 user_id = row['user_id']
                 userid.append(user_id)
 
-            print(f"user_id----> {userid}")
 
             # team_id respective to team
             query = f"select team_id from cfg_udops_teams_metadata where teamname = '{teamname}'"
@@ -138,15 +132,16 @@ class UserManagementManager:
             # fetching admin_id with respect to given team
             que1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
             cursor.execute(que1)
-            list_of_admin = [row[0] for row in cursor.fetchall()]
-           # ro = cursor.fetchall()
-            #print(row1)
-            print(f"list_of_admin--> {list_of_admin}")
+            ro1 = cursor.fetchall()
+            admin_ids = [row.get('admin_id') for row in ro1]
+
+
+            print(f"list_of_admin--> {admin_ids}")
 
             # check weather admin_id is present in user_id array.
             array1 = []
             for id1 in userid:
-                if id1 in list_of_admin:
+                if id1 in admin_ids:
                     array1.append(id1)
                 else:
                     # query1 = f"select user_id from udops_users where user_name = {username}"
