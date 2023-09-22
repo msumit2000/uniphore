@@ -120,8 +120,9 @@ class UserManagementManager:
                 q = f"select user_id from udops_users where user_name = '{user}'"
                 print(f"query-->{q}")
                 cursor.execute(q)
-                print(f"row--->{row}")
+
                 row = cursor.fetchone()
+                print(f"row--->{row}")
                 user_id = row['user_id']
                 userid.append(user_id)
 
