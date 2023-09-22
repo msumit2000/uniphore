@@ -127,7 +127,6 @@ class UserManagementManager:
             cursor.execute(query)
             row = cursor.fetchone()
             team_id = row['team_id']
-            print(f"team_id----> {team_id}")
 
             # fetching admin_id with respect to given team
             que1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
@@ -135,12 +134,13 @@ class UserManagementManager:
             ro1 = cursor.fetchall()
             admin_ids = [row.get('admin_id') for row in ro1]
 
-
+            print(f"list_of_user--> {userid}")
             print(f"list_of_admin--> {admin_ids}")
 
             # check weather admin_id is present in user_id array.
             array1 = []
             for id1 in userid:
+                print(f"id-->{id1}")
                 if id1 in admin_ids:
                     array1.append(id1)
                 else:
@@ -150,8 +150,10 @@ class UserManagementManager:
                     # user_id = row1['user_id']
 
                     query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id)"
-                              f"VALUES  ({team_id},{id1})")
+                              f"VALUES ({team_id},{id1})")
+                    print(f"query2-->{query2}")
                     cursor.execute(query2)
+            print(f"array--->{array1}")
             array2 = []
             if len(array1) == 0:
                 return 1
@@ -161,8 +163,9 @@ class UserManagementManager:
                     cursor.execute(q2)
                     row1 = cursor.fetchone()
                     name = row1['user_name']
+                    print(name)
                     array2.append(name)
-                return name
+                return array2
         except Exception as e:
             error = str(e)
             return error
