@@ -60,7 +60,13 @@ class UserManagementManager:
                                 SELECT user_name
                                 FROM cfg_udops_users
                                 WHERE team_id = t.team_id
-                            ) AS users
+                            ) AS users,
+                            ARRAY(
+                                 SELECT DISTINCT user_name
+                                 FROM cfg_udops_users
+                                 INNER JOIN cfg_udops_teams_admin 
+                                 ON cfg_udops_users.team_id = cfg_udops_teams_admin.team_id
+                                  ) AS admin_user
                         FROM
                             cfg_udops_teams_metadata AS t;
                     """
