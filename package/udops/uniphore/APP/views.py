@@ -473,6 +473,22 @@ class remove_admin(APIView):
                 "message": "delete successfully"
             }
             return JsonResponse(response_data, safe=False)
+        
+class list_admin(APIView):
+
+    permission_classes = ([IsAuthenticated])
+
+    def post(self, request):
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            dataset = UserManagement()
+            response = dataset.list_admin(data['teamname'])
+
+            response_data = {
+                "status": "success",
+                "message": response
+            }
+            return JsonResponse(response_data, safe=False)
 
 
 

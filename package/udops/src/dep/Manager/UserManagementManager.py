@@ -110,6 +110,33 @@ class UserManagementManager:
             return 1
         except Exception as e:
             return e
+        
+    def list_admin(self, teamname):
+        try:
+            conn = connection.get_connection()
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"select team_id from cfg_udops_teams_metadata where teamnam='{teamname}'"
+            cursor.execute(query)
+            row = cursor.fetchone()
+            team_id = row['team_id']
+
+            query1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
+            cursor.execute(query1)
+            ro1 = cursor.fetchall()
+            admin_ids = [row.get('admin_id') for row in ro1]
+
+            admin_name = []
+            for id1 in admin_ids:
+                query2 = f"select user_name from udops_users where user_id = {id1} "
+                cursor.execute(query2)
+                row = cursor.fetchone()
+                team_id = row['user_name']
+                admin_name.append(team_id)
+                
+            return admin_name
+
+        except Exception as e:
+            return e
 
     def update_admin(self, username, teamname):
         try:
@@ -137,21 +164,12 @@ class UserManagementManager:
             ro1 = cursor.fetchall()
             admin_ids = [row.get('admin_id') for row in ro1]
 
-            print(f"list_of_user--> {userid}")
-            print(f"list_of_admin--> {admin_ids}")
-
             # check weather admin_id is present in user_id array.
             array1 = []
             for id1 in userid:
-                print(f"id-->{id1}")
                 if id1 in admin_ids:
                     array1.append(id1)
                 else:
-                    # query1 = f"select user_id from udops_users where user_name = {username}"
-                    # cursor.execute(query1)
-                    # row1 = cursor.fetchone()
-                    # user_id = row1['user_id']
-
                     query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id)"
                               f" VALUES ({team_id},{id1})")
                     print(f"query2-->{query2}")
