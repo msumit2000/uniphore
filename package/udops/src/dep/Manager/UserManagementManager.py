@@ -112,6 +112,7 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             print(f"Username---> {username}")
+            print(type(username))
             # list of user id from username --> udops_user
             userid = []
             for user in username:
