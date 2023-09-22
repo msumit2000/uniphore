@@ -115,8 +115,11 @@ class UserManagementManager:
             # list of user id from username --> udops_user
             userid = []
             for user in username:
+                print(f"user---->{user}")
                 q = f"select user_id from udops_users where user_name = '{user}'"
+                print(f"query-->{q}")
                 cursor.execute(q)
+                print(f"row--->{row}")
                 row = cursor.fetchone()
                 user_id = row['user_id']
                 userid.append(user_id)
