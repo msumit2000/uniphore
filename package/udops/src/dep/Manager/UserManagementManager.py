@@ -51,7 +51,6 @@ class UserManagementManager:
             # query = f"""SELECT t.teamname,t.permanent_access_token,t.tenant_id,t.admin_user_id,t.s3_base_path, ARRAY(SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id) AS users FROM cfg_udops_teams_metadata AS t;"""
             query = f"""    
                             SELECT
-                            t.team_id,
                             t.teamname,
                             t.permanent_access_token,
                             t.tenant_id,
@@ -82,16 +81,6 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-            # # Retrieve the user_id for the provided admin_user_id from udops_users table
-            # user_id_query = f"SELECT user_id FROM udops_users WHERE user_name = '{admin_user_name}'"
-            # cursor.execute(user_id_query)
-            #
-            # result = cursor.fetchone()
-            # if result is None:
-            #     return "Invalid admin user_name !!!"
-            #
-            # user_id = result['user_id']
-            # Update the cfg_udops_teams_metadata table with the new values
             query = (f" UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}',"
                      f" tenant_id = '{tenant_id}', s3_base_path = '{s3_base_path}', "
                      f" s3_destination_path = '{destination_base_path}',"
