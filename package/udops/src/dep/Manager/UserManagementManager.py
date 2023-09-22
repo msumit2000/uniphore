@@ -751,11 +751,21 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             if teamname_substring=="":
-                query=(f"SELECT t.teamname, t.permanent_access_token, t.tenant_id, "
-                       f"(SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id) "
-                       f"AS admin_user_name,t.s3_base_path,t.s3_destination_path, ARRAY(SELECT "
-                       f"user_name FROM cfg_udops_users WHERE team_id = t.team_id) AS users FROM "
-                       f"cfg_udops_teams_metadata AS t;")
+                query=f""" SELECT
+                            t.teamname,
+                            t.permanent_access_token,
+                            t.tenant_id,
+                            (SELECT ARRAY_AGG(user_name) FROM udops_users WHERE user_id IN (
+                                SELECT admin_id FROM cfg_udops_teams_admin WHERE team_id = t.team_id
+                            )) AS admin_user_names,
+                            t.s3_base_path,
+                            t.s3_destination_path,
+                            ARRAY(
+                                SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id
+                            ) AS users
+                            FROM
+                            cfg_udops_teams_metadata AS t;
+                            """
 
                 cursor.execute(query)
                 rows = cursor.fetchall()
@@ -765,11 +775,23 @@ class UserManagementManager:
 
             else:
 
-                query = (f"SELECT t.teamname,t.permanent_access_token,t.tenant_"
-                         f"id,(SELECT user_name FROM udops_users WHERE user_id = t.admin_user_id)"
-                         f" AS admin_user_name,t.s3_base_path,t.s3_destination_path, ARRAY(SELECT user_name FROM "
-                         f"cfg_udops_users WHERE team_id = t.team_id ) AS users FROM "
-                         f"cfg_udops_teams_metadata AS t WHERE t.teamname ILIKE '%{teamname_substring}%';")
+                query = f""" 
+                            SELECT
+                            t.teamname,
+                            t.permanent_access_token,
+                            t.tenant_id,
+                            (SELECT ARRAY_AGG(user_name) FROM udops_users WHERE user_id IN (
+                                SELECT admin_id FROM cfg_udops_teams_admin WHERE team_id = t.team_id
+                            )) AS admin_user_names,
+                            t.s3_base_path,
+                            t.s3_destination_path,
+                            ARRAY(
+                                SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id
+                            ) AS users
+                            FROM
+                            cfg_udops_teams_metadata AS t
+                            WHERE t.teamname ILIKE '%{teamname_substring}%';
+                            """
                 cursor.execute(query)
                 rows = cursor.fetchall()
                 conn.commit()
