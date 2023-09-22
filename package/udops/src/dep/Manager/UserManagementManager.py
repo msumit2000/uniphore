@@ -49,7 +49,7 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             # query = f"""SELECT t.teamname,t.permanent_access_token,t.tenant_id,t.admin_user_id,t.s3_base_path, ARRAY(SELECT user_name FROM cfg_udops_users WHERE team_id = t.team_id) AS users FROM cfg_udops_teams_metadata AS t;"""
-            query = f""" SELECT
+            query = f"""    SELECT
                             t.teamname,
                             t.permanent_access_token,
                             t.tenant_id,
@@ -60,20 +60,22 @@ class UserManagementManager:
                                 SELECT user_name
                                 FROM cfg_udops_users
                                 WHERE team_id = t.team_id
-                            ) AS users,
+                                ) AS users,
                             ARRAY(
-                                SELECT user_name
-                                FROM cfg_udops_users
-                                WHERE user_id IN (
-                                    SELECT admin_id
-                                    FROM cfg_udops_teams_admin
-                                    WHERE team_id IN (
-                                        SELECT team_id
-                                        FROM cfg_udops_teams_metadata        
+                                    SELECT user_name
+                                    FROM cfg_udops_users
+                                    WHERE user_id IN (
+                                        SELECT admin_id
+                                        FROM cfg_udops_teams_admin
+                                        WHERE team_id IN (
+                                            SELECT team_id
+                                            FROM cfg_udops_teams_metadata
+                                        )
                                     )
-                                )  
-                        FROM
-                            cfg_udops_teams_metadata AS t;
+                                ) AS admin_user
+                            FROM
+                                cfg_udops_teams_metadata AS t;
+
                     """
 
             cursor.execute(query)
