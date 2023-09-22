@@ -153,7 +153,6 @@ class UserManagementManager:
                 userid.append(user_id)
             print(f"user_id--->{userid}")
 
-
             # team_id respective to team
             query = f"select team_id from cfg_udops_teams_metadata where teamname = '{teamname}'"
             cursor.execute(query)

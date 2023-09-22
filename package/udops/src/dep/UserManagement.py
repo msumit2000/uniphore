@@ -37,6 +37,13 @@ class UserManagement:
         except Exception as e:
             raise e
 
+    def list_admin(self,teamname):
+        try:
+            user = UserManagementManager()
+            return user.remove_admin(teamname)
+        except Exception as e:
+            raise e
+
     def add_users_team(self, user_name, teamname):
         user = UserManagementHandler()
         return user.add_users_team(user_name, teamname)

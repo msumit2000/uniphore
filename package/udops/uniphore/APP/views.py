@@ -483,7 +483,6 @@ class list_admin(APIView):
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.list_admin(data['teamname'])
-
             response_data = {
                 "status": "success",
                 "message": response
