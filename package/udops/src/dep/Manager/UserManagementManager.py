@@ -112,7 +112,6 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-            # list of user id from username --> udops_user
             userid = []
             for user in username:
                 q = f"select user_id from udops_users where user_name = '{user}'"
@@ -150,7 +149,7 @@ class UserManagementManager:
                     # user_id = row1['user_id']
 
                     query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id)"
-                              f"VALUES ({team_id},{id1})")
+                              f" VALUES ({team_id},{id1})")
                     print(f"query2-->{query2}")
                     cursor.execute(query2)
             print(f"array--->{array1}")
@@ -165,7 +164,10 @@ class UserManagementManager:
                     name = row1['user_name']
                     print(name)
                     array2.append(name)
-                return array2
+
+            conn.commit()
+            cursor.close()
+            return array2
         except Exception as e:
             error = str(e)
             return error
