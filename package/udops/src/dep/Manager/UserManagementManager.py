@@ -171,22 +171,32 @@ class UserManagementManager:
             que1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
             cursor.execute(que1)
             ro1 = cursor.fetchall()
-            print(f"ro1-->{ro1}")
-            admin_ids = [row.get('admin_id') for row in ro1]
-            print(f"user_id--->{userid}")
-            print(f"admin_id--->{admin_ids}")
+
+            if len(ro1) == 0:
+                for id2 in userid:
+                    que2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id2})"
+                    print(f"query2-->{que2}")
+                    cursor.execute(que2)
+                    conn.commit()
+                    cursor.close()
+            else:
+                print(f"ro1-->{ro1}")
+                admin_ids = [row.get('admin_id') for row in ro1]
+
+                print(f"user_id--->{userid}")
+                print(f"admin_id--->{admin_ids}")
 
             # check weather admin_id is present in user_id array.
-            array1 = []
-            for id1 in userid:
-                if id1 in admin_ids:
-                    array1.append(id1)
-                else:
-                    query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id1})")
-                    print(f"query2-->{query2}")
-                    cursor.execute(query2)
-            print(f"array--->{array1}")
-
+                array1 = []
+                for id1 in userid:
+                    if id1 in admin_ids:
+                        array1.append(id1)
+                    else:
+                        query2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id1})"
+                        print(f"query2-->{query2}")
+                        cursor.execute(query2)
+                        conn.commit()
+                print(f"array--->{array1}")
             array2 = []
             if len(array1) == 0:
                 return 1
