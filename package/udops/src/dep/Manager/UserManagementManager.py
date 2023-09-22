@@ -138,26 +138,36 @@ class UserManagementManager:
             # fetching admin_id with respect to given team
             que1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
             cursor.execute(que1)
-            row1 = cursor.fetchall()
-            print(row1)
+            list_of_admin = [row[0] for row in cursor.fetchall()]
+           # ro = cursor.fetchall()
+            #print(row1)
+            print(f"list_of_admin--> {list_of_admin}")
 
             # check weather admin_id is present in user_id array.
-            # array1 = []
-            # for id1 in userid:
-            #     if id1 in row1:
-            #         array1.append(id1)
-            #     else:
-            #         pass
+            array1 = []
+            for id1 in userid:
+                if id1 in list_of_admin:
+                    array1.append(id1)
+                else:
                     # query1 = f"select user_id from udops_users where user_name = {username}"
                     # cursor.execute(query1)
                     # row1 = cursor.fetchone()
                     # user_id = row1['user_id']
 
-                    # query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id)"
-                    #           f"VALUES  ({team_id},{id1})")
-                    # cursor.execute(query2)
-
-            return 1
+                    query2 = (f"insert into cfg_udops_teams_admin (team_id, admin_id)"
+                              f"VALUES  ({team_id},{id1})")
+                    cursor.execute(query2)
+            array2 = []
+            if len(array1) == 0:
+                return 1
+            else:
+                for id2 in array1:
+                    q2 = f"select user_name from udops_users where user_id = {id2}"
+                    cursor.execute(q2)
+                    row1 = cursor.fetchone()
+                    name = row1['user_name']
+                    array2.append(name)
+                return name
         except Exception as e:
             error = str(e)
             return error
