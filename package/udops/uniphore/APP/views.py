@@ -446,7 +446,7 @@ class upsert_admin(APIView):
             if response == 1:
                 response_data = {
                     "status": "success",
-                    "data": response
+                    "message": "OK"
                 }
                 return JsonResponse(response_data, safe=False)
 
