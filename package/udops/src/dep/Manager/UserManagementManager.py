@@ -663,44 +663,45 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             # Retrieve the user_id for the provided admin_user_id from udops_users table
-            user_id = f"SELECT user_id FROM udops_users WHERE user_name = '{admin_user_name}'"
+            admin_id = []
+            for name in admin_user_name:
+                user_id = f"SELECT user_id FROM udops_users WHERE user_name = '{name}'"
+                cursor.execute(user_id)
+                result  = cursor.fetchone()
+                id1 = result['user_id']
+                admin_id.append(id1)
+            print(f"admin_id-->{admin_id}")
 
-            cursor.execute(user_id)
-            result = cursor.fetchone()
-            if result is None:
-                return "Admin user not found!!!"
-            else:
-                admin_id = result['user_id']
                 # Check if the teamname already exists
-                team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' LIMIT 1"
-                cursor.execute(team_query)
-                result = cursor.fetchone()
-                if result is not None:
-                    return "Teamname already exists!!!"
-                else:
+            team_query = f"SELECT teamname FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' LIMIT 1"
+            cursor.execute(team_query)
+            result = cursor.fetchone()
+            if result is not None:
+                return "Teamname already exists!!!"
+            else:
+                mount_location = mount.mount_s3_bucket(destination_base_path, mount_point=teamname)
+            # Insert the new team into cfg_udops_teams_metadata table
+                insert_query = (f" INSERT INTO cfg_udops_teams_metadata (teamname,permanent_access_token,"
+                                f" tenant_id,  s3_base_path, s3_destination_path,"
+                                f" mount_location) VALUES ('{teamname}','{permanent_access_token}', '{tenant_id}',"
+                                f"'{s3_base_path}','{destination_base_path}','{mount_location}')")
+                cursor.execute(insert_query)
 
-                    mount_location = mount.mount_s3_bucket(destination_base_path, mount_point=teamname)
+                query1 = f"select team_id from cfg_udops_teams_metadata where teamname='{teamname}'"
+                cursor.execute(query1)
+                row = cursor.fetchone()
+                team_id = row['team_id']
+                print(f"team_id-->{team_id}")
 
-                # Insert the new team into cfg_udops_teams_metadata table
-                    insert_query = (f" INSERT INTO cfg_udops_teams_metadata (teamname, admin_user_id ,permanent_access_token,"
-                                    f" tenant_id,  s3_base_path, s3_destination_path,"
-                                    f" mount_location) VALUES ('{teamname}', {admin_id},'{permanent_access_token}', '{tenant_id}',"
-                                    f"'{s3_base_path}','{destination_base_path}','{mount_location}')")
-
-                    cursor.execute(insert_query)
-
-                    query1 = f"select team_id from cfg_udops_teams_metadata where teamname='{teamname}'"
-                    cursor.execute(query1)
-                    row = cursor.fetchone()
-                    team_id = row['team_id']
-
+                for id2 in admin_id:
                     insert_query1 = (f"INSERT INTO cfg_udops_teams_admin (team_id, admin_id)"
-                                     f"VALUES ({team_id},{admin_id})")
+                                     f" VALUES ({team_id},{id2})")
                     cursor.execute(insert_query1)
-                    conn.commit()
-                    cursor.close()
-                    message = "Team added successfully !!!"
-                    return message
+
+                conn.commit()
+                cursor.close()
+                message = "Team added successfully !!!"
+                return message
         except Exception as e:
             raise e
 

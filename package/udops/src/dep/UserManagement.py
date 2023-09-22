@@ -17,11 +17,11 @@ class UserManagement:
         user = UserManagementHandler()
         return user.get_team_list()
 
-    def update_team(self, permanent_access_token, tenant_id, admin_user_name, s3_base_path,destination_base_path, existing_teamname,
+    def update_team(self, permanent_access_token, tenant_id, s3_base_path,destination_base_path, existing_teamname,
                     new_teamname):
         user = UserManagementHandler()
-        return user.update_team(permanent_access_token, tenant_id, admin_user_name, s3_base_path,destination_base_path, existing_teamname,
-                                new_teamname)
+        return user.update_team(permanent_access_token, tenant_id,  s3_base_path,destination_base_path, \
+                                existing_teamname,new_teamname)
 
     def update_admin(self,user_name, teamname):
         try:

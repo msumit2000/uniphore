@@ -421,13 +421,13 @@ class team_list(APIView):
 
 
 class team_upsert(APIView):
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
 
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
-            response = dataset.update_team(data["permanent_access_token"],data["tenant_id"],data["admin_user_name"],data["s3_base_path"],data["s3_destination_path"],data["existing_teamname"],data["new_teamname"])
+            response = dataset.update_team(data["permanent_access_token"],data["tenant_id"],data["s3_base_path"],data["s3_destination_path"],data["existing_teamname"],data["new_teamname"])
             response_data = {
                 "status":"success",
                 "data":response
@@ -665,6 +665,7 @@ class not_existing_users(APIView):
 
 
 class add_team(APIView):
+
     permission_classes=([IsAuthenticated])
 
     def post(self,request):
