@@ -177,8 +177,7 @@ class UserManagementManager:
                     que2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id2})"
                     print(f"query2-->{que2}")
                     cursor.execute(que2)
-                    conn.commit()
-                    cursor.close()
+
             else:
                 print(f"ro1-->{ro1}")
                 admin_ids = [row.get('admin_id') for row in ro1]
@@ -194,8 +193,7 @@ class UserManagementManager:
                     else:
                         query2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id1})"
                         print(f"query2-->{query2}")
-                        cursor.execute(query2)
-                        conn.commit()
+
                 print(f"array--->{array1}")
             array2 = []
             if len(array1) == 0:
