@@ -188,13 +188,17 @@ class UserManagementManager:
             # check weather admin_id is present in user_id array.
                 array1 = []
                 for id1 in userid:
+                    print(f"idinforloop-->{id1}")
+
                     if id1 in admin_ids:
                         array1.append(id1)
                     else:
                         query2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id1})"
                         print(f"query2-->{query2}")
+                        cursor.execute(query2)
 
-                print(f"array--->{array1}")
+
+            print(f"array--->{array1}")
             array2 = []
             if len(array1) == 0:
                 return 1
