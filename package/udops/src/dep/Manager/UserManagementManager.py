@@ -175,14 +175,12 @@ class UserManagementManager:
             if len(ro1) == 0:
                 for id2 in userid:
                     que2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id2})"
-                    print(f"que-->{que2}")
                     cursor.execute(que2)
-                    conn.commit()
-                    cursor.close()
+                conn.commit()
+                cursor.close()
                 return 1
 
             else:
-
                 admin_ids = [row.get('admin_id') for row in ro1]
                 print(f"user_id--->{userid}")
                 print(f"admin_id--->{admin_ids}")
