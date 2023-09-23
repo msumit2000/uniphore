@@ -178,6 +178,8 @@ class UserManagementManager:
                     print(f"query2-->{que2}")
                     cursor.execute(que2)
 
+                return 1
+
             else:
                 print(f"ro1-->{ro1}")
                 admin_ids = [row.get('admin_id') for row in ro1]
@@ -197,19 +199,19 @@ class UserManagementManager:
                         print(f"query2-->{query2}")
                         cursor.execute(query2)
 
+           # print(f"array--->{array1}")
 
-            print(f"array--->{array1}")
-            array2 = []
-            if len(array1) == 0:
-                return 1
-            else:
-                for id2 in array1:
-                    q2 = f"select user_name from udops_users where user_id = {id2}"
-                    cursor.execute(q2)
-                    row1 = cursor.fetchone()
-                    name = row1['user_name']
-                    print(name)
-                    array2.append(name)
+                array2 = []
+                if len(array1) == 0:
+                    return 1
+                else:
+                    for id2 in array1:
+                        q2 = f"select user_name from udops_users where user_id = {id2}"
+                        cursor.execute(q2)
+                        row1 = cursor.fetchone()
+                        name = row1['user_name']
+                        print(name)
+                        array2.append(name)
 
             conn.commit()
             cursor.close()
