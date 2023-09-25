@@ -95,13 +95,13 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = f"select user_id from udops_users where user_name='{user_name} "
+            query = f"select user_id from udops_users where user_name= '{user_name}' "
             cursor.execute(query)
             row = cursor.fetchone()
             print(row)
             admin_id = row['user_id']
             print(f"admin--->{admin_id}")
-            query1 = f"select team_id from cfg_udops_teams_metadata where teamname ='{teamname}"
+            query1 = f"select team_id from cfg_udops_teams_metadata where teamname ='{teamname}'"
             cursor.execute(query1)
             row1 = cursor.fetchone()
             print(row1)
