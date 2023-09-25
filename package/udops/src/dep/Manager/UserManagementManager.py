@@ -910,14 +910,15 @@ class UserManagementManager:
                         query2 = "select admin_id from cfg_udops_teams_admin"
                         cursor.execute(query2)
                         rows1 = cursor.fetchall()
-                        print(f"rowsss-->{rows1}")
-
+                        print("*******************************")
                         arr = []
                         for i in range(len(rows1)):
-                            a = rows1[i]['admin_user_id']
+                            print(f"from rows1--->{i}")
+                            a = rows1[i]['admin_id']
+                            print(f"a---->{a}")
                             arr.append(a)
 
-                        print(f"admin_is---->{arr}")
+                        print("####################")
                         cursor.close()
                         conn.commit()
 
