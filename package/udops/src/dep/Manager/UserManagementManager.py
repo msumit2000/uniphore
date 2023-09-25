@@ -878,17 +878,19 @@ class UserManagementManager:
             url = 'https://api.github.com/user'
             headers = {'Authorization': f'token {token}'}
             response = requests.get(url, headers=headers)
-            print(f"response--->{response}")
+
+            print(f"response_statuscode--->{response.status_code}")
 
             if response.status_code == 200:
                 username = response.json()['login']
-                if username==github_username:
+                print(f"useraname-->{username}")
+                if username == github_username:
                     conn = connection.get_connection()
                     cursor = conn.cursor(cursor_factory=RealDictCursor)
                     query = f"select user_id,user_name,firstname,lastname,email from udops_users where user_name ='{github_username}'"
                     cursor.execute(query)
                     rows = cursor.fetchall()
-                    print(f"row--->{rows}")
+                    print(f"rowfrom udops user--->{rows}")
                     user_id = rows[0]['user_id']
                     print(f"user_id--->{user_id}")
 
