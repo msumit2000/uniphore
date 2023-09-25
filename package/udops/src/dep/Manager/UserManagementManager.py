@@ -890,24 +890,28 @@ class UserManagementManager:
                     rows = cursor.fetchall()
                     print(f"row--->{rows}")
                     user_id = rows[0]['user_id']
+                    print(f"user_id--->{user_id}")
+
                     if len(rows) == 0:
                         cursor.close()
                         conn.commit()
                         return 0
+
                     else:
                         query2 = "select admin_id from cfg_udops_teams_admin"
                         cursor.execute(query2)
                         rows1 = cursor.fetchall()
+                        print(f"rows1-->{rows1}")
                         arr = []
                         cursor.close()
                         conn.commit()
+
                         for i in range(len(rows1)):
                             a = rows1[i]['admin_user_id']
                             print(f"a-->{a}")
                             arr.append(a)
                         print(f"arr--->{arr}")
-                        print(f"user_id-->{user_id}")
-                        print(f"rows--->{rows}")
+
                         if user_id not in arr:
                             return 1, rows
                         else:
