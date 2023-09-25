@@ -910,17 +910,18 @@ class UserManagementManager:
                         query2 = "select admin_id from cfg_udops_teams_admin"
                         cursor.execute(query2)
                         rows1 = cursor.fetchall()
+                        print(f"rowsss-->{rows1}")
 
-                        admin_ids = []
-                        for real_dict_row in rows1:
-                            admin_id = real_dict_row[0]['admin_id']
-                            admin_ids.append(admin_id)
+                        arr = []
+                        for i in range(len(rows1)):
+                            a = rows1[i]['admin_user_id']
+                            arr.append(a)
 
-                        print(f"admin_is---->{admin_ids}")
+                        print(f"admin_is---->{arr}")
                         cursor.close()
                         conn.commit()
 
-                        if user_id not in admin_ids:
+                        if user_id not in arr:
                             return 1, value_list
                         else:
                             return 2, value_list
