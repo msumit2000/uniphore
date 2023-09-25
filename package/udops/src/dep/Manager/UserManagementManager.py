@@ -890,6 +890,10 @@ class UserManagementManager:
                     query = f"select user_id,user_name,firstname,lastname,email from udops_users where user_name ='{github_username}'"
                     cursor.execute(query)
                     rows = cursor.fetchall()
+                    print(type(rows))
+                    for data1 in rows:
+                        print(data1)
+
                     print(f"rowfrom udops user--->{rows}")
                     user_id = rows[0]['user_id']
                     print(f"user_id--->{user_id}")
