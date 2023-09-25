@@ -913,7 +913,8 @@ class UserManagementManager:
 
                         admin_ids = []
                         for real_dict_row in rows1:
-                            admin_ids.append(real_dict_row[0]['admin_id'])
+                            admin_id = real_dict_row[0]['admin_id']
+                            admin_ids.append(admin_id)
 
                         print(f"admin_is---->{admin_ids}")
                         cursor.close()
