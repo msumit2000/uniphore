@@ -806,14 +806,18 @@ def user_status(request):
         token = data['token']
         dataset = UserManagement()
         response = dataset.user_status(git_username, token)
-        print(f"response--->{response}")
+
+        print(f"response from views--->{response}")
+
         if response == 0:
             response_data = {
                 "User_role": "User Not exist",
             }
         else:
             val = response[0]
+            print(f"val-->{val}")
             user_data = response[1]
+            print(f"userdata-->{user_data}")
             if val == 1:
                 response_data = {
                     "User_role": "normal user",

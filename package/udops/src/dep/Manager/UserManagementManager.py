@@ -883,7 +883,6 @@ class UserManagementManager:
 
             if response.status_code == 200:
                 username = response.json()['login']
-                print(f"useraname-->{username}")
                 if username == github_username:
                     conn = connection.get_connection()
                     cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -896,14 +895,7 @@ class UserManagementManager:
                     for key, value in data1.items():
                         value_list.append(value)
 
-                    print(value_list)
-                    print(type(rows))
-                    for data1 in rows:
-                        print(f"data---->{data1}")
-
-                    print(f"rowfrom udops user--->{rows}")
                     user_id = rows[0]['user_id']
-                    print(f"user_id--->{user_id}")
 
                     if len(rows) == 0:
                         cursor.close()
@@ -914,18 +906,15 @@ class UserManagementManager:
                         query2 = "select admin_id from cfg_udops_teams_admin"
                         cursor.execute(query2)
                         rows1 = cursor.fetchall()
-                        print(f"rows1-->{rows1}")
-                        arr = []
+
+                        admin_ids = []
+                        for real_dict_row in rows1:
+                            admin_ids.append(real_dict_row[0]['admin_id'])
+                        print(f"admin_is---->{admin_ids}")
                         cursor.close()
                         conn.commit()
 
-                        for i in range(len(rows1)):
-                            a = rows1[i]['admin_user_id']
-                            print(f"a-->{a}")
-                            arr.append(a)
-                        print(f"arr--->{arr}")
-
-                        if user_id not in arr:
+                        if user_id not in admin_ids:
                             return 1, value_list
                         else:
                             return 2, value_list
