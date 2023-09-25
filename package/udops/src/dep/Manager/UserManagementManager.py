@@ -892,7 +892,7 @@ class UserManagementManager:
                     rows = cursor.fetchall()
                     print(type(rows))
                     for data1 in rows:
-                        print(f"data---->{data1[0]}")
+                        print(f"data---->{data1}")
 
                     print(f"rowfrom udops user--->{rows}")
                     user_id = rows[0]['user_id']
