@@ -878,6 +878,8 @@ class UserManagementManager:
             url = 'https://api.github.com/user'
             headers = {'Authorization': f'token {token}'}
             response = requests.get(url, headers=headers)
+            print(f"response--->{response}")
+
             if response.status_code == 200:
                 username = response.json()['login']
                 if username==github_username:
@@ -886,13 +888,14 @@ class UserManagementManager:
                     query = f"select user_id,user_name,firstname,lastname,email from udops_users where user_name ='{github_username}'"
                     cursor.execute(query)
                     rows = cursor.fetchall()
+                    print(f"row--->{rows}")
                     user_id = rows[0]['user_id']
                     if len(rows) == 0:
                         cursor.close()
                         conn.commit()
                         return 0
                     else:
-                        query2 = "select admin_user_id from cfg_udops_teams_metadata"
+                        query2 = "select admin_id from cfg_udops_teams_admin"
                         cursor.execute(query2)
                         rows1 = cursor.fetchall()
                         arr = []
@@ -910,7 +913,8 @@ class UserManagementManager:
             else:
                 return 0
         except Exception as e:
-            print(e)
+            err = str(e)
+            return err
 
 
 

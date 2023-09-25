@@ -181,21 +181,26 @@ class get_corpus_list(APIView):
                 "data": response
             }
             return JsonResponse(response_data, safe=False)
-        
+
+
 class language(APIView):
+
     permission_classes=([IsAuthenticated])
+
     def get(self,request):
         if request.method == 'GET':
             re = ucorpus()
             response = re.language()
             response_data = {
-            "status": "success",
-            "failure_error": " ",
-            "data": response
-            }
+                "status": "success",
+                "failure_error": " ",
+                "data": response
+                }
             return JsonResponse(response_data, safe=False)
-        
+
+
 class corpus_type(APIView):
+
     permission_classes=([IsAuthenticated])
     def get(self,request):
         if request.method == 'GET':
@@ -801,6 +806,7 @@ def user_status(request):
         token = data['token']
         dataset = UserManagement()
         response = dataset.user_status(git_username, token)
+        print(f"response--->{response}")
         if response == 0:
             response_data = {
                 "User_role": "User Not exist",
