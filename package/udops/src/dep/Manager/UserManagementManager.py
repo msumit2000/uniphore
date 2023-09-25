@@ -903,7 +903,11 @@ class UserManagementManager:
                         conn.commit()
                         for i in range(len(rows1)):
                             a = rows1[i]['admin_user_id']
+                            print(f"a-->{a}")
                             arr.append(a)
+                        print(f"arr--->{arr}")
+                        print(f"user_id-->{user_id}")
+                        print(f"rows--->{rows}")
                         if user_id not in arr:
                             return 1, rows
                         else:
