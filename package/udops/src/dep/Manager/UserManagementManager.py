@@ -883,6 +883,7 @@ class UserManagementManager:
 
             if response.status_code == 200:
                 username = response.json()['login']
+                print(f"username--->{username}")
                 if username == github_username:
                     conn = connection.get_connection()
                     cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -890,10 +891,13 @@ class UserManagementManager:
                     cursor.execute(query)
                     rows = cursor.fetchall()
                     data1 = rows[0]
+                    print(f"data1--->{data1}")
 
                     value_list = []
+
                     for key, value in data1.items():
                         value_list.append(value)
+                    print(f"value_list--->{value_list}")
 
                     user_id = rows[0]['user_id']
 
@@ -910,6 +914,7 @@ class UserManagementManager:
                         admin_ids = []
                         for real_dict_row in rows1:
                             admin_ids.append(real_dict_row[0]['admin_id'])
+
                         print(f"admin_is---->{admin_ids}")
                         cursor.close()
                         conn.commit()
