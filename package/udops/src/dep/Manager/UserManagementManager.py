@@ -760,6 +760,10 @@ class UserManagementManager:
 
             query2 = f"DELETE FROM cfg_udops_teams_admin WHERE team_id = {team_id} "
             cursor.execute(query2)
+            query3 = f"DELETE FROM cfg_udops_teams_acl WHERE team_id = {team_id} "
+            cursor.execute(query3)
+            query4 = f"DELETE FROM cfg_udops_users WHERE team_id = {team_id} "
+            cursor.execute(query4)
 
             query = f"DELETE FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' "
             cursor.execute(query)
