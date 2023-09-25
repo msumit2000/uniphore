@@ -99,10 +99,13 @@ class UserManagementManager:
             cursor.execute(query)
             row = cursor.fetchone()
             admin_id = row['user_id']
+            print(f"admin--->{admin_id}")
             query1 = f"select team_id from cfg_udops_teams_metadata where teamname ='{teamname}"
             cursor.execute(query1)
             row = cursor.fetchone()
             team_id = row['team_id']
+            print(f"team_id--->{team_id}")
+
             query3 = f"DELETE from cfg_udops_teams_admin where team_id = {team_id} AND admin_id = {admin_id}"
             cursor.execute(query3)
             conn.commit()

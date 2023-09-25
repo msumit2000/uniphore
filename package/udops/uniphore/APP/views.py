@@ -466,14 +466,15 @@ class remove_admin(APIView):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
-            dataset.remove_admin(data['user_name'],data['teamname'])
+            response = dataset.remove_admin(data['user_name'],data['teamname'])
+            if response==1:
+                response_data = {
+                    "status": "success",
+                    "message": "delete successfully"
+                }
+                return JsonResponse(response_data, safe=False)
 
-            response_data = {
-                "status": "success",
-                "message": "delete successfully"
-            }
-            return JsonResponse(response_data, safe=False)
-        
+
 class list_admin(APIView):
 
     permission_classes = ([IsAuthenticated])
