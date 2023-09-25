@@ -753,7 +753,7 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query1 = f"SELECT FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}'"
+            query1 = f"SELECT team_id FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}'"
             cursor.execute(query1)
             row = cursor.fetchone()
             team_id = row['team_id']
