@@ -478,6 +478,10 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'read'
+            query1 = f"select user_id from udops_users where user_name = '{user_name}'"
+            cursor.execute(query1)
+            row1 = cursor.fetchone()
+            user_id = row1['user_id']
 
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
@@ -542,9 +546,9 @@ class UserManagementManager:
 
                         else:
                             # Insert a new record
-                            insert_query = (f"INSERT INTO cfg_udops_acl (user_name, corpus_id, permission)"
-                                            f" VALUES (%s, %s, %s)")
-                            cursor.execute(insert_query, (user_name, corpus_id[0], permission))
+                            insert_query = (f"INSERT INTO cfg_udops_acl (user_id,user_name, corpus_id, permission)"
+                                            f" VALUES (%s, %s, %s, %s)")
+                            cursor.execute(insert_query, (user_id,user_name, corpus_id[0], permission))
 
             conn.commit()
             cursor.close()
@@ -558,6 +562,11 @@ class UserManagementManager:
             conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'write'
+
+            query1 = f"select user_id from udops_users where user_name = '{user_name}'"
+            cursor.execute(query1)
+            row1 = cursor.fetchone()
+            user_id = row1['user_id']
 
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
@@ -622,9 +631,9 @@ class UserManagementManager:
 
                         else:
                             # Insert a new record
-                            insert_query = (f"INSERT INTO cfg_udops_acl (user_name, corpus_id, permission)"
-                                            f" VALUES (%s, %s, %s)")
-                            cursor.execute(insert_query, (user_name, corpus_id[0], permission))
+                            insert_query = (f"INSERT INTO cfg_udops_acl (user_id,user_name, corpus_id, permission)"
+                                            f" VALUES (%s, %s, %s, %s)")
+                            cursor.execute(insert_query, (user_id, user_name, corpus_id[0], permission))
 
             conn.commit()
             cursor.close()

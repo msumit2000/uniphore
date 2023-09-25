@@ -181,6 +181,7 @@ class UserManagementHandler:
     def list_user_search(self, user_name_substring):
         try:
             user = UserManagementManager()
+
             return user.list_user_search(user_name_substring)
         except Exception as e:
             raise e
