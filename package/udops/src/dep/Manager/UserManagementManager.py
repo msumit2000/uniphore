@@ -99,21 +99,15 @@ class UserManagementManager:
             query1 = f"select team_id from cfg_udops_teams_metadata where teamname ='{teamname}'"
             cursor.execute(query1)
             row1 = cursor.fetchone()
-            print(row1)
+
             if row1 is None:
                 return 0
             else:
                 team_id = row1['team_id']
-                print(f"team_id--->{team_id}")
-
                 query = f"select user_id from udops_users where user_name= '{user_name}' "
                 cursor.execute(query)
                 row = cursor.fetchone()
-                print(row)
                 admin_id = row['user_id']
-                print(f"admin--->{admin_id}")
-
-
                 query3 = f"DELETE from cfg_udops_teams_admin where team_id = {team_id} AND admin_id = {admin_id}"
                 cursor.execute(query3)
                 conn.commit()
@@ -131,27 +125,24 @@ class UserManagementManager:
             cursor.execute(query)
             row = cursor.fetchone()
             team_id = row['team_id']
-            print(f"team-id--->{team_id}")
 
             query1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
             cursor.execute(query1)
             ro1 = cursor.fetchall()
-            print(f"ro1--->{ro1}")
             admin_ids = [row.get('admin_id') for row in ro1]
-            print(f"admin_ids--->{admin_ids}")
 
             admin_name = []
             for id1 in admin_ids:
                 query2 = f"select user_name from udops_users where user_id = {id1} "
                 cursor.execute(query2)
                 row = cursor.fetchone()
-                name= row['user_name']
+                name = row['user_name']
                 admin_name.append(name)
 
             return admin_name
 
         except Exception as e:
-            err=str(e)
+            err = str(e)
             return err
 
     def update_admin(self, username, teamname):
@@ -762,6 +753,8 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query1 = f"DELETE FROM cfg_udops_teams_admin WHERE teamname = '{teamname}'"
+            cursor.execute(query1)
             query = f"DELETE FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' "
             cursor.execute(query)
             conn.commit()
