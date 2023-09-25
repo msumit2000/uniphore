@@ -473,6 +473,13 @@ class remove_admin(APIView):
                     "message": "delete successfully"
                 }
                 return JsonResponse(response_data, safe=False)
+            elif response==0:
+                response_data = {
+                    "status": "success",
+                    "message": "team not found"
+                }
+                return JsonResponse(response_data, safe=False)
+
             else:
                 response_data = {
                     "status": "error",

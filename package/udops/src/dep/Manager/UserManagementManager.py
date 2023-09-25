@@ -95,24 +95,30 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query = f"select user_id from udops_users where user_name= '{user_name}' "
-            cursor.execute(query)
-            row = cursor.fetchone()
-            print(row)
-            admin_id = row['user_id']
-            print(f"admin--->{admin_id}")
+
             query1 = f"select team_id from cfg_udops_teams_metadata where teamname ='{teamname}'"
             cursor.execute(query1)
             row1 = cursor.fetchone()
             print(row1)
-            team_id = row1['team_id']
-            print(f"team_id--->{team_id}")
+            if row1 is None:
+                return 0
+            else:
+                team_id = row1['team_id']
+                print(f"team_id--->{team_id}")
 
-            query3 = f"DELETE from cfg_udops_teams_admin where team_id = {team_id} AND admin_id = {admin_id}"
-            cursor.execute(query3)
-            conn.commit()
-            cursor.close()
-            return 1
+                query = f"select user_id from udops_users where user_name= '{user_name}' "
+                cursor.execute(query)
+                row = cursor.fetchone()
+                print(row)
+                admin_id = row['user_id']
+                print(f"admin--->{admin_id}")
+
+
+                query3 = f"DELETE from cfg_udops_teams_admin where team_id = {team_id} AND admin_id = {admin_id}"
+                cursor.execute(query3)
+                conn.commit()
+                cursor.close()
+                return 1
         except Exception as e:
             error = str(e)
             return error
