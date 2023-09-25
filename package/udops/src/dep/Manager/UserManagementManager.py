@@ -879,11 +879,8 @@ class UserManagementManager:
             headers = {'Authorization': f'token {token}'}
             response = requests.get(url, headers=headers)
 
-            print(f"response_statuscode--->{response.status_code}")
-
             if response.status_code == 200:
                 username = response.json()['login']
-                print(f"username--->{username}")
                 if username == github_username:
                     conn = connection.get_connection()
                     cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -891,13 +888,11 @@ class UserManagementManager:
                     cursor.execute(query)
                     rows = cursor.fetchall()
                     data1 = rows[0]
-                    print(f"data1--->{data1}")
 
                     value_list = []
 
                     for key, value in data1.items():
                         value_list.append(value)
-                    print(f"value_list--->{value_list}")
 
                     user_id = rows[0]['user_id']
 
@@ -910,15 +905,11 @@ class UserManagementManager:
                         query2 = "select admin_id from cfg_udops_teams_admin"
                         cursor.execute(query2)
                         rows1 = cursor.fetchall()
-                        print("*******************************")
                         arr = []
                         for i in range(len(rows1)):
-                            print(f"from rows1--->{i}")
                             a = rows1[i]['admin_id']
-                            print(f"a---->{a}")
                             arr.append(a)
 
-                        print("####################")
                         cursor.close()
                         conn.commit()
 
