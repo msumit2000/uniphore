@@ -473,6 +473,12 @@ class remove_admin(APIView):
                     "message": "delete successfully"
                 }
                 return JsonResponse(response_data, safe=False)
+            else:
+                response_data = {
+                    "status": "error",
+                    "message": response
+                }
+                return JsonResponse(response_data, safe=False)
 
 
 class list_admin(APIView):

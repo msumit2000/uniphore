@@ -98,12 +98,14 @@ class UserManagementManager:
             query = f"select user_id from udops_users where user_name='{user_name} "
             cursor.execute(query)
             row = cursor.fetchone()
+            print(row)
             admin_id = row['user_id']
             print(f"admin--->{admin_id}")
             query1 = f"select team_id from cfg_udops_teams_metadata where teamname ='{teamname}"
             cursor.execute(query1)
-            row = cursor.fetchone()
-            team_id = row['team_id']
+            row1 = cursor.fetchone()
+            print(row1)
+            team_id = row1['team_id']
             print(f"team_id--->{team_id}")
 
             query3 = f"DELETE from cfg_udops_teams_admin where team_id = {team_id} AND admin_id = {admin_id}"
