@@ -753,8 +753,14 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query1 = f"DELETE FROM cfg_udops_teams_admin WHERE teamname = '{teamname}'"
+            query1 = f"SELECT FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}'"
             cursor.execute(query1)
+            row = cursor.fetchone()
+            team_id = row['team_id']
+
+            query2 = f"DELETE FROM cfg_udops_teams_admin WHERE team_id = {team_id} "
+            cursor.execute(query2)
+
             query = f"DELETE FROM cfg_udops_teams_metadata WHERE teamname = '{teamname}' "
             cursor.execute(query)
             conn.commit()
