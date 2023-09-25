@@ -133,6 +133,8 @@ try:
                     print(f"corpus_id--->{corpus_id}")
                     print(f"user_id--->{user_id}")
                     access = auth.authorize_user_clone(user_id, corpus_id)
+
+                    print(f"access---{access}")
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
                     corpus_name = data['corpus_name']
