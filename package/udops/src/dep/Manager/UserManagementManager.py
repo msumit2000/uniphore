@@ -890,6 +890,11 @@ class UserManagementManager:
                     query = f"select user_id,user_name,firstname,lastname,email from udops_users where user_name ='{github_username}'"
                     cursor.execute(query)
                     rows = cursor.fetchall()
+                    value_list = []
+                    for key, value in rows.items():
+                        value_list.append(value)
+
+                    print(value_list)
                     print(type(rows))
                     for data1 in rows:
                         print(f"data---->{data1}")
@@ -919,9 +924,9 @@ class UserManagementManager:
                         print(f"arr--->{arr}")
 
                         if user_id not in arr:
-                            return 1, rows
+                            return 1, value_list
                         else:
-                            return 2, rows
+                            return 2, value_list
                 else:
                     return 0
             else:
