@@ -501,7 +501,7 @@ class UserManagementManager:
             for name in teamnames:
                 t = name
                 print(f"team--->{t}")
-                if t not in teamnames:
+                if t not in teamname:
                     user_team.append(t)
 
             print(f"user_team--->{user_team}")
