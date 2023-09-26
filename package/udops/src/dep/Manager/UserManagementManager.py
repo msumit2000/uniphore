@@ -498,7 +498,7 @@ class UserManagementManager:
 
             user_team = []  # it will store the teamname who don't have user access.
 
-            for name in teamname:
+            for name in teamnames:
                 t = name
                 print(f"team--->{t}")
                 if t not in teamnames:
