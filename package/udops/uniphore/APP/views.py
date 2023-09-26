@@ -158,18 +158,20 @@ class get_udops_count(APIView):
 
 
 class summary(APIView):
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
+
     def get(self,request):
-        if request.method =='GET':
-            data= json.loads(request.body)
+        if request.method == 'GET':
+            data = json.loads(request.body)
             corpus = ucorpus()
-            response=corpus.summary(data['column'])
+            response = corpus.summary(data['column'])
             data = json.loads(response)
             return JsonResponse(data, safe=False)
 
 
 class get_corpus_list(APIView):
-    permission_classes=([IsAuthenticated])
+    permission_classes = ([IsAuthenticated])
+
     def post(self,request):
         if request.method == 'POST':
             data = json.loads(request.body)
