@@ -500,13 +500,15 @@ class UserManagementManager:
 
             for name in teamname:
                 t = name
-                print("************")
+                print(f"team--->{t}")
                 if t not in teamnames:
                     user_team.append(t)
 
+            print(f"user_team--->{user_team}")
+
             remain = [x for x in teamname if x not in user_team]
             print(f"remain--->{remain}")
-            # this will gve list of team where user have read access
+            # this will give list of team where user have read access
             accessible_teams = []
 
             for team_name in teamnames:
@@ -519,9 +521,11 @@ class UserManagementManager:
                 cursor.execute(corpus_query)
                 corpus_ids = cursor.fetchall()
                 print(f"cursor_id--->{corpus_ids}")
+
                 # Check if the user_name has permission for all the corpus_ids
                 acl_query = (f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' "
                              f"AND corpus_id = ANY(%s) AND permission ='read'")
+
                 cursor.execute(acl_query, (corpus_ids,))
 
                 num_corpuses = cursor.fetchone()[0]
