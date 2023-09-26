@@ -475,12 +475,15 @@ class UserManagementManager:
     def grant_team_pemission_read(self,user_name, teamname):
 
         try:
+            print("!!!!!!!!!!!!!!!!!!!!!1")
             conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'read'
             query1 = f"select user_id from udops_users where user_name = '{user_name}'"
             cursor.execute(query1)
+            print("@@@@@@@@@@@@@2")
             row1 = cursor.fetchone()
+            print(row1)
             user_id = row1['user_id']
 
             print(f"user_id--->{user_id}")
