@@ -483,20 +483,29 @@ class UserManagementManager:
             row1 = cursor.fetchone()
             user_id = row1['user_id']
 
+            print(f"user_id--->{user_id}")
+
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
+
             cursor.execute(team_query)
-            teamnames = [row[0] for row in cursor.fetchall()]  # it gives the list of teams associated with username
+            teamnames = [row[0] for row in cursor.fetchall()]
+            print(f"teamname---->{teamnames}")             # it gives the list of teams associated with username
+
+
             user_team = []  # it will store the teamname who don't have user access.
 
             for name in teamname:
                 t = name
+                print("************")
                 if t not in teamnames:
                     user_team.append(t)
 
             remain = [x for x in teamname if x not in user_team]
+            print(f"remain--->{remain}")
             # this will gve list of team where user have read access
             accessible_teams = []
+
             for team_name in teamnames:
 
                 # Fetch all the corpus_ids associated with the teamname
@@ -506,6 +515,7 @@ class UserManagementManager:
 
                 cursor.execute(corpus_query)
                 corpus_ids = cursor.fetchall()
+                print(f"cursor_id--->{corpus_ids}")
                 # Check if the user_name has permission for all the corpus_ids
                 acl_query = (f"SELECT COUNT(*) FROM cfg_udops_acl WHERE user_name = '{user_name}' "
                              f"AND corpus_id = ANY(%s) AND permission ='read'")
