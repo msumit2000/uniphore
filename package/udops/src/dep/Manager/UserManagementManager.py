@@ -484,7 +484,7 @@ class UserManagementManager:
             print("@@@@@@@@@@@@@2")
             row1 = cursor.fetchone()
             print(row1)
-            user_id = row1['user_id']
+            user_id = row1[0]
 
             print(f"user_id--->{user_id}")
 
