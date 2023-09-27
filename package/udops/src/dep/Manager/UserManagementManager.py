@@ -475,39 +475,30 @@ class UserManagementManager:
     def grant_team_pemission_read(self,user_name, teamname):
 
         try:
-            print("!!!!!!!!!!!!!!!!!!!!!1")
             conn = connection.get_connection()
             cursor = conn.cursor()
             permission = 'read'
+            ## here teamname is array of team
+            ## fetch user_id
             query1 = f"select user_id from udops_users where user_name = '{user_name}'"
             cursor.execute(query1)
-            print("@@@@@@@@@@@@@2")
             row1 = cursor.fetchone()
-            print(row1)
             user_id = row1[0]
 
-            print(f"user_id--->{user_id}")
+            ## fetch teamname related to given usename
 
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
-
             cursor.execute(team_query)
             teamnames = [row[0] for row in cursor.fetchall()]
-            print(f"teamname---->{teamnames}")             # it gives the list of teams associated with username
-
 
             user_team = []  # it will store the teamname who don't have user access.
 
-            for name in teamnames:
+            for name in teamname:
                 t = name
-                print(f"team--->{t}")
-                if t not in teamname:
+                if t not in teamnames:
                     user_team.append(t)
-
-            print(f"user_team--->{user_team}")
-
             remain = [x for x in teamname if x not in user_team]
-            print(f"remain--->{remain}")
             # this will give list of team where user have read access
             accessible_teams = []
 
@@ -583,7 +574,7 @@ class UserManagementManager:
             query1 = f"select user_id from udops_users where user_name = '{user_name}'"
             cursor.execute(query1)
             row1 = cursor.fetchone()
-            user_id = row1['user_id']
+            user_id = row1[0]
 
             team_query = (f"SELECT teamname FROM cfg_udops_teams_metadata WHERE team_id IN "
                           f"(SELECT team_id FROM cfg_udops_users WHERE user_name = '{user_name}')")
