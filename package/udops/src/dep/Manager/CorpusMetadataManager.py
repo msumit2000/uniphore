@@ -243,16 +243,23 @@ class CorpusMetadataManager:
 
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-            query = (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
-                     f"migration_date, lastupdated_ts, description, acquisition_date,"
-                     f"(SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN "
-                     f"(SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id))"
-                     f" AS teamname FROM corpus_metadata WHERE language IN "
-                     f"(SELECT language FROM corpus_metadata where language = '{lan}') AND "
-                     f"corpus_type IN (SELECT corpus_type FROM corpus_metadata where corpus_type = '{cor_type}' ) AND "
-                     f"source_type IN (SELECT source_type FROM corpus_metadata where source_type = '{sor_type}')")
+            # query = (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
+            #          f"migration_date, lastupdated_ts, description, acquisition_date,"
+            #          f"(SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN "
+            #          f"(SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id))"
+            #          f" AS teamname FROM corpus_metadata WHERE language IN "
+            #          f"(SELECT language FROM corpus_metadata where language = '{lan}') AND "
+            #          f"corpus_type IN (SELECT corpus_type FROM corpus_metadata where corpus_type = '{cor_type}' ) AND "
+            #          f"source_type IN (SELECT source_type FROM corpus_metadata where source_type = '{sor_type}')")
+            #
+            query= (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date,"
+                    f"lastupdated_ts , description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata"
+                    f" tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE "
+                    f"cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata WHERE "
+                    f"language IN (SELECT * FROM unnest(%s)) and corpus_type IN (SELECT * FROM unnest(%s)) "
+                    f"and source_type IN (SELECT * FROM unnest(%s))")
 
-            cursor.execute(query)
+            cursor.execute(query, (lan, cor_type, sor_type))
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
