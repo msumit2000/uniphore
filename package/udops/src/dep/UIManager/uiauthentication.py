@@ -76,7 +76,8 @@ class uiauthentication:
             query = f"select mount_location, s3_destination_path from cfg_udops_teams_metadata where teamname = '{team_name}'"
             cursor.execute(query)
             rows = cursor.fetchall()
-            print(f"rowssss---->{rows}")
+            print(f"rowssss---->{rows[0]}")
+
             conn.commit()
             cursor.close()
             if rows is not None:
