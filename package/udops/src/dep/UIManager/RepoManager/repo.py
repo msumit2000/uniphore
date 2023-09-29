@@ -23,17 +23,6 @@ class repomanager:
             print(error)
             return error
 
-    # def get_url(self, target,location):
-    #     try:ls
-    #         os.chdir(location)
-    #         git.Repo.init(location)
-    #         #s = Repo(location)
-    #        # s.get_url(target)
-    #         return 1
-    #     except Exception as e:
-    #         error = str(e)
-    #         return error
-
     def create_corpus(self, json_loader, conn):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)

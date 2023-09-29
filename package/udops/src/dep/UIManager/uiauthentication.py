@@ -73,19 +73,22 @@ class uiauthentication:
     def get_team_location(self, team_name,conn):
         try:
             cursor = conn.cursor()
-            query = f"select mount_location from cfg_udops_teams_metadata where teamname = '{team_name}'"
+            query = f"select mount_location, s3_destination_path from cfg_udops_teams_metadata where teamname = '{team_name}'"
             cursor.execute(query)
-            rows = cursor.fetchone()
+            rows = cursor.fetchall()
             conn.commit()
             cursor.close()
             if rows is not None:
-                loc = rows[0]
-                return loc
+                loc = rows[0]['mount_location']
+                s3_path = rows[1]['s3_destination_path']
+                return loc, s3_path
             else:
                 return 0
         except Exception as e:
             error = str(e)
             return error
+
+
 
     def corpus_id(self,corpus_name,conn):
         try:
