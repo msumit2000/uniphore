@@ -50,6 +50,7 @@ try:
                         #         return 4
                         #     else:
                         #         return create_corpus
+                        return 1
             except Exception as e:
                 error = str(e)
                 return error
