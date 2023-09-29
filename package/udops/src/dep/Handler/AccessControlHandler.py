@@ -51,3 +51,4 @@ class UserAuthenticationHandler:
     def Corpus_team_map(self,team_id , corpus_id):
         authentication = udpos_authentication()
         return authentication.Corpus_team_map(team_id,corpus_id,conn)
+

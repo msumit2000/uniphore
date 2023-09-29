@@ -18,39 +18,41 @@ try:
                     if team_id == 0:
                         return 2
                     else:
-                        location = auth.get_team_location(data['teamname'])
+                        cred = auth.get_team_location(data['teamname'])
+                        location = cred[0]
+                        s3_bucket = cred[1]
+                        print(f"s3_bucket-->{s3_bucket}")
                         print(f"location--->{location}")
+                        corpus_name = data['corpus_name']
+                        location = str(location) + "/" + str(corpus_name)
+                        os.makedirs(location, exist_ok=True)
+                        if location == 0:
+                            return 3
+                        else:
+                            corpus_details = {
+                                "corpus_name": data['corpus_name'],
+                                "corpus_type": data['corpus_type'],
+                                "language": data['language'],
+                                "source_type": data['source_type'],
+                                "vendor": data['vendor'],
+                                "domain": data['domain'],
+                                "description": data['description'],
+                                "lang_code": data['lang_code'],
+                                "acquisition_date": data['acquisition_date'],
+                                "migration_date": data['migration_date']
+                            }
+                            uih = uihandler()
+                            create_corpus = uih.init(corpus_details, location)
+                            if create_corpus == 1:
+                                corpus_id = auth.corpus_id(data['corpus_name'])
+                                auth.default_acess(corpus_id, user_id)
+                                auth.Corpus_team_map(team_id, corpus_id)
+                                return 1
+                            elif create_corpus == 2:
+                                return 4
+                            else:
+                                return create_corpus
 
-                        # corpus_name = data['corpus_name']
-                        # location = str(location) + "/" + str(corpus_name)
-                        # os.makedirs(location, exist_ok=True)
-                        # if location == 0:
-                        #     return 3
-                        # else:
-                        #     corpus_details = {
-                        #         "corpus_name": data['corpus_name'],
-                        #         "corpus_type": data['corpus_type'],
-                        #         "language": data['language'],
-                        #         "source_type": data['source_type'],
-                        #         "vendor": data['vendor'],
-                        #         "domain": data['domain'],
-                        #         "description": data['description'],
-                        #         "lang_code": data['lang_code'],
-                        #         "acquisition_date": data['acquisition_date'],
-                        #         "migration_date": data['migration_date']
-                        #     }
-                        #     uih = uihandler()
-                        #     create_corpus = uih.init(corpus_details, location)
-                        #     if create_corpus == 1:
-                        #         corpus_id = auth.corpus_id(data['corpus_name'])
-                        #         auth.default_acess(corpus_id, user_id)
-                        #         auth.Corpus_team_map(team_id, corpus_id)
-                        #         return 1
-                        #     elif create_corpus == 2:
-                        #         return 4
-                        #     else:
-                        #         return create_corpus
-                        return 1
             except Exception as e:
                 error = str(e)
                 return error

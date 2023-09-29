@@ -79,10 +79,13 @@ class uiauthentication:
             r1 = rows[0]
             conn.commit()
             cursor.close()
+            cred = []
             if rows is not None:
                 loc = r1[0]
                 s3_path = r1[1]
-                return loc, s3_path
+                cred.append(loc)
+                cred.append(s3_path)
+                return cred
             else:
                 return 0
         except Exception as e:
