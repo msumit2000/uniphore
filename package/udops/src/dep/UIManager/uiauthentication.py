@@ -76,13 +76,12 @@ class uiauthentication:
             query = f"select mount_location, s3_destination_path from cfg_udops_teams_metadata where teamname = '{team_name}'"
             cursor.execute(query)
             rows = cursor.fetchall()
-            print(f"rowssss---->{rows[0]}")
-
+            r1 = rows[0]
             conn.commit()
             cursor.close()
             if rows is not None:
-                loc = rows[0]['mount_location']
-                s3_path = rows[1]['s3_destination_path']
+                loc = r1[0]
+                s3_path = r1[1]
                 return loc, s3_path
             else:
                 return 0
