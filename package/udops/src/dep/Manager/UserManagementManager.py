@@ -75,13 +75,11 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-
             query = (f" UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}',"
                      f" tenant_id = '{tenant_id}', s3_base_path = '{s3_base_path}', "
                      f" s3_destination_path = '{destination_base_path}',"
                      f" teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';")
             cursor.execute(query)
-
             if cursor.rowcount == 0:
                 return "existing_teamname not found!!!"
             else:
@@ -95,11 +93,9 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-
             query1 = f"select team_id from cfg_udops_teams_metadata where teamname ='{teamname}'"
             cursor.execute(query1)
             row1 = cursor.fetchone()
-
             if row1 is None:
                 return 0
             else:
@@ -138,9 +134,7 @@ class UserManagementManager:
                 row = cursor.fetchone()
                 name = row['user_name']
                 admin_name.append(name)
-
             return admin_name
-
         except Exception as e:
             err = str(e)
             return err
@@ -157,18 +151,13 @@ class UserManagementManager:
                 row = cursor.fetchone()
                 user_id = row['user_id']
                 userid.append(user_id)
-
-
-
             # team_id respective to team
             query = f"select team_id, tenant_id from cfg_udops_teams_metadata where teamname = '{teamname}'"
             cursor.execute(query)
             row = cursor.fetchall()
             team_id = row[0]['team_id']
             tenant_id = row[0]['tenant_id']
-            print("!!!!!!!!!!!!!!!!!1")
-            print(team_id)
-            print(tenant_id)
+
 
             # fetching admin_id with respect to given team
             que1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
@@ -179,10 +168,7 @@ class UserManagementManager:
                     que2 = f"select user_name from udops_users where user_id = {id2}"
                     cursor.execute(que2)
                     ro2 = cursor.fetchone()
-                    print(f"ro2--->{ro2}")
                     user_name = ro2['user_name']
-                    print("@@@@@@@@@@@@@@@@@@@@")
-                    print(user_name)
 
                     que3 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id2})"
                     cursor.execute(que3)
@@ -204,10 +190,7 @@ class UserManagementManager:
                         que2 = f"select user_name from udops_users where user_id = {id1}"
                         cursor.execute(que2)
                         ro2 = cursor.fetchone()
-                        print(f"ro2--->{ro2}")
                         user_name = ro2['user_name']
-                        print("@@@@@@@@@@@@@@@@@@@@")
-                        print(user_name)
                         query2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id1})"
                         cursor.execute(query2)
                         query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({id1},'{user_name}',{team_id},'{tenant_id}')"

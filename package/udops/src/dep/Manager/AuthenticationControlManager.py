@@ -28,10 +28,9 @@ class udpos_authentication:
             cursor.execute(query)
             rows = cursor.fetchone()
             if rows is not None:
-               team_id = rows[0]
-               conn.commit()
-
-               return team_id
+                team_id = rows[0]
+                conn.commit()
+                return team_id
             else:
                 return 0
         except Exception as e:

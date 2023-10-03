@@ -1,20 +1,14 @@
 from psycopg2.extras import RealDictCursor
 import json
-
 from udops.src.dep.Common.Constants import Constants
-
 from udops.src.dep.config.Connection import *
 from collections import Counter
-
-
-
 connection = Connection()
 
 
 class DatasetMetadatamanager:
     def list_corpus_names(self, filterValue):
         try:
-            print("******************")
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             if not filterValue:
@@ -23,33 +17,26 @@ class DatasetMetadatamanager:
                 conn.commit()
                 return rows
             else:
-                print("****************")
                 mydict = self._filter(filterValue)
                 counter = len(mydict)
-
                 final_resp = []
-
                 cursor.execute(
                     Constants.select_query_create+ mydict)
                 rows = cursor.fetchall()
                 final_resp.extend(rows)
                 conn.commit()
-
-                print(final_resp)
                 return final_resp
 
         except Exception as e:
             raise e
-    
-   
-    def corpus_custom_fields(self ,corpusname,kv_pairs):
+
+    def corpus_custom_fields(self , corpusname, kv_pairs):
         conn = connection.get_connection()
         cur = conn.cursor()
-        cur.execute("select dataset_id from dataset_metadata where dataset_name = %s",(datasetname,))
+        cur.execute("select dataset_id from dataset_metadata where dataset_name = %s",(corpusname,))
         rows = cur.fetchall()
         for i in rows:
             c = i[0]
-        print(c)
         for key, value in kv_pairs.items():
            cur.execute("insert into dataset_custom_fields(dataset_id, field_name, field_value) values (%s , %s , %s)",(c,key,value))
            print(key,":",value,"\n")
@@ -62,15 +49,12 @@ class DatasetMetadatamanager:
         try:
             conn = connection.get_connection()
             query = self._list_filter(list_corpus1)
-
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            print("***********************")
             cursor.execute(Constants.select_query_create + query)
             row = cursor.fetchall()
             return row
         except Exception as e:
             raise e
-
 
     def create_dataset(self, dataset_name, result_list, list_corpus, custom_field_file,training_corpus):
         try:

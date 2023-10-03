@@ -1,10 +1,8 @@
-import json
-from pprint import pprint
+
 from udops.src.dep.poc.librispeech.asr.asr_data_reader import ASRDataReader
 from udops.src.dep.Manager.CorpusMetadataManager import *
-
-corpus_metadat_manager = CorpusMetadataManager()
 from udops.src.dep.config.Connection import *
+corpus_metadat_manager = CorpusMetadataManager()
 
 connection = Connection()
 conn = connection.get_connection()
@@ -43,11 +41,7 @@ class CorpusDataReaderManager:
         dataset_list = ASRDataReader().get_dataset_as_json(dataset)
         return {'status': 'success', 'error': '', 'data': dataset_list}
 
-    #    def get_output_schema(self, file_path):
-    #       output_schema = json.load(open(file_path[0]))
-    #      return output_schema['asr']
     def get_output_schema(self, corpus_name, file_path):
-
         corpus_detail = corpus_metadat_manager.get_corpus_metadata_by_id(corpus_name, conn)
         output_schema = json.load(open(file_path[0]))
 

@@ -11,7 +11,6 @@ class repomanager:
         try:
             os.chdir(location)
             git.Repo.init(location)
-            print("git initialized")
             Repo.init(
                 location,
                 force=True,
@@ -20,7 +19,6 @@ class repomanager:
 
         except Exception as e:
             error = str(e)
-            print(error)
             return error
 
     def create_corpus(self, json_loader, conn):

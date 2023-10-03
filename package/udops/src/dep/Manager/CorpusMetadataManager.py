@@ -13,7 +13,6 @@ class CorpusMetadataManager:
                 conn.commit()
                 return rows
             else:
-                print("*************************")
                 mydict = json.loads(filterValue)
                 if len(mydict) == 1:
                     cursor.execute(
@@ -28,7 +27,6 @@ class CorpusMetadataManager:
                             0] + "' AND " + list(mydict.keys())[1] + "= '" + list(mydict.values())[1] + "'")
                     rows = cursor.fetchall()
                     conn.commit()
-                   # conn.close()
                     cursor.close()
                     return rows
                 elif len(mydict) == 3:
@@ -62,7 +60,6 @@ class CorpusMetadataManager:
                         list(mydict.values())[4] + "'")
                     rows = cursor.fetchall()
                     conn.commit()
-                   # conn.close()
                     cursor.close()
                     return rows
                 else:
@@ -72,16 +69,13 @@ class CorpusMetadataManager:
 
     def get_corpus_metadata_by_id(self, corpus_id, conn):
         try:
-            print(corpus_id)
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute(
                 Constants.query_metadta + corpus_id + "'")
             rows = cursor.fetchone()
             cursor.execute(Constants.query_metadta + corpus_id + "'")
             rows1 = cursor.fetchall()  # for corpus_custom_field
-         #   conn.commit()
-        #    conn.close()
-          #  cursor.close()
+
             return rows1
         except Exception as e:
             print(e)
@@ -92,9 +86,7 @@ class CorpusMetadataManager:
             cursor.execute(Constants.metadata_select_query_type + corpus_type + "'")
             rows = cursor.fetchall()
             conn.commit()
-            #conn.close()
             cursor.close()
-      #      print(rows)
             return rows
         except Exception as e:
             print(e)
@@ -110,7 +102,6 @@ class CorpusMetadataManager:
                 return rows
             else:
                 mydict = self._filter(filterValue)
-                # mydict = json.loads(filterValue)
                 counter = len(mydict)
 
                 while len(mydict) >= counter:
@@ -126,12 +117,10 @@ class CorpusMetadataManager:
                             counter = counter - 1
                         else:
                             raise Exception("Please validate filter Condition!!")
-                    # print(final_resp)
                     return final_resp
 
         except Exception as e:
             print(e)
-
 
     def create_corpus(self, json_loader, conn):
         try:
@@ -146,7 +135,6 @@ class CorpusMetadataManager:
                 Constants.insert_query_metadata,
                 data)
             cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
-            print("success")
             conn.commit()
             cursor.close()
             #conn.close()
@@ -171,22 +159,20 @@ class CorpusMetadataManager:
                     cursor.execute(query)
                     conn.commit()
                 return 1
-        except Exception as e :
+        except Exception as e:
             print(e)
 
     def update_timestamp(self, conn, args):
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute(Constants.update_ts_query, args)
         conn.commit()
-       # conn.close()
         cursor.close()
     
     def update_corpus_remote(self,name,args1,args2,conn):
-        cursor=conn.cursor()
-        input_remote_tuple=(args2,args1,name)
+        cursor = conn.cursor()
+        input_remote_tuple = (args2,args1,name)
         cursor.execute("update corpus_metadata set git_remote = %s, remote_location = %s where corpus_name=%s",input_remote_tuple)
         conn.commit()
-      #  conn.close()
         cursor.close()
    
     def corpus_custom_fields(self ,corpusname,kv_pairs, conn):
@@ -195,14 +181,12 @@ class CorpusMetadataManager:
         rows = cur.fetchall()
         for i in rows:
             c = i[0]
-        print(c)
         for key, value in kv_pairs.items():
-           cur.execute("insert into corpus_custom_fields(corpus_id, field_name, field_value) values (%s , %s , %s)",(c,key,value))
-           print(key,":",value,"\n")
+            cur.execute("insert into corpus_custom_fields(corpus_id, field_name, field_value) values (%s , %s , %s)",(c,key,value))
+            print(key,":",value,"\n")
            
         conn.commit()
         cur.close()
-     #   conn.close()
 
     def delete_corpus(self,corpusname,conn):
         cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -210,15 +194,13 @@ class CorpusMetadataManager:
         print("Deleted corpus ",corpusname)
         conn.commit()
         cur.close()
-      #  conn.close()
-    
+
     def _filter(self, filterValue):
         filters = filterValue.split(",")
         resp = []
         for filter_con in filters:
             condition = filter_con.split(":")
             resp.append(condition)
-
         return resp
 
     ################### CORPUS API #############################
@@ -235,23 +217,12 @@ class CorpusMetadataManager:
             print(e)
 
     def list_corpus(self, language, corpus_type, source_type, conn):
-
         try:
             lan = language
             cor_type = corpus_type
             sor_type = source_type
-
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-            # query = (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
-            #          f"migration_date, lastupdated_ts, description, acquisition_date,"
-            #          f"(SELECT teamname FROM cfg_udops_teams_metadata tm WHERE tm.team_id IN "
-            #          f"(SELECT team_id FROM cfg_udops_teams_acl cta WHERE cta.corpus_id = corpus_metadata.corpus_id))"
-            #          f" AS teamname FROM corpus_metadata WHERE language IN "
-            #          f"(SELECT language FROM corpus_metadata where language = '{lan}') AND "
-            #          f"corpus_type IN (SELECT corpus_type FROM corpus_metadata where corpus_type = '{cor_type}' ) AND "
-            #          f"source_type IN (SELECT source_type FROM corpus_metadata where source_type = '{sor_type}')")
-            #
             query= (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date,"
                     f"lastupdated_ts , description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata"
                     f" tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE "

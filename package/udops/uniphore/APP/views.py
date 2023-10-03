@@ -301,7 +301,6 @@ class summary_custom(APIView):
             data = json.loads(request.body)
             corpus = ucorpus()
             response = corpus.summary_custom(data["corpus_name"])
-            # print(response)
             data = json.loads(response)
             return JsonResponse(data, safe=False)
 
@@ -457,7 +456,6 @@ class add_users_team(APIView):
             data = json.loads(request.body)
             dataset = UserManagement()
             response = dataset.add_users_team(data["user_name"], data["teamname"])
-            print(response)
             if response == 1:
                 response_data = {
                     "status": "error",

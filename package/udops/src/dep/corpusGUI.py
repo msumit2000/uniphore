@@ -20,9 +20,6 @@ try:
                     else:
                         cred = auth.get_team_location(data['teamname'])
                         location = cred[0]
-                        s3_bucket = cred[1]
-                        print(f"s3_bucket-->{s3_bucket}")
-                        print(f"location--->{location}")
                         corpus_name = data['corpus_name']
                         location = str(location) + "/" + str(corpus_name)
                         os.makedirs(location, exist_ok=True)
@@ -135,11 +132,8 @@ try:
                     return 0
                 else:
                     corpus_id = auth.corpus_id(data['corpus_name'])
-                    print(f"corpus_id--->{corpus_id}")
-                    print(f"user_id--->{user_id}")
                     access = auth.authorize_user_clone(user_id, corpus_id)
 
-                    print(f"access---{access}")
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
                     corpus_name = data['corpus_name']
