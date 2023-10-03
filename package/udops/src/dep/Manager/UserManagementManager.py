@@ -201,8 +201,17 @@ class UserManagementManager:
                     if id1 in admin_ids:
                         array1.append(id1)
                     else:
+                        que2 = f"select user_name from udops_users where user_id = {id1}"
+                        cursor.execute(que2)
+                        ro2 = cursor.fetchone()
+                        print(f"ro2--->{ro2}")
+                        user_name = ro2['user_name']
+                        print("@@@@@@@@@@@@@@@@@@@@")
+                        print(user_name)
                         query2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id1})"
                         cursor.execute(query2)
+                        query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({id2},'{user_name}',{team_id},'{tenant_id}')"
+                        cursor.execute(query)
 
                 array2 = []
                 if len(array1) == 0:
