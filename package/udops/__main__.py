@@ -93,37 +93,18 @@ try:
             if team_id == 0:
                 print("team not found")
             else:
-                print("!!!!!!!!!")
-                print(re.match("r'^s3://([\w.-]+)/(.+)$'", source))
-                if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
-                    Source_tenant = input("Enter Source Tenant name:")
-                    User_Token = input("Enter User Token:") # Partial change for import of data
-                    AccessControl().partial_change(Source_tenant,User_Token)
-                    if corpus_name == os.path.basename(os.getcwd()):
-                        corpus_details = {
-                            "corpus_name": corpus_name,
-                            "corpus_type": corpustype,
-                            "language": language,
-                            "source_type": source_type,
-                            "vendor": vendor,
-                            "domain": domain,
-                            "description": description,
-                            "lang_code":lang_code,
-                            "acquisition_date": acquisition_date,
-                            "migration_date": migration_date
+                print(f"corpus_name-->{corpus_name}")
+                print(f"Qwe-->{os.path.basename(os.getcwd())}")
 
-                               }
-                        ucorpus.init(corpus_details,source)
-                        corpus_id = authentication.corpus_id(corpus_name)
-                        authentication.default_access(corpus_id,user_id)
-                        authentication.Corpus_team_map(team_id , corpus_id)
-                        AccessControl().retrieve_change()
-                    else:
-                        return "Corpus name and folder name should be same"
-                else:
-                    if corpus_name == os.path.basename(os.getcwd()):
-                        print("&&&&&&&&7")
-                        corpus_details = {
+                print(re.match("r'^s3://([\w.-]+)/(.+)$'", source))
+              #  if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
+
+                Source_tenant = input("Enter Source Tenant name:")
+                User_Token = input("Enter User Token:") # Partial change for import of data
+                AccessControl().partial_change(Source_tenant,User_Token)
+
+                if corpus_name == os.path.basename(os.getcwd()):
+                    corpus_details = {
                         "corpus_name": corpus_name,
                         "corpus_type": corpustype,
                         "language": language,
@@ -134,14 +115,41 @@ try:
                         "lang_code":lang_code,
                         "acquisition_date": acquisition_date,
                         "migration_date": migration_date
-                        }
-                        ucorpus.init(corpus_details,source)
-                        corpus_id = authentication.corpus_id(corpus_name)
-                        authentication.default_access(corpus_id,user_id)
-                        authentication.Corpus_team_map(team_id, corpus_id)
-                        AccessControl().retrieve_change()
-                    else:
-                        return "Corpus name and folder name should be same"
+
+                           }
+                    ucorpus.init(corpus_details,source)
+                    corpus_id = authentication.corpus_id(corpus_name)
+                    authentication.default_access(corpus_id,user_id)
+                    authentication.Corpus_team_map(team_id , corpus_id)
+                    AccessControl().retrieve_change()
+                else:
+                    return "Corpus name and folder name should be same"
+
+                # else:
+                #     print(f"@@@")
+                #     print(corpus_name)
+                #     print(os.path.basename(os.getcwd()))
+                #     if corpus_name == os.path.basename(os.getcwd()):
+                #
+                #         corpus_details = {
+                #         "corpus_name": corpus_name,
+                #         "corpus_type": corpustype,
+                #         "language": language,
+                #         "source_type": source_type,
+                #         "vendor": vendor,
+                #         "domain": domain,
+                #         "description": description,
+                #         "lang_code":lang_code,
+                #         "acquisition_date": acquisition_date,
+                #         "migration_date": migration_date
+                #         }
+                #         ucorpus.init(corpus_details,source)
+                #         corpus_id = authentication.corpus_id(corpus_name)
+                #         authentication.default_access(corpus_id,user_id)
+                #         authentication.Corpus_team_map(team_id, corpus_id)
+                #         AccessControl().retrieve_change()
+                #     else:
+                #         return "Corpus name and folder name should be same"
 
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
