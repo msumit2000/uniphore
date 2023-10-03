@@ -18,8 +18,7 @@ try:
                     if team_id == 0:
                         return 2
                     else:
-                        cred = auth.get_team_location(data['teamname'])
-                        location = cred[0]
+                        location = auth.get_team_location(data['teamname'])
                         corpus_name = data['corpus_name']
                         location = str(location) + "/" + str(corpus_name)
                         os.makedirs(location, exist_ok=True)

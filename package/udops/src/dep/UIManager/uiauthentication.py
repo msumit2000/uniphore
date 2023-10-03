@@ -42,9 +42,6 @@ class uiauthentication:
         query = f" select permission from cfg_udops_acl where user_id = {user_id} AND corpus_id={corpus_id};"
         cursor.execute(query)
         rows = cursor.fetchone()
-
-
-
         try:
             if rows is None:
                 return 0
@@ -80,13 +77,9 @@ class uiauthentication:
             r1 = rows[0]
             conn.commit()
             cursor.close()
-            cred = []
             if rows is not None:
                 loc = r1[0]
-                s3_path = r1[1]
-                cred.append(loc)
-                cred.append(s3_path)
-                return cred
+                return loc
             else:
                 return 0
         except Exception as e:
