@@ -248,12 +248,11 @@ try:
         corpus_id = authentication.corpus_id(corpus_name)
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
-        def is_file_present(file_name):
-                        
-            return os.path.isfile(file_name)
-        
-        file_exists = is_file_present(file_name)
 
+        def is_file_present(file_name):
+            return os.path.isfile(file_name)
+
+        file_exists = is_file_present(file_name)
         if file_exists:
             config = configparser.ConfigParser()
             config.read(file_name)

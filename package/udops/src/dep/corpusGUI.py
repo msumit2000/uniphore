@@ -147,8 +147,9 @@ try:
                                 return 1
                             else:
                                 return uih.clone(data['gita'],location)
-            except Exception as a:
-                return a
+            except Exception as e:
+                err = str(e)
+                return err
 
         def pull(self, data):
             try:
