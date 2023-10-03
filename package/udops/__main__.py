@@ -67,10 +67,13 @@ try:
                       lang_code: str = typer.Option(..., "--lang_code") ,
                       acquisition_date: datetime = typer.Option(None,"--acquisition_date"),
                       migration_date : datetime = typer.Option(None,"--migration_date"),
-                     ):
+                      ):
         
         dir_path = os.path.dirname(os.path.realpath(__file__))
+
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
+        print(f"filepath--->{file_name}")
+
         def is_file_present(file_name):
             current_directory = os.getcwd()
             directory = os.path.join(current_directory, file_name)
@@ -85,7 +88,9 @@ try:
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
             team_id = authentication.get_user_team(team_name)
-            if team_id==0:
+            print(f"user_id-->{user_id}")
+            print(f"team_id-->{team_id}")
+            if team_id == 0:
                 print("team not found")
             else:
                 if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
