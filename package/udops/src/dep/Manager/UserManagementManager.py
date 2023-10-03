@@ -143,7 +143,6 @@ class UserManagementManager:
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-
             userid = []
             for user in username:
                 q = f"select user_id from udops_users where user_name = '{user}'"
@@ -158,7 +157,6 @@ class UserManagementManager:
             team_id = row[0]['team_id']
             tenant_id = row[0]['tenant_id']
 
-
             # fetching admin_id with respect to given team
             que1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
             cursor.execute(que1)
@@ -172,11 +170,19 @@ class UserManagementManager:
 
                     que3 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id2})"
                     cursor.execute(que3)
-                    query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({id2},'{user_name}',{team_id},'{tenant_id}')"
-                    cursor.execute(query)
-                conn.commit()
-                cursor.close()
-                return 1
+                    que4 = f"SELECT * from cfg_udops_users where team_id = {team_id} AND user_id = {id2}"
+                    cursor.execute(que4)
+                    ro3 = cursor.fetchall()
+                    if len(ro3) == 0:
+                        query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({id2},'{user_name}',{team_id},'{tenant_id}')"
+                        cursor.execute(query)
+                        conn.commit()
+                        cursor.close()
+                        return 1
+                    else:
+                        conn.commit()
+                        cursor.close()
+                        return 1
 
             else:
                 admin_ids = [row.get('admin_id') for row in ro1]
@@ -193,8 +199,13 @@ class UserManagementManager:
                         user_name = ro2['user_name']
                         query2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id1})"
                         cursor.execute(query2)
-                        query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({id1},'{user_name}',{team_id},'{tenant_id}')"
-                        cursor.execute(query)
+
+                        que4 = f"SELECT * from cfg_udops_users where team_id = {team_id} AND user_id = {id1}"
+                        cursor.execute(que4)
+                        ro3 = cursor.fetchall()
+                        if len(ro3) == 0:
+                            query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({id1},'{user_name}',{team_id},'{tenant_id}')"
+                            cursor.execute(query)
 
                 array2 = []
                 if len(array1) == 0:
