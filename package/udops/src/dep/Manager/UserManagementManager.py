@@ -155,17 +155,20 @@ class UserManagementManager:
                 q = f"select user_id from udops_users where user_name = '{user}'"
                 cursor.execute(q)
                 row = cursor.fetchone()
-
                 user_id = row['user_id']
                 userid.append(user_id)
 
 
 
             # team_id respective to team
-            query = f"select team_id from cfg_udops_teams_metadata where teamname = '{teamname}'"
+            query = f"select team_id, tenant_id from cfg_udops_teams_metadata where teamname = '{teamname}'"
             cursor.execute(query)
-            row = cursor.fetchone()
-            team_id = row['team_id']
+            row = cursor.fetchall()
+            team_id = row[0]['team_id']
+            tenant_id = row[0]['tenant_id']
+            print("!!!!!!!!!!!!!!!!!1")
+            print(team_id)
+            print(tenant_id)
 
             # fetching admin_id with respect to given team
             que1 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id}"
@@ -173,8 +176,18 @@ class UserManagementManager:
             ro1 = cursor.fetchall()
             if len(ro1) == 0:
                 for id2 in userid:
-                    que2 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id2})"
+                    que2 = f"select user_name from udops_users where user_id = {id2}"
                     cursor.execute(que2)
+                    ro2 = cursor.fetchone()
+                    print(f"ro2--->{ro2}")
+                    user_name = ro2['user_name']
+                    print("@@@@@@@@@@@@@@@@@@@@")
+                    print(user_name)
+
+                    que3 = f"insert into cfg_udops_teams_admin (team_id, admin_id) VALUES ({team_id},{id2})"
+                    cursor.execute(que3)
+                    query = f"INSERT INTO cfg_udops_users(user_id,user_name,team_id,tenant_id) VALUES ({id2},'{user_name}',{team_id},'{tenant_id}')"
+                    cursor.execute(query)
                 conn.commit()
                 cursor.close()
                 return 1
