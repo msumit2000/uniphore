@@ -13,27 +13,20 @@ class User_log:
             url = 'https://api.github.com/user'
             headers = {'Authorization': f'token {access_token}'}
             response = requests.get(url, headers=headers)
-            print(f"response--->{response.status_code}")
-            print(access_token)
-            print(username)
             if response.status_code == 200:
                 github_username = response.json()['login']
-                print(f"github_username-->{github_username}")
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
                 query = f"select user_name from udops_users where user_name = '{username}';"
                 cursor.execute(query)
                 rows = cursor.fetchone()
                 database_username = rows['user_name']
-                print(f"database_username--->{database_username}")
                 conn.commit()
-
                 if username != github_username:
                     print('Wrong username')
                 elif github_username != database_username:
                     print('Username Doesnt exist in Udops')
                 else:
                     config = configparser.ConfigParser()
-                    print(f"dir_path-->{dir_path}")
                     config.read(dir_path + '/udops_config')
                     if 'github' not in config:
                         config.add_section('github')

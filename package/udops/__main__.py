@@ -19,12 +19,9 @@ try:
     @app.command()
     def login(token:str, username:str,teamname:str):
         Userlog = AccessControl()
-        print(username)
-        print(teamname)
         Userlog.login(token,username)
         dvchandler1 = dvchandler()
         dvchandler1.team_authenticator(username,teamname)
-        
 
     @app.command()
     def logout():

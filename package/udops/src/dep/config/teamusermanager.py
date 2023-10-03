@@ -2,7 +2,7 @@ from psycopg2.extras import RealDictCursor
 import requests
 from udops.src.dep.config.Connection import *
 from udops.src.dep.InputProperties import *
-from udops.src.dep.Handler.duplotoken  import *
+from udops.src.dep.Handler.duplotoken import *
 import configparser
 import os
 
@@ -16,7 +16,8 @@ file_path = os.path.join(dir_path, 'udops_config')
 
 class teamusermanager:
     def team_authentication(self,username,team_name):
-        directory = file_path      
+        directory = file_path
+        print(f"directory--->{directory}")
         config = configparser.ConfigParser()
         config.read(directory)
 
@@ -32,19 +33,22 @@ class teamusermanager:
                  f"and team_id = ( select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'));")
         cursor.execute(query)
         rows = cursor.fetchone()
+        print(f"rows--->{rows}")
         user_team_exist = rows['exists']
         conn.commit()
 
         if user_team_exist:
-            
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             query = f"select permanent_access_token from cfg_udops_teams_metadata where teamname = '{team_name}';"
             cursor.execute(query)
             rows = cursor.fetchone()
+
             duplo_token = rows['permanent_access_token']
+            print(f"duplotoken--->{duplo_token}")
+
             conn.commit()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query  = f"select tenant_id from cfg_udops_teams_metadata where teamname = '{team_name}';"
+            query = f"select tenant_id from cfg_udops_teams_metadata where teamname = '{team_name}';"
             cursor.execute(query)
             rows = cursor.fetchone()
             tenant = rows['tenant_id']
