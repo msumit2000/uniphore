@@ -93,6 +93,8 @@ try:
             if team_id == 0:
                 print("team not found")
             else:
+                print("!!!!!!!!!")
+                print(re.match("r'^s3://([\w.-]+)/(.+)$'", source))
                 if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
                     Source_tenant = input("Enter Source Tenant name:")
                     User_Token = input("Enter User Token:") # Partial change for import of data
@@ -120,6 +122,7 @@ try:
                         return "Corpus name and folder name should be same"
                 else:
                     if corpus_name == os.path.basename(os.getcwd()):
+                        print("&&&&&&&&7")
                         corpus_details = {
                         "corpus_name": corpus_name,
                         "corpus_type": corpustype,
