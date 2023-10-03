@@ -33,6 +33,7 @@ class User_log:
                     print('Username Doesnt exist in Udops')
                 else:
                     config = configparser.ConfigParser()
+                    print(f"dir_path-->{dir_path}")
                     config.read(dir_path + '/udops_config')
                     if 'github' not in config:
                         config.add_section('github')
