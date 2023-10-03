@@ -123,30 +123,35 @@ try:
 
         def clone(self, data):
             try:
-                uih = uihandler()
-                auth = authentication()
-                user_id = auth.authenticate_user(data['username'])
-
-                if user_id == 0:
-                    return 0
-                else:
-                    corpus_id = auth.corpus_id(data['corpus_name'])
-                    access = auth.authorize_user_clone(user_id, corpus_id)
-
+                s = re.sub(r'^.*/(.*?)(\.git)?$', r'\1', data['gita'])
+                if s == data['corpus_name']:
+                    uih = uihandler()
                     auth = authentication()
-                    location = auth.get_team_location(data["teamname"])
-                    corpus_name = data['corpus_name']
-                    location = str(location) + "/" + str(corpus_name)
-                    if location == 0:
-                        return 2
+                    user_id = auth.authenticate_user(data['username'])
+
+
+                    if user_id == 0:
+                        return 0
                     else:
-                        if access == 0:
-                            return 3
+                        corpus_id = auth.corpus_id(data['corpus_name'])
+                        access = auth.authorize_user_clone(user_id, corpus_id)
+
+                        auth = authentication()
+                        location = auth.get_team_location(data["teamname"])
+                        corpus_name = data['corpus_name']
+                        location = str(location) + "/" + str(corpus_name)
+                        if location == 0:
+                            return 2
                         else:
-                            if uih.clone(data['gita'],location) == 1:
-                                return 1
+                            if access == 0:
+                                return 3
                             else:
-                                return uih.clone(data['gita'],location)
+                                if uih.clone(data['gita'],location) == 1:
+                                    return 1
+                                else:
+                                    return uih.clone(data['gita'],location)
+                else:
+                    return 2
             except Exception as e:
                 err = str(e)
                 return err

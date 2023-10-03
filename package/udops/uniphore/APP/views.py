@@ -111,7 +111,7 @@ class clone(APIView):
             elif response == 1:
                 return JsonResponse({"status": "success", "message": "cloned  successfully"})
             elif response == 2:
-                return JsonResponse({"status": "error", "message": "no mount location"})
+                return JsonResponse({"status": "error", "message": "corpusname and repository name should be same"})
             elif response == 3:
                 return JsonResponse({"status": "error", "message": "ACCESS DENY"})
             else:
