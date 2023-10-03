@@ -72,7 +72,7 @@ try:
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
-        print(f"filepath--->{file_name}")
+        print(f"filepath--->{dir_path}")
 
         def is_file_present(file_name):
             current_directory = os.getcwd()
@@ -96,13 +96,13 @@ try:
                 print(f"corpus_name-->{corpus_name}")
                 print(f"Qwe-->{os.path.basename(os.getcwd())}")
 
-                print(re.match("r'^s3://([\w.-]+)/(.+)$'", source))
+               # print(re.match("r'^s3://([\w.-]+)/(.+)$'", source))
               #  if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
 
-                Source_tenant = input("Enter Source Tenant name:")
-                User_Token = input("Enter User Token:") # Partial change for import of data
-                AccessControl().partial_change(Source_tenant,User_Token)
-
+               # Source_tenant = input("Enter Source Tenant name:")
+                #User_Token = input("Enter User Token:") # Partial change for import of data
+               # AccessControl().partial_change(Source_tenant,User_Token)
+#
                 if corpus_name == os.path.basename(os.getcwd()):
                     corpus_details = {
                         "corpus_name": corpus_name,
