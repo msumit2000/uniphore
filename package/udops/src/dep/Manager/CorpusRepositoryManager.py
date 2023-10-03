@@ -22,11 +22,7 @@ class CorpusRepositoryManager:
         s = Repo(os.getcwd())
         g = git.Repo(os.getcwd())
         s.add(
-            targets=target,
-            recursive=False,
-            no_commit=False,
-            fname=None,
-            to_remote=False,
+            targets=target
         )
     
     def checkout(self, commitid):
