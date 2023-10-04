@@ -88,13 +88,10 @@ try:
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
             team_id = authentication.get_user_team(team_name)
-            print(f"user_id-->{user_id}")
-            print(f"team_id-->{team_id}")
+
             if team_id == 0:
                 print("team not found")
             else:
-                print(f"corpus_name-->{corpus_name}")
-                print(f"Qwe-->{os.path.basename(os.getcwd())}")
 
                # print(re.match("r'^s3://([\w.-]+)/(.+)$'", source))
               #  if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
