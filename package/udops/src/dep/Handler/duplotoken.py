@@ -7,8 +7,6 @@ class duplotoken:
             configParser = configparser.RawConfigParser()
             home = os.path.expanduser('~')
             configFilePath = home + "/.aws/config"
-            print(f"configFilePath-->{configFilePath}")
-            ### addd
             configParser.read(configFilePath)
 
             newvalue = "duplo-jit aws --tenant={} --host https://uniphore-ds.duplocloud.net --token {}".format(tenant,token)

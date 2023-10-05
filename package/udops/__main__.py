@@ -53,7 +53,7 @@ try:
 
     @app.command()
     def getCorpusMetadatabytype(corpus_type: str):
-        response=ucorpus.getCorpusMetadatabytype(corpus_type)
+        response = ucorpus.getCorpusMetadatabytype(corpus_type)
 
 
     @app.command()
@@ -70,9 +70,7 @@ try:
                       ):
         
         dir_path = os.path.dirname(os.path.realpath(__file__))
-
         file_name = os.path.join(dir_path, 'src/dep/config/udops_config')
-        print(f"filepath--->{dir_path}")
 
         def is_file_present(file_name):
             current_directory = os.getcwd()
@@ -92,61 +90,56 @@ try:
             if team_id == 0:
                 print("team not found")
             else:
+                if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
 
-               # print(re.match("r'^s3://([\w.-]+)/(.+)$'", source))
-              #  if re.match("r'^s3://([\w.-]+)/(.+)$'", source) == True:
+                    Source_tenant = input("Enter Source Tenant name:")
+                    User_Token = input("Enter User Token:") # Partial change for import of data
+                    AccessControl().partial_change(Source_tenant,User_Token)
 
-               # Source_tenant = input("Enter Source Tenant name:")
-                #User_Token = input("Enter User Token:") # Partial change for import of data
-               # AccessControl().partial_change(Source_tenant,User_Token)
-#
-                if corpus_name == os.path.basename(os.getcwd()):
-                    corpus_details = {
-                        "corpus_name": corpus_name,
-                        "corpus_type": corpustype,
-                        "language": language,
-                        "source_type": source_type,
-                        "vendor": vendor,
-                        "domain": domain,
-                        "description": description,
-                        "lang_code":lang_code,
-                        "acquisition_date": acquisition_date,
-                        "migration_date": migration_date
+                    if corpus_name == os.path.basename(os.getcwd()):
+                        corpus_details = {
+                            "corpus_name": corpus_name,
+                            "corpus_type": corpustype,
+                            "language": language,
+                            "source_type": source_type,
+                            "vendor": vendor,
+                            "domain": domain,
+                            "description": description,
+                            "lang_code":lang_code,
+                            "acquisition_date": acquisition_date,
+                            "migration_date": migration_date
 
-                           }
-                    ucorpus.init(corpus_details,source)
-                    corpus_id = authentication.corpus_id(corpus_name)
-                    authentication.default_access(corpus_id,user_id)
-                    authentication.Corpus_team_map(team_id , corpus_id)
-                    AccessControl().retrieve_change()
+                               }
+                        ucorpus.init(corpus_details,source)
+                        corpus_id = authentication.corpus_id(corpus_name)
+                        authentication.default_access(corpus_id,user_id)
+                        authentication.Corpus_team_map(team_id , corpus_id)
+                        AccessControl().retrieve_change()
+                    else:
+                        return "Corpus name and folder name should be same"
+
                 else:
-                    return "Corpus name and folder name should be same"
+                    if corpus_name == os.path.basename(os.getcwd()):
 
-                # else:
-                #     print(f"@@@")
-                #     print(corpus_name)
-                #     print(os.path.basename(os.getcwd()))
-                #     if corpus_name == os.path.basename(os.getcwd()):
-                #
-                #         corpus_details = {
-                #         "corpus_name": corpus_name,
-                #         "corpus_type": corpustype,
-                #         "language": language,
-                #         "source_type": source_type,
-                #         "vendor": vendor,
-                #         "domain": domain,
-                #         "description": description,
-                #         "lang_code":lang_code,
-                #         "acquisition_date": acquisition_date,
-                #         "migration_date": migration_date
-                #         }
-                #         ucorpus.init(corpus_details,source)
-                #         corpus_id = authentication.corpus_id(corpus_name)
-                #         authentication.default_access(corpus_id,user_id)
-                #         authentication.Corpus_team_map(team_id, corpus_id)
-                #         AccessControl().retrieve_change()
-                #     else:
-                #         return "Corpus name and folder name should be same"
+                        corpus_details = {
+                            "corpus_name": corpus_name,
+                            "corpus_type": corpustype,
+                            "language": language,
+                            "source_type": source_type,
+                            "vendor": vendor,
+                            "domain": domain,
+                            "description": description,
+                            "lang_code":lang_code,
+                            "acquisition_date": acquisition_date,
+                            "migration_date": migration_date
+                        }
+                        ucorpus.init(corpus_details,source)
+                        corpus_id = authentication.corpus_id(corpus_name)
+                        authentication.default_access(corpus_id,user_id)
+                        authentication.Corpus_team_map(team_id, corpus_id)
+                        AccessControl().retrieve_change()
+                    else:
+                        return "Corpus name and folder name should be same"
 
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")

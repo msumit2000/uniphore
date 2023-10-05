@@ -17,7 +17,6 @@ file_path = os.path.join(dir_path, 'udops_config')
 class teamusermanager:
     def team_authentication(self,username,team_name):
         directory = file_path
-        print(f"directory--->{directory}")
         config = configparser.ConfigParser()
         config.read(directory)
 
@@ -33,7 +32,6 @@ class teamusermanager:
                  f"and team_id = ( select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'));")
         cursor.execute(query)
         rows = cursor.fetchone()
-        print(f"rows--->{rows}")
         user_team_exist = rows['exists']
         conn.commit()
 
@@ -42,10 +40,7 @@ class teamusermanager:
             query = f"select permanent_access_token from cfg_udops_teams_metadata where teamname = '{team_name}';"
             cursor.execute(query)
             rows = cursor.fetchone()
-
             duplo_token = rows['permanent_access_token']
-            print(f"duplotoken--->{duplo_token}")
-
             conn.commit()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             query = f"select tenant_id from cfg_udops_teams_metadata where teamname = '{team_name}';"
