@@ -68,6 +68,22 @@ class uiauthentication:
             error = str(e)
             return error
 
+    def admin_user(self,team_id,admin_id,conn):
+        try:
+            cursor = conn.cursor()
+            query = f"select * from cfg_udops_teams_admin where team_id = {team_id} AND admin_id = {admin_id}"
+            cursor.execute(query)
+            rows = cursor.fetchone()
+            conn.commit()
+            cursor.close()
+            if len(rows) == 0:
+                return 0
+            else:
+                return 1
+        except Exception as e:
+            error = str(e)
+            return error
+
     def get_team_location(self, team_name,conn):
         try:
             cursor = conn.cursor()

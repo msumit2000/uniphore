@@ -14,8 +14,10 @@ try:
                 if user_id == 0:
                     return 0
                 else:
+
                     team_id = auth.get_user_team(data['teamname'])
-                    if team_id == 0:
+                    admin_id = auth.admin_user(team_id,user_id)
+                    if admin_id == 0:
                         return 2
                     else:
                         location = auth.get_team_location(data['teamname'])
@@ -128,8 +130,6 @@ try:
                     uih = uihandler()
                     auth = authentication()
                     user_id = auth.authenticate_user(data['username'])
-
-
                     if user_id == 0:
                         return 0
                     else:

@@ -23,6 +23,10 @@ class authentication:
         auth = uiauthentication()
         return auth.get_user_team(teamname, conn)
 
+    def admin_user(self, team_id, user_id):
+        auth = uiauthentication()
+        return auth.admin_user(team_id, user_id, conn)
+
     def get_team_location(self, teamname):
         auth = uiauthentication()
         return auth.get_team_location(teamname, conn)
