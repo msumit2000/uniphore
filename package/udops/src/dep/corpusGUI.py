@@ -16,10 +16,7 @@ try:
                 else:
 
                     team_id = auth.get_user_team(data['teamname'])
-                    print(f"team_id--->{team_id}")
                     admin_id = auth.admin_user(team_id,user_id)
-                    print(f"admin_id--->{admin_id}")
-
                     if admin_id == 0:
                         return 2
                     else:

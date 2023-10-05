@@ -74,7 +74,6 @@ class uiauthentication:
             query = f"select * from cfg_udops_teams_admin where team_id = {team_id} AND admin_id = {admin_id}"
             cursor.execute(query)
             rows = cursor.fetchall()
-            print(f"rows--->{rows}")
             conn.commit()
             cursor.close()
             if len(rows) == 0:

@@ -21,7 +21,7 @@ class create_corpus(APIView):
             elif response == 1:
                 return JsonResponse({"status": "success", "message": "created successfully"})
             elif response == 2:
-                return JsonResponse({"status": "error", "message": "user is not the admin of given team"})
+                return JsonResponse({"status": "error", "message": "The user is not the admin of the given team."})
             elif response == 3:
                 return JsonResponse({"status": "error", "message": "no mount location"})
             elif response == 4:
