@@ -26,8 +26,13 @@ class CorpusRepositoryManager:
         )
     
     def checkout(self, commitid):
-        g = git.Repo(os.getcwd())
-        g.git.checkout(commitid)
+        try:
+            g = git.Repo(os.getcwd())
+            g.git.checkout(commitid)
+            print()
+        except Exception as e:
+            err = str(e)
+            print(err)
 
     def list_commits(self):
         try:

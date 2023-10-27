@@ -190,6 +190,14 @@ class CorpusMetadataManager:
 
     def delete_corpus(self,corpusname,conn):
         cur = conn.cursor(cursor_factory=RealDictCursor)
+        query1 = f"SELECT corpus_id FROM corpus_metadata where corpus_name ='{corpusname}'"
+        cur.execute(query1)
+        rows = cur.fetchone()
+        corpus_id = rows['corpus_id']
+        #  query2 = f"DELETE FROM cfg_udops_teams_acl WHERE corpus_id ={corpus_id}"
+
+        cur.execute(f"DELETE FROM cfg_udops_teams_acl WHERE corpus_id ={corpus_id}")
+        cur.execute(f"DELETE FROM cfg_udops_acl WHERE corpus_id ={corpus_id}")
         cur.execute("DELETE FROM corpus_metadata WHERE corpus_name = %s",(corpusname,))
         print("Deleted corpus ",corpusname)
         conn.commit()
