@@ -23,7 +23,6 @@ class ucorpus:
         row = corpus_handler.manager_get_metadata_type(corpus_type)
   #      print(row)
         return row
-        
 
     def RDSConfig(self,host,dbname , user, password):
         corpus_handler = CorpusHandler()
@@ -50,7 +49,6 @@ class ucorpus:
         corpus_properties = file
         corpus_handler.create_corpus(corpus_properties,target)
         print("Config written")
-
 
     def add(self,target: str):
         corpus_handler = CorpusHandler()

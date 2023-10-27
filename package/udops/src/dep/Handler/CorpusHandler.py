@@ -1,7 +1,5 @@
-from udops.src.dep.Manager.CorpusMetadataManager import *
 from udops.src.dep.Manager.CorpusRepositoryManager import *
 from udops.src.dep.Manager.CorpusDataReaderManager import *
-import os
 from udops.src.dep.config.Connection import *
 from udops.src.dep.InputProperties import *
 
@@ -200,7 +198,6 @@ class CorpusHandler:
                 else:
                     return ("invalid custom_schema path")
             else:
-                # print("&&&&&&&&&&&&&&&&&&",response,output_loc,schema_type)
                 dataset = CorpusDataReaderManager1.store_data(corpus_name, response, output_loc, schema_type)
 
             return dataset

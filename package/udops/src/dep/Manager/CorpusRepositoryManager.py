@@ -2,7 +2,7 @@ import os.path
 from dvc.repo import Repo
 import git
 import os
-
+import re
 
 class CorpusRepositoryManager:
     def init(self):
@@ -29,7 +29,7 @@ class CorpusRepositoryManager:
         try:
             g = git.Repo(os.getcwd())
             g.git.checkout(commitid)
-            print()
+            print(f"repository switched to this id -->{commitid} ")
         except Exception as e:
             err = str(e)
             print(err)
@@ -52,7 +52,12 @@ class CorpusRepositoryManager:
         g.git.commit('-m',message)
     
     def clone(self,args):
+
+        corpus_name = re.sub(r'^.*/(.*?)(\.git)?$', r'\1', git)
+
         git.Git(os.getcwd()).clone(args)
+
+        print(f"{corpus_name} cloned successfully!")
 
     def remote(self,name:str, data: str, gita: str):
         s = Repo(os.getcwd())

@@ -236,7 +236,9 @@ try:
     
     @app.command()
     def clone(git:str):
+
         corpus_name = re.sub(r'^.*/(.*?)(\.git)?$', r'\1', git)
+
         authentication = AccessControl()
         corpus_id = authentication.corpus_id(corpus_name)
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -255,6 +257,7 @@ try:
 
             if authentication.authorize_user_clone(user_id,corpus_id)==1:
                 ucor= ucorpus()
+
                 return ucor.clone(git)
             else:
                 print("No access for user to clone corpus")
@@ -390,6 +393,7 @@ try:
 
     @app.command()
     def dataset_push():
+
         udataset.push()
 
 
