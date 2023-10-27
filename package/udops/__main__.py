@@ -117,7 +117,7 @@ try:
                         authentication.Corpus_team_map(team_id , corpus_id)
                         AccessControl().retrieve_change()
                     else:
-                        return "Corpus name and folder name should be same"
+                        print("Corpus name and folder name should be same")
 
                 else:
                     if corpus_name == os.path.basename(os.getcwd()):
@@ -140,7 +140,7 @@ try:
                         authentication.Corpus_team_map(team_id, corpus_id)
                         AccessControl().retrieve_change()
                     else:
-                        return "Corpus name and folder name should be same"
+                        print("Corpus name and folder name should be same")
 
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
@@ -176,7 +176,8 @@ try:
 
     @app.command()
     def checkout(commitid):
-        ucorpus.checkout(commitid)
+        ucor = ucorpus()
+        ucor.checkout(commitid)
 
     @app.command()
     def add(target: str):
