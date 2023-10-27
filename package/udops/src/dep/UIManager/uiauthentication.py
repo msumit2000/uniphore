@@ -38,7 +38,6 @@ class uiauthentication:
     def authorise_user_clone(self, user_id, corpus_id, conn):
 
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-
         query = f" select permission from cfg_udops_acl where user_id = {user_id} AND corpus_id={corpus_id};"
         cursor.execute(query)
         rows = cursor.fetchone()

@@ -108,7 +108,6 @@ try:
                             "lang_code":lang_code,
                             "acquisition_date": acquisition_date,
                             "migration_date": migration_date
-
                                }
                         ucorpus.init(corpus_details,source)
                         corpus_id = authentication.corpus_id(corpus_name)

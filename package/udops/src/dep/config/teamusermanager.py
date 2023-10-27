@@ -16,10 +16,8 @@ file_path = os.path.join(dir_path, 'udops_config')
 
 class teamusermanager:
     def team_authentication(self,username,team_name):
-        print("##########################################")
-        print("Duplo authentication")
+
         directory = file_path
-        print(f"directory-->  {directory}")
 
         config = configparser.ConfigParser()
         config.read(directory)
@@ -37,7 +35,9 @@ class teamusermanager:
                  f"and team_id = ( select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'));")
         cursor.execute(query)
         rows = cursor.fetchone()
+
         user_team_exist = rows['exists']
+
         conn.commit()
 
         if user_team_exist:
@@ -46,7 +46,6 @@ class teamusermanager:
             cursor.execute(query)
             rows = cursor.fetchone()
             duplo_token = rows['permanent_access_token']
-            print(f"duplo_token--> {duplo_token}")
             conn.commit()
 
             cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -54,7 +53,6 @@ class teamusermanager:
             cursor.execute(query)
             rows = cursor.fetchone()
             tenant = rows['tenant_id']
-            print(f"tenant--> {tenant}")
             conn.commit()
             cursor.close()
             duplo.ChangeToken(tenant,duplo_token)
