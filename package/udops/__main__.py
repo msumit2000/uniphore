@@ -39,11 +39,13 @@ try:
     
     @app.command()
     def delete_corpus(corpusname):
-        ucorpus.delete_corpus(corpusname)
+        ucor = ucorpus()
+        ucor.delete_corpus(corpusname)
 
     @app.command()
     def listCorpusNames(filter_value: str):
-        ucorpus.listCorpusNames(filter_value)
+        ucor = ucorpus()
+        ucor.listCorpusNames(filter_value)
 
     @app.command()
     def getCorpusMetadata(corpus_id: str):  # take one argument
@@ -169,7 +171,8 @@ try:
 
     @app.command()
     def list_commits():
-        ucorpus.list_corpus()
+        ucor = ucorpus()
+        ucor.list_corpus()
 
     @app.command()
     def checkout(commitid):
