@@ -172,7 +172,7 @@ try:
     @app.command()
     def list_commits():
         ucor = ucorpus()
-        ucor.list_corpus()
+        ucor.list_commit()
 
     @app.command()
     def checkout(commitid):
