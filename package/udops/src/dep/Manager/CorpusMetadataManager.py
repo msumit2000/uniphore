@@ -2,7 +2,7 @@ from udops.src.dep.Common.Constants import Constants
 import json
 from psycopg2.extras import RealDictCursor
 
-    
+
 class CorpusMetadataManager:
     def list_corpus_names1(self, filterValue, conn):
         try:
@@ -47,7 +47,7 @@ class CorpusMetadataManager:
                             3] + "= '" + list(mydict.values())[3] + "'")
                     rows = cursor.fetchall()
                     conn.commit()
-                    #conn.close()
+                    # conn.close()
                     cursor.close()
                     return rows
                 elif len(mydict) == 5:
@@ -90,7 +90,7 @@ class CorpusMetadataManager:
             return rows
         except Exception as e:
             print(e)
-    
+
     def list_corpus_names(self, filterValue, conn):
         try:
 
@@ -129,7 +129,8 @@ class CorpusMetadataManager:
             cursor.execute(Constants.create_custom_table)
             data = json_loader["corpus_name"], json_loader["corpus_type"], json_loader["language"], json_loader[
                 "source_type"], \
-                   json_loader["vendor"], json_loader["domain"],json_loader["description"],json_loader["lang_code"],json_loader["acquisition_date"], json_loader["migration_date"]
+                json_loader["vendor"], json_loader["domain"], json_loader["description"], json_loader["lang_code"], \
+            json_loader["acquisition_date"], json_loader["migration_date"]
 
             cursor.execute(
                 Constants.insert_query_metadata,
@@ -137,19 +138,19 @@ class CorpusMetadataManager:
             cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
             conn.commit()
             cursor.close()
-            #conn.close()
+            # conn.close()
         except Exception as e:
             print(e)
 
-    def update_corpus(self,json_loader, conn):
+    def update_corpus(self, json_loader, conn):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             corpus_name = json_loader["corpus_name"]
-#           cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
+            #           cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
             query = f"select * from corpus_metadata where corpus_name='{corpus_name}'"
             cursor.execute(query)
             rows = cursor.fetchall()
-#            print(len(rows))
+            #            print(len(rows))
             if len(rows) == 0:
                 return 0
             else:
@@ -167,41 +168,50 @@ class CorpusMetadataManager:
         cursor.execute(Constants.update_ts_query, args)
         conn.commit()
         cursor.close()
-    
-    def update_corpus_remote(self,name,args1,args2,conn):
+
+    def update_corpus_remote(self, name, args1, args2, conn):
         cursor = conn.cursor()
-        input_remote_tuple = (args2,args1,name)
-        cursor.execute("update corpus_metadata set git_remote = %s, remote_location = %s where corpus_name=%s",input_remote_tuple)
+        input_remote_tuple = (args2, args1, name)
+        cursor.execute("update corpus_metadata set git_remote = %s, remote_location = %s where corpus_name=%s",
+                       input_remote_tuple)
         conn.commit()
         cursor.close()
-   
-    def corpus_custom_fields(self ,corpusname,kv_pairs, conn):
+
+    def corpus_custom_fields(self, corpusname, kv_pairs, conn):
         cur = conn.cursor()
-        cur.execute("select corpus_id from corpus_metadata where corpus_name = %s",(corpusname,))
+        cur.execute("select corpus_id from corpus_metadata where corpus_name = %s", (corpusname,))
         rows = cur.fetchall()
         for i in rows:
             c = i[0]
         for key, value in kv_pairs.items():
-            cur.execute("insert into corpus_custom_fields(corpus_id, field_name, field_value) values (%s , %s , %s)",(c,key,value))
-            print(key,":",value,"\n")
-           
+            cur.execute("insert into corpus_custom_fields(corpus_id, field_name, field_value) values (%s , %s , %s)",
+                        (c, key, value))
+            print(key, ":", value, "\n")
+
         conn.commit()
         cur.close()
 
-    def delete_corpus(self,corpusname,conn):
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        query1 = f"SELECT corpus_id FROM corpus_metadata where corpus_name ='{corpusname}'"
-        cur.execute(query1)
-        rows = cur.fetchone()
-        corpus_id = rows['corpus_id']
-        #  query2 = f"DELETE FROM cfg_udops_teams_acl WHERE corpus_id ={corpus_id}"
+    def delete_corpus(self, corpusname, conn):
+        try:
+            cur = conn.cursor(cursor_factory=RealDictCursor)
+            query1 = f"SELECT corpus_id FROM corpus_metadata where corpus_name ='{corpusname}'"
+            cur.execute(query1)
+            rows = cur.fetchone()
+            if rows is None:
+                print("Corpus not found")
+            else:
+                corpus_id = rows['corpus_id']
+                #  query2 = f"DELETE FROM cfg_udops_teams_acl WHERE corpus_id ={corpus_id}"
 
-        cur.execute(f"DELETE FROM cfg_udops_teams_acl WHERE corpus_id ={corpus_id}")
-        cur.execute(f"DELETE FROM cfg_udops_acl WHERE corpus_id ={corpus_id}")
-        cur.execute("DELETE FROM corpus_metadata WHERE corpus_name = %s",(corpusname,))
-        print("Deleted corpus ",corpusname)
-        conn.commit()
-        cur.close()
+                cur.execute(f"DELETE FROM cfg_udops_teams_acl WHERE corpus_id ={corpus_id}")
+                cur.execute(f"DELETE FROM cfg_udops_acl WHERE corpus_id ={corpus_id}")
+                cur.execute("DELETE FROM corpus_metadata WHERE corpus_name = %s", (corpusname,))
+                print("Deleted corpus ", corpusname)
+                conn.commit()
+                cur.close()
+        except Exception as e:
+            err = str(e)
+            print(err)
 
     def _filter(self, filterValue):
         filters = filterValue.split(",")
@@ -231,12 +241,12 @@ class CorpusMetadataManager:
             sor_type = source_type
             cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-            query= (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date,"
-                    f"lastupdated_ts , description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata"
-                    f" tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE "
-                    f"cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata WHERE "
-                    f"language IN (SELECT * FROM unnest(%s)) and corpus_type IN (SELECT * FROM unnest(%s)) "
-                    f"and source_type IN (SELECT * FROM unnest(%s))")
+            query = (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, migration_date,"
+                     f"lastupdated_ts , description, acquisition_date, (SELECT teamname FROM cfg_udops_teams_metadata"
+                     f" tm WHERE tm.team_id IN ( SELECT team_id FROM cfg_udops_teams_acl cta WHERE "
+                     f"cta.corpus_id = corpus_metadata.corpus_id )) AS teamname FROM corpus_metadata WHERE "
+                     f"language IN (SELECT * FROM unnest(%s)) and corpus_type IN (SELECT * FROM unnest(%s)) "
+                     f"and source_type IN (SELECT * FROM unnest(%s))")
 
             cursor.execute(query, (lan, cor_type, sor_type))
             rows = cursor.fetchall()
@@ -252,7 +262,7 @@ class CorpusMetadataManager:
     def language(self, conn):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute( f"select DISTINCT language from corpus_metadata")
+            cursor.execute(f"select DISTINCT language from corpus_metadata")
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
@@ -263,7 +273,7 @@ class CorpusMetadataManager:
     def source_type(self, conn):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute( f"select DISTINCT source_type from corpus_metadata")
+            cursor.execute(f"select DISTINCT source_type from corpus_metadata")
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
@@ -274,7 +284,7 @@ class CorpusMetadataManager:
     def corpus_type(self, conn):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            cursor.execute( f"select DISTINCT corpus_type from corpus_metadata")
+            cursor.execute(f"select DISTINCT corpus_type from corpus_metadata")
             rows = cursor.fetchall()
             conn.commit()
             cursor.close()
@@ -297,11 +307,11 @@ class CorpusMetadataManager:
                 return rows
             else:
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
-                query=(f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
-                       f"lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata "
-                       f"tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta "
-                       f"WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata"
-                       f" WHERE corpus_name ILIKE '%{corpus_name}%'")
+                query = (f"SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
+                         f"lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata "
+                         f"tm WHERE tm.team_id IN (SELECT team_id FROM cfg_udops_teams_acl cta "
+                         f"WHERE cta.corpus_id = corpus_metadata.corpus_id ) ) AS team_name FROM corpus_metadata"
+                         f" WHERE corpus_name ILIKE '%{corpus_name}%'")
                 cursor.execute(query)
                 rows = cursor.fetchall()
                 conn.commit()
