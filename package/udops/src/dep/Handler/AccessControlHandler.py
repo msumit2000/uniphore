@@ -17,6 +17,7 @@ class UserAuthenticationHandler:
         #     print("Authentication is successful!!!!")
         #     authorise = udops_authorise()
         #     return authorise.authorise_access_to_corpus(username,conn)
+
     def get_user_team(self,user_id):
         authentication = udpos_authentication()
         team_id= authentication.get_user_team(user_id,conn)
@@ -24,7 +25,6 @@ class UserAuthenticationHandler:
             return 0
         else:
             return team_id
-        
 
     def default_acess(self,corpus_id,user_id):
         authentication = udpos_authentication()

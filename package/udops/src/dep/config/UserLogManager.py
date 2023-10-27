@@ -6,11 +6,11 @@ prop=properties()
 connection = Connection()
 conn = connection.get_connection()
 
+
 class User_log:
     def login(self,access_token,username):
         try:
             dir_path = os.path.dirname(os.path.realpath(__file__))
-            print(f"dir_path-->{dir_path}")
             url = 'https://api.github.com/user'
             headers = {'Authorization': f'token {access_token}'}
             response = requests.get(url, headers=headers)
@@ -23,11 +23,6 @@ class User_log:
                 rows = cursor.fetchone()
                 database_username = rows['user_name']
                 conn.commit()
-
-                print("*****************")
-                print(f"username-->{username}")
-                print(f"github_username-->{github_username}")
-                print(f"database_username--> {database_username}")
 
                 if username != github_username:
                     print('Wrong username')
@@ -46,7 +41,6 @@ class User_log:
                     with open(dir_path + '/udops_config', 'w') as config_file:
                         config.write(config_file)
                     print("login Successfully !!!")
-                    print("done with login")
 
             else:
                 return print(response.status_code)

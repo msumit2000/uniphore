@@ -12,7 +12,6 @@ class DatasetRepositoryManager:
             force=True,
         )
 
-
     def add_dataset(self, target):
         s = Repo(os.getcwd())
         g = git.Repo(os.getcwd())
@@ -25,7 +24,6 @@ class DatasetRepositoryManager:
         )
         g.git.add('--all')
 
-
     def commit_dataset(self, args2):
         g = git.Repo(os.getcwd())
         g.git.commit('-m', args2)
@@ -33,7 +31,6 @@ class DatasetRepositoryManager:
 
     def clone_dataset(self, args):
         git.Git(os.getcwd()).clone(args)
-
 
     def remote_dataset(self, args1: str, args2: str):
         s = Repo(os.getcwd())
@@ -43,13 +40,11 @@ class DatasetRepositoryManager:
             conf["remote"]["remote_store"] = {"url": str(args1)}
         g.create_remote('origin', str(args2))
 
-
     def push_dataset(self):
         s = Repo(os.getcwd())
         g = git.Repo(os.getcwd())
         s.push(remote='remote_store')
         g.git.push("--set-upstream", "origin", "master")
-
 
     def pull_dataset(self, args):
         s = Repo(os.getcwd())
