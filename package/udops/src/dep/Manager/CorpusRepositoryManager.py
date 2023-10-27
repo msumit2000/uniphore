@@ -30,8 +30,12 @@ class CorpusRepositoryManager:
         g.git.checkout(commitid)
 
     def list_commits(self):
-        g = git.Git(os.getcwd())
-        print(g.log('--reflog'))
+        try:
+            g = git.Git(os.getcwd())
+            print(g.log('--reflog'))
+        except Exception as e:
+            err = str(e)
+            print(err)
 
     def destroy(self):
         s = Repo(os.getcwd())
