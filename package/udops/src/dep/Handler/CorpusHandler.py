@@ -150,7 +150,7 @@ class CorpusHandler:
     def clone_repo(self, args):
         try:
             CorpusRepositoryManager1 = CorpusRepositoryManager()
-            CorpusRepositoryManager1.clone(args)
+            return CorpusRepositoryManager1.clone(args)
         except Exception as e:
             raise e
 

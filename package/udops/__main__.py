@@ -252,8 +252,10 @@ try:
             ACCESS_TOKEN = config.get('github', 'access_token')
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
+
             if authentication.authorize_user_clone(user_id,corpus_id)==1:
-                return ucorpus.clone(git)
+                ucor= ucorpus()
+                return ucor.clone(git)
             else:
                 print("No access for user to clone corpus")
         else:
