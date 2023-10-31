@@ -45,7 +45,8 @@ try:
     @app.command()
     def listCorpusNames(filter_value: str):
         ucor = ucorpus()
-        ucor.listCorpusNames(filter_value)
+        data = ucor.listCorpusNames(filter_value)
+        print(data)
 
     @app.command()
     def getCorpusMetadata(corpus_id: str):  # take one argument
@@ -257,7 +258,6 @@ try:
 
             if authentication.authorize_user_clone(user_id,corpus_id)==1:
                 ucor= ucorpus()
-
                 return ucor.clone(git)
             else:
                 print("No access for user to clone corpus")
@@ -290,7 +290,7 @@ try:
             authentication = AccessControl()
             user_id = authentication.authenticate(ACCESS_TOKEN)
             access_type = "write"
-            if authentication.authorize_user(user_id, corpus_id, access_type) == 1:
+            if authentication.authorize_user_clone(user_id, corpus_id) == 1:
                 return ucorpus.pull(folder)
             else:
                 print("ACCESS DENY")

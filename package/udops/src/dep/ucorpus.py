@@ -8,7 +8,8 @@ class ucorpus:
         #      typer.echo("load test")
         #        print(filter_value)
         corpus_handler = CorpusHandler()
-        response = corpus_handler.list_corpus_names(filter_value)
+        corpus_handler.list_corpus_names(filter_value)
+
         #for row in response:
         #    print("Result :", row)
 
