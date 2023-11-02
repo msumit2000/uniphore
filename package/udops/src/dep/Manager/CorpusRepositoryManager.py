@@ -53,7 +53,7 @@ class CorpusRepositoryManager:
     
     def clone(self,args):
 
-        corpus_name = re.sub(r'^.*/(.*?)(\.git)?$', r'\1', git)
+        corpus_name = re.sub(r'^.*/(.*?)(\.git)?$', r'\1', args)
 
         git.Git(os.getcwd()).clone(args)
 
