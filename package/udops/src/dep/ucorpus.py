@@ -144,5 +144,5 @@ class ucorpus:
         else:
             return 2
 
-if __name__ == '__main__':
-    ucorpus()
+# if __name__ == '__main__':
+#     ucorpus()
