@@ -101,8 +101,6 @@ class uiauthentication:
             error = str(e)
             return error
 
-
-
     def corpus_id(self,corpus_name,conn):
         try:
             cursor = conn.cursor()
