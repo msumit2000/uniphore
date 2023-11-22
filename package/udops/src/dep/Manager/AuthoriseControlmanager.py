@@ -45,7 +45,8 @@ class udops_authorise:
             query = f"select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'"
             cursor.execute(query)
             row = cursor.fetchone()
-            team_id = row['team_id']
+            print(f"row--->{row}")
+            team_id = row[0]
             print(f"team_id-->{team_id}")
 
             query1 = f"select * from cfg_udops_teams_acl where team_id = {team_id} AND corpus_id = {corpus_id}"
