@@ -45,14 +45,10 @@ class udops_authorise:
             query = f"select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'"
             cursor.execute(query)
             row = cursor.fetchone()
-            print(f"row--->{row}")
             team_id = row[0]
-            print(f"team_id-->{team_id}")
-
             query1 = f"select * from cfg_udops_teams_acl where team_id = {team_id} AND corpus_id = {corpus_id}"
             cursor.execute(query1)
             row = cursor.fetchall()
-            print(f"length of row-->{len(row)}")
             conn.commit()
             if len(row) == 0:
                 return 0

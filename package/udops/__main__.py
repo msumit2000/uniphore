@@ -209,31 +209,32 @@ try:
 
         authentication = AccessControl()
         corpus_id = authentication.corpus_id(corpus_name)
-
-        file_exists = is_file_present(file_name)
-
-        if file_exists:
-            config = configparser.ConfigParser()
-            config.read(file_name)
-            team_name = config.get('github', 'team_name')
-            authentication = AccessControl()
-            team_validity = authentication.associate_team(corpus_id,team_name)
-            if team_validity ==0:
-                print("Corpus name is not associated with team")
-            else:
-                ACCESS_TOKEN = config.get('github', 'access_token')
-
-                user_id = authentication.authenticate(ACCESS_TOKEN)
-                access_type = "write"
-                print(user_id)
-                # if authentication.authorize_user(user_id,corpus_id,access_type) == 1:
-                #     print("Valid user.....")
-                #     ucor = ucorpus()
-                #     return ucor.push()
-                # else:
-                #     print("ACCESS DENY")
+        if corpus_id is None or corpus_id==0:
+            print("corpus doesn't exists")
         else:
-            print(f"The file '{file_name}' does not exist in the current working directory.")
+            file_exists = is_file_present(file_name)
+
+            if file_exists:
+                config = configparser.ConfigParser()
+                config.read(file_name)
+                team_name = config.get('github', 'team_name')
+                authentication = AccessControl()
+                team_validity = authentication.associate_team(corpus_id,team_name)
+                if team_validity ==0:
+                    print("Corpus name is not associated with team")
+                else:
+                    ACCESS_TOKEN = config.get('github', 'access_token')
+
+                    user_id = authentication.authenticate(ACCESS_TOKEN)
+                    access_type = "write"
+                    if authentication.authorize_user(user_id,corpus_id,access_type) == 1:
+                        print("Valid user.....")
+                        ucor = ucorpus()
+                        return ucor.push()
+                    else:
+                        print("ACCESS DENY")
+            else:
+                print(f"The file '{file_name}' does not exist in the current working directory.")
 
 
 
@@ -259,15 +260,22 @@ try:
         if file_exists:
             config = configparser.ConfigParser()
             config.read(file_name)
-            ACCESS_TOKEN = config.get('github', 'access_token')
+            team_name = config.get('github', 'team_name')
             authentication = AccessControl()
-            user_id = authentication.authenticate(ACCESS_TOKEN)
+            team_validity = authentication.associate_team(corpus_id, team_name)
+            if team_validity == 0:
+                print("Corpus name is not associated with team")
 
-            if authentication.authorize_user_clone(user_id,corpus_id)==1:
-                ucor= ucorpus()
-                return ucor.clone(git)
             else:
-                print("No access for user to clone corpus")
+                ACCESS_TOKEN = config.get('github', 'access_token')
+              #  authentication = AccessControl()
+                user_id = authentication.authenticate(ACCESS_TOKEN)
+                print("working for clone")
+                # if authentication.authorize_user_clone(user_id,corpus_id)==1:
+                #     ucor= ucorpus()
+                #     return ucor.clone(git)
+                # else:
+                #     print("No access for user to clone corpus")
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
 
@@ -293,14 +301,22 @@ try:
         if file_exists:
             config = configparser.ConfigParser()
             config.read(file_name)
-            ACCESS_TOKEN = config.get('github', 'access_token')
+            team_name = config.get('github', 'team_name')
             authentication = AccessControl()
-            user_id = authentication.authenticate(ACCESS_TOKEN)
-            access_type = "write"
-            if authentication.authorize_user_clone(user_id, corpus_id) == 1:
-                return ucorpus.pull(folder)
+            team_validity = authentication.associate_team(corpus_id, team_name)
+
+            if team_validity == 0:
+                print("Corpus name is not associated with team")
+
             else:
-                print("ACCESS DENY")
+                ACCESS_TOKEN = config.get('github', 'access_token')
+                user_id = authentication.authenticate(ACCESS_TOKEN)
+                access_type = "write"
+                print("working for pull")
+                # if authentication.authorize_user_clone(user_id, corpus_id) == 1:
+                #     return ucorpus.pull(folder)
+                # else:
+                #     print("ACCESS DENY")
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
 
