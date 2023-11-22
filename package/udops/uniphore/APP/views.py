@@ -373,7 +373,7 @@ class team_upsert(APIView):
         if request.method == 'POST':
             data = json.loads(request.body)
             dataset = UserManagement()
-            response = dataset.update_team(data["user_name"],data["permanent_access_token"], data["tenant_id"], data["s3_base_path"],
+            response = dataset.update_team(data["permanent_access_token"], data["tenant_id"], data["s3_base_path"],
                                            data["s3_destination_path"], data["existing_teamname"], data["new_teamname"])
             response_data = {
                 "status": "success",

@@ -49,7 +49,6 @@ class AccessControl:
         user = UserAuthenticationHandler()
         return user.default_acess(corpus_id,user_id)
 
-
     def retrieve_change(self):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         file_name = os.path.join(dir_path, 'config/udops_config')
@@ -64,10 +63,14 @@ class AccessControl:
         teamuser = teamusermanager()
         teamuser.team_authentication(username,teamname)
 
-
     def Corpus_team_map(self,team_id , corpus_id):
         user = UserAuthenticationHandler()
         return user.Corpus_team_map(team_id,corpus_id)
+
+    def associate_team(self, corpus_id, teamname):
+        user = UserAuthenticationHandler()
+        return user.associate_team(corpus_id, teamname)
+
 
         
 

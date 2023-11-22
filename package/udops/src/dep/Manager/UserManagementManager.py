@@ -70,38 +70,36 @@ class UserManagementManager:
         except Exception as e:
             print(e)
 
-    def update_team(self, admin_user,permanent_access_token, tenant_id, s3_base_path, destination_base_path, existing_teamname,
+    def update_team(self,permanent_access_token, tenant_id, s3_base_path, destination_base_path, existing_teamname,
                     new_teamname):
         try:
             conn = connection.get_connection()
             cursor = conn.cursor(cursor_factory=RealDictCursor)
-            query1 = f"select team_id from cfg_udops_teams_metadata where team_name = '{existing_teamname}' "
-            cursor.execute(query1)
-            row1 = cursor.fetchone()
-            if len(row1) == 0:
-                print("team not found")
-            else:
-                team_id = row1['team_id']
-                query2 = f"select user_id from udops_users where user_name = '{admin_user}'"
-                cursor.execute(query2)
-                row2 = cursor.fetchone()
-                user_id = row2['user_id']
-                query3 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id} "
-                cursor.execute(query3)
-                row3 = cursor.fetchall()
-                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-                print(f"row3-->{row3}")
-                print("!!!!!!!!!!!!!!!!!!!!!!1")
-                admin_ids = row3['admin_id']
-                print(admin_ids)
-                if user_id in admin_ids:
-                    query = (f" UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}',"
-                             f" tenant_id = '{tenant_id}', s3_base_path = '{s3_base_path}', "
-                             f" s3_destination_path = '{destination_base_path}',"
-                             f" teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';")
-                    cursor.execute(query)
-                else:
-                    print("user not a admin user")
+            # query1 = f"select team_id from cfg_udops_teams_metadata where teamname = '{existing_teamname}' "
+            # cursor.execute(query1)
+            # row1 = cursor.fetchone()
+            # if len(row1) == 0:
+            #     print("team not found")
+            # else:
+            #     team_id = row1['team_id']
+            #     query2 = f"select user_id from udops_users where user_name = '{admin_user}'"
+            #     cursor.execute(query2)
+            #     row2 = cursor.fetchone()
+            #     user_id = row2['user_id']
+            #     query3 = f"select admin_id from cfg_udops_teams_admin where team_id = {team_id} "
+            #     cursor.execute(query3)
+            #     row3 = cursor.fetchall()
+            #     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            #     print(f"row3-->{row3}")
+            #     print("!!!!!!!!!!!!!!!!!!!!!!1")
+            #     admin_ids = row3['admin_id']
+            #     print(admin_ids)
+            #     if user_id in admin_ids:
+            query = (f" UPDATE cfg_udops_teams_metadata SET permanent_access_token = '{permanent_access_token}',"
+                     f" tenant_id = '{tenant_id}', s3_base_path = '{s3_base_path}', "
+                     f" s3_destination_path = '{destination_base_path}',"
+                     f" teamname = '{new_teamname}' WHERE teamname = '{existing_teamname}';")
+            cursor.execute(query)
 
             if cursor.rowcount == 0:
                 return "existing_teamname not found!!!"

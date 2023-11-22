@@ -53,3 +53,6 @@ class UserAuthenticationHandler:
         authentication = udpos_authentication()
         return authentication.Corpus_team_map(team_id,corpus_id,conn)
 
+    def associate_team(self,corpus_id, teamname):
+        authentication = udops_authorise()
+        return authentication.associate_team(corpus_id,teamname, conn)

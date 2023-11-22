@@ -215,17 +215,23 @@ try:
         if file_exists:
             config = configparser.ConfigParser()
             config.read(file_name)
-            ACCESS_TOKEN = config.get('github', 'access_token')
+            team_name = config.get('github', 'team_name')
             authentication = AccessControl()
-            user_id = authentication.authenticate(ACCESS_TOKEN)
-            access_type = "write"
-
-            if authentication.authorize_user(user_id,corpus_id,access_type) == 1:
-                print("Valid user.....")
-                ucor = ucorpus()
-                return ucor.push()
+            team_validity = authentication.associate_team(corpus_id,team_name)
+            if team_validity ==0:
+                print("Corpus name is not associated with team")
             else:
-                print("ACCESS DENY")
+                ACCESS_TOKEN = config.get('github', 'access_token')
+
+                user_id = authentication.authenticate(ACCESS_TOKEN)
+                access_type = "write"
+                print(user_id)
+                # if authentication.authorize_user(user_id,corpus_id,access_type) == 1:
+                #     print("Valid user.....")
+                #     ucor = ucorpus()
+                #     return ucor.push()
+                # else:
+                #     print("ACCESS DENY")
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
 

@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
+
 class udops_authorise:
     def authorise_user_clone(self,user_id,corpus_id,conn):
         cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -35,5 +36,27 @@ class udops_authorise:
             cursor.execute(query)
             conn.commit()
             print(f"Access type updated successfully for user '{username}'")
+        except psycopg2.Error as e:
+            print(f"Error connecting to the database: {e}")
+
+    def associate_team(self, corpus_id, team_name, conn):
+        try:
+            cursor = conn.cursor()
+            query = f"select team_id from cfg_udops_teams_metadata where teamname = '{team_name}"
+            cursor.execute(query)
+            row = cursor.fetchone()
+            team_id = row['team_id']
+            print(f"team_id-->{team_id}")
+
+            query1 = f"select * from cfg_udops_teams_acl where team_id = {team_id} AND corpus_id = {corpus_id}"
+            cursor.execute(query1)
+            row = cursor.fetchall()
+            print(f"length of row-->{len(row)}")
+            conn.commit()
+            if len(row) == 0:
+                return 0
+            else:
+                return 1
+
         except psycopg2.Error as e:
             print(f"Error connecting to the database: {e}")
