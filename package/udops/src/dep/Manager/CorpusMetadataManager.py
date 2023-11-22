@@ -132,8 +132,6 @@ class CorpusMetadataManager:
             cursor.execute(query)
             row = cursor.fetchone()
             if len(row) == 0:
-                return 0
-            else:
                 data = json_loader["corpus_name"], json_loader["corpus_type"], json_loader["language"], json_loader[
                     "source_type"], \
                     json_loader["vendor"], json_loader["domain"], json_loader["description"], json_loader["lang_code"], \
@@ -145,8 +143,9 @@ class CorpusMetadataManager:
                 cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
                 conn.commit()
                 cursor.close()
-
                 return 1
+            else:
+                return 0
             # conn.close()
         except Exception as e:
             print(e)
