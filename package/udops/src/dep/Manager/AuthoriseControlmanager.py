@@ -42,7 +42,7 @@ class udops_authorise:
     def associate_team(self, corpus_id, team_name, conn):
         try:
             cursor = conn.cursor()
-            query = f"select team_id from cfg_udops_teams_metadata where teamname = '{team_name}"
+            query = f"select team_id from cfg_udops_teams_metadata where teamname = '{team_name}'"
             cursor.execute(query)
             row = cursor.fetchone()
             team_id = row['team_id']
