@@ -48,8 +48,8 @@ class ucorpus:
     def init(self,file,target):
         corpus_handler = CorpusHandler()
         corpus_properties = file
-        corpus_handler.create_corpus(corpus_properties,target)
         print("Config written")
+        return corpus_handler.create_corpus(corpus_properties,target)
 
     def add(self,target: str):
         corpus_handler = CorpusHandler()

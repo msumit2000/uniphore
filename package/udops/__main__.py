@@ -135,11 +135,14 @@ try:
                             "acquisition_date": acquisition_date,
                             "migration_date": migration_date
                         }
-                        ucorpus().init(corpus_details,source)
-                        corpus_id = authentication.corpus_id(corpus_name)
-                        authentication.default_access(corpus_id,user_id)
-                        authentication.Corpus_team_map(team_id, corpus_id)
-                        AccessControl().retrieve_change()
+                        if ucorpus().init(corpus_details,source)==0:
+                            print("corpus already existed")
+
+                        else:
+                            corpus_id = authentication.corpus_id(corpus_name)
+                            authentication.default_access(corpus_id,user_id)
+                            authentication.Corpus_team_map(team_id, corpus_id)
+                            AccessControl().retrieve_change()
                     else:
                         print("Corpus name and folder name should be same")
 

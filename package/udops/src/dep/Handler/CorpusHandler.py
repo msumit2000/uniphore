@@ -117,7 +117,10 @@ class CorpusHandler:
           #  corpusRepositoryManager1.init()
           #  corpusRepositoryManager1.get_url(target)
             corpusMetadataManager = CorpusMetadataManager()
-            corpusMetadataManager.create_corpus(json_loader, conn)
+            if corpusMetadataManager.create_corpus(json_loader, conn) == 0:
+                return 0
+            else:
+                return 1
 
         except Exception as e:
             raise e

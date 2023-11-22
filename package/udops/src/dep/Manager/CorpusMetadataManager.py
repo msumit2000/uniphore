@@ -127,17 +127,26 @@ class CorpusMetadataManager:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute(Constants.create_metadata_table)
             cursor.execute(Constants.create_custom_table)
-            data = json_loader["corpus_name"], json_loader["corpus_type"], json_loader["language"], json_loader[
-                "source_type"], \
-                json_loader["vendor"], json_loader["domain"], json_loader["description"], json_loader["lang_code"], \
-            json_loader["acquisition_date"], json_loader["migration_date"]
+            corpus_name = json_loader["corpus_name"]
+            query = f"select corpus_id from corpus_metadata where corpus_name = '{corpus_name}'"
+            cursor.execute(query)
+            row = cursor.fetchone()
+            if len(row) == 0:
+                return 0
+            else:
+                data = json_loader["corpus_name"], json_loader["corpus_type"], json_loader["language"], json_loader[
+                    "source_type"], \
+                    json_loader["vendor"], json_loader["domain"], json_loader["description"], json_loader["lang_code"], \
+                    json_loader["acquisition_date"], json_loader["migration_date"]
 
-            cursor.execute(
-                Constants.insert_query_metadata,
-                data)
-            cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
-            conn.commit()
-            cursor.close()
+                cursor.execute(
+                    Constants.insert_query_metadata,
+                    data)
+                cursor.execute(Constants.query_metadata + json_loader["corpus_name"] + "'")
+                conn.commit()
+                cursor.close()
+
+                return 1
             # conn.close()
         except Exception as e:
             print(e)
