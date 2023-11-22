@@ -112,7 +112,7 @@ try:
                             "acquisition_date": acquisition_date,
                             "migration_date": migration_date
                                }
-                        ucorpus.init(corpus_details,source)
+                        ucorpus().init(corpus_details,source)
                         corpus_id = authentication.corpus_id(corpus_name)
                         authentication.default_access(corpus_id,user_id)
                         authentication.Corpus_team_map(team_id , corpus_id)
@@ -135,7 +135,7 @@ try:
                             "acquisition_date": acquisition_date,
                             "migration_date": migration_date
                         }
-                        ucorpus.init(corpus_details,source)
+                        ucorpus().init(corpus_details,source)
                         corpus_id = authentication.corpus_id(corpus_name)
                         authentication.default_access(corpus_id,user_id)
                         authentication.Corpus_team_map(team_id, corpus_id)
@@ -268,14 +268,13 @@ try:
 
             else:
                 ACCESS_TOKEN = config.get('github', 'access_token')
-              #  authentication = AccessControl()
                 user_id = authentication.authenticate(ACCESS_TOKEN)
-                print("working for clone")
-                # if authentication.authorize_user_clone(user_id,corpus_id)==1:
-                #     ucor= ucorpus()
-                #     return ucor.clone(git)
-                # else:
-                #     print("No access for user to clone corpus")
+
+                if authentication.authorize_user_clone(user_id,corpus_id)==1:
+                    ucor= ucorpus()
+                    return ucor.clone(git)
+                else:
+                    print("No access for user to clone corpus")
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
 
@@ -312,11 +311,10 @@ try:
                 ACCESS_TOKEN = config.get('github', 'access_token')
                 user_id = authentication.authenticate(ACCESS_TOKEN)
                 access_type = "write"
-                print("working for pull")
-                # if authentication.authorize_user_clone(user_id, corpus_id) == 1:
-                #     return ucorpus.pull(folder)
-                # else:
-                #     print("ACCESS DENY")
+                if authentication.authorize_user_clone(user_id, corpus_id) == 1:
+                    return ucorpus.pull(folder)
+                else:
+                    print("ACCESS DENY")
         else:
             print(f"The file '{file_name}' does not exist in the current working directory.")
 
