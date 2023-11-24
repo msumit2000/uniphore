@@ -130,7 +130,9 @@ class CorpusMetadataManager:
             corpus_name = json_loader["corpus_name"]
             query = f"select corpus_id from corpus_metadata where corpus_name = '{corpus_name}'"
             cursor.execute(query)
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             row = cursor.fetchone()
+            print(f"row-->{row}")
             if len(row) == 0:
                 data = json_loader["corpus_name"], json_loader["corpus_type"], json_loader["language"], json_loader[
                     "source_type"], \

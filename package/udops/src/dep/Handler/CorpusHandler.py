@@ -114,8 +114,8 @@ class CorpusHandler:
     def create_corpus(self, json_loader, target):
         try:
             corpusRepositoryManager1 = CorpusRepositoryManager()
-          #  corpusRepositoryManager1.init()
-          #  corpusRepositoryManager1.get_url(target)
+            corpusRepositoryManager1.init()
+            corpusRepositoryManager1.get_url(target)
             corpusMetadataManager = CorpusMetadataManager()
             if corpusMetadataManager.create_corpus(json_loader, conn) == 0:
                 return 0
