@@ -133,7 +133,7 @@ class CorpusMetadataManager:
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             row = cursor.fetchone()
             print(f"row-->{row}")
-            if len(row) == 0:
+            if row is None:
                 data = json_loader["corpus_name"], json_loader["corpus_type"], json_loader["language"], json_loader[
                     "source_type"], \
                     json_loader["vendor"], json_loader["domain"], json_loader["description"], json_loader["lang_code"], \
