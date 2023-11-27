@@ -17,12 +17,11 @@ class CorpusRepositoryManager:
         s = Repo(os.getcwd())
         s.get_url(target)
 
-
     def add(self, target):
         s = Repo(os.getcwd())
         g = git.Repo(os.getcwd())
         s.add(
-            targets=target
+            targets=target,
         )
     
     def checkout(self, commitid):

@@ -40,6 +40,7 @@ try:
                                 "migration_date": data['migration_date']
                             }
                             uih = uihandler()
+                            auth.change_credential(data['teamname'])
                             create_corpus = uih.init(corpus_details, location)
                             if create_corpus == 1:
                                 corpus_id = auth.corpus_id(data['corpus_name'])

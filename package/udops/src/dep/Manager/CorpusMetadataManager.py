@@ -130,7 +130,6 @@ class CorpusMetadataManager:
             corpus_name = json_loader["corpus_name"]
             query = f"select corpus_id from corpus_metadata where corpus_name = '{corpus_name}'"
             cursor.execute(query)
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             row = cursor.fetchone()
             print(f"row-->{row}")
             if row is None:
@@ -305,6 +304,7 @@ class CorpusMetadataManager:
     def search_corpus(self, corpus_name, conn):
         try:
             if corpus_name == "":
+                print("########################33")
                 cursor = conn.cursor(cursor_factory=RealDictCursor)
                 cursor.execute("SELECT corpus_id, corpus_name, corpus_type, language, source_type, "
                                "lastupdated_ts, (SELECT teamname FROM cfg_udops_teams_metadata"

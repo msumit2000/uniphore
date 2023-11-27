@@ -40,7 +40,10 @@ class AccessControl:
     
     def partial_change(self,source_tenant,own_token):
         duplo.ChangeToken(tenant=source_tenant,token=own_token)
-    
+
+    def credentials(self,token, tenant):
+        duplo.credentials(token,tenant)
+
     def corpus_id(self,corpus_name):
         user = UserAuthenticationHandler()
         return user.corpus_id(corpus_name)

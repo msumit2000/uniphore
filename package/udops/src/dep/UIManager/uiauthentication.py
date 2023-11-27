@@ -1,4 +1,5 @@
 from psycopg2.extras import RealDictCursor
+from udops.src.dep.Handler.duplotoken import *
 
 
 class uiauthentication:
@@ -145,4 +146,29 @@ class uiauthentication:
         except Exception as e:
             error = str(e)
             return error
+
+    def change_credentials(self, team_name,conn):
+        try:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"select permanent_access_token from cfg_udops_teams_metadata where teamname = '{team_name}';"
+            cursor.execute(query)
+            rows = cursor.fetchone()
+            duplo_token = rows['permanent_access_token']
+            conn.commit()
+
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            query = f"select tenant_id from cfg_udops_teams_metadata where teamname = '{team_name}';"
+            cursor.execute(query)
+            rows = cursor.fetchone()
+            tenant = rows['tenant_id']
+            conn.commit()
+            cursor.close()
+            duplo = duplotoken()
+            duplo.ChangeToken(tenant, duplo_token)
+            duplo.credentials(duplo_token, tenant)
+
+        except Exception as e:
+            err = str(e)
+            print(err)
+
 

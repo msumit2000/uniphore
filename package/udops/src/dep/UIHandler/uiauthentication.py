@@ -42,3 +42,7 @@ class authentication:
     def Corpus_team_map(self, team_id, corpus_id):
         auth = uiauthentication()
         return auth.Corpus_team_map(team_id, corpus_id, conn)
+
+    def change_credential(self, team_name):
+        auth = uiauthentication()
+        return auth.change_credentials(team_name, conn)

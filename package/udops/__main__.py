@@ -98,7 +98,7 @@ try:
                     Source_tenant = input("Enter Source Tenant name:")
                     User_Token = input("Enter User Token:") # Partial change for import of data
                     AccessControl().partial_change(Source_tenant,User_Token)
-
+                    AccessControl().credentials(User_Token, Source_tenant)
                     if corpus_name == os.path.basename(os.getcwd()):
                         corpus_details = {
                             "corpus_name": corpus_name,
