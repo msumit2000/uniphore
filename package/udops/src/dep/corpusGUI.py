@@ -113,19 +113,25 @@ try:
                     access = auth.authorize_user(user_id, corpus_id, access_type)
                     auth = authentication()
                     location = auth.get_team_location(data["teamname"])
-                    corpus_name = data['corpus_name']
-                    location = str(location) + "/" + str(corpus_name)
-                    if location == 0:
-                        return 2
-                    else:
-                        if access == 0:
-                            return 3
+
+                    mount = auth.S3_mount(data['teamname'])
+                    if mount == 1 :
+                        corpus_name = data['corpus_name']
+                        location = str(location) + "/" + str(corpus_name)
+                        if location == 0:
+                            return 2
                         else:
-                            h = uih.push(location)
-                            if h == 1:
-                                return 1
+                            if access == 0:
+                                return 3
                             else:
-                                return h
+                                h = uih.push(location)
+                                if h == 1:
+                                    auth.umount(data['teamname'])
+                                    return 1
+                                else:
+                                    return h
+                    else:
+                        return 0
 
             except Exception as e:
                 error = str(e)
@@ -146,18 +152,25 @@ try:
 
                         auth = authentication()
                         location = auth.get_team_location(data["teamname"])
-                        corpus_name = data['corpus_name']
-                        location = str(location) + "/" + str(corpus_name)
-                        if location == 0:
-                            return 2
-                        else:
-                            if access == 0:
-                                return 3
+                        mount = auth.S3_mount(data['teamname'])
+                        if mount == 1:
+                            corpus_name = data['corpus_name']
+                            location = str(location) + "/" + str(corpus_name)
+                            if location == 0:
+                                return 2
                             else:
-                                if uih.clone(data['gita'],location) == 1:
-                                    return 1
+                                if access == 0:
+                                    return 3
                                 else:
-                                    return uih.clone(data['gita'],location)
+                                    if uih.clone(data['gita'],location) == 1:
+                                        auth.umount(data['teamname'])
+                                        return 1
+                                    else:
+                                        auth.umount(data['teamname'])
+                                        return uih.clone(data['gita'],location)
+                        else:
+                            print("Error in mounting bucket")
+                            return 2
                 else:
                     return 2
             except Exception as e:
