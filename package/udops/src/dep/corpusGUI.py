@@ -170,7 +170,7 @@ try:
                                         return uih.clone(data['gita'],location)
                         else:
                             print("Error in mounting bucket")
-                            return 2
+                            return 3
                 else:
                     return 2
             except Exception as e:

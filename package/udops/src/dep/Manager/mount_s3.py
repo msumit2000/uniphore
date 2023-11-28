@@ -62,11 +62,22 @@ class mount_s3:
             subprocess.run(command, shell=True, check=True)
             return 1
 
-        except Exception as e:
-            err = str(e)
-            print(err)
-            return 2
+        except subprocess.CalledProcessError as e:
 
+            # If the mount fails due to nonempty, try to remount with nonempty using fusermount
+
+            if "directory not empty" in str(e):
+
+                print("Retrying with fusermount -o nonempty...")
+
+                subprocess.run(["fusermount", "-o", "nonempty", mount_location], check=True)
+
+                print(f"S3 bucket {bucket_name} mounted at {mount_location} using fusermount -o nonempty.")
+
+            else:
+
+                print(f"Error: Unable to mount S3 bucket. {e}")
+            return 0
     def unmount_s3_bucket(self, teamname):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
