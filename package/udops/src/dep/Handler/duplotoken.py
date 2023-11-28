@@ -61,6 +61,7 @@ class duplotoken:
 
                 configParser.set('default', 'aws_access_key_id',access_key_id)
                 configParser.set('default', 'aws_secret_access_key', secret_access_key)
+                configParser.set('default', 'aws_session_token', session_token)
 
                 with open(configFilePath, 'w') as configfile:
                     configParser.write(configfile)

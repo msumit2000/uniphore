@@ -1,4 +1,5 @@
 from udops.src.dep.UIManager.uiauthentication import uiauthentication
+from udops.src.dep.Manager.mount_s3 import mount_s3
 from udops.src.dep.config.Connection import *
 from udops.src.dep.InputProperties import *
 prop = properties()
@@ -46,3 +47,11 @@ class authentication:
     def change_credential(self, team_name):
         auth = uiauthentication()
         return auth.change_credentials(team_name, conn)
+
+    def S3_mount(self, teamname):
+        mount = mount_s3()
+        return mount.mount_s3_bucket_indiviual(teamname)
+
+    def umount(self, teamname):
+        mount = mount_s3()
+        return mount.unmount_s3_bucket(teamname)
