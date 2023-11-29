@@ -77,7 +77,7 @@ class mount_s3:
             else:
 
                 print(f"Error: Unable to mount S3 bucket. {e}")
-            return 0
+            return 1
     def unmount_s3_bucket(self, teamname):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
@@ -86,8 +86,8 @@ class mount_s3:
             rows = cursor.fetchone()
             mount_location = rows['mount_location']
             conn.commit()
-
-            subprocess.run(["fusermount", "-u", ], check=True)
+            print(f"mount_location---> {mount_location}")
+            subprocess.run(["fusermount", "-u", mount_location], check=True)
             print(f"S3 bucket at {mount_location} successfully unmounted.")
         except subprocess.CalledProcessError as e:
             print(f"Error: Unable to unmount S3 bucket. {e}")
