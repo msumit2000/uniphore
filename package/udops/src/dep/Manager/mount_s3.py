@@ -54,8 +54,6 @@ class mount_s3:
                 bucket_name = path[:first_index] + ":/" + path[first_index + 1:]
             else:
                 bucket_name = s3_destination_path
-            print(f"bucket_name--> {bucket_name}")
-
             #mount_point = "/home/ubuntu/mount/"+str()
             os.makedirs(mount_location, exist_ok=True)
             command = f"s3fs {bucket_name} {mount_location} "
@@ -67,17 +65,13 @@ class mount_s3:
             # If the mount fails due to nonempty, try to remount with nonempty using fusermount
 
             if "directory not empty" in str(e):
-
                 print("Retrying with fusermount -o nonempty...")
-
                 subprocess.run(["fusermount", "-o", "nonempty", mount_location], check=True)
-
                 print(f"S3 bucket {bucket_name} mounted at {mount_location} using fusermount -o nonempty.")
-
             else:
-
                 print(f"Error: Unable to mount S3 bucket. {e}")
             return 1
+
     def unmount_s3_bucket(self, teamname):
         try:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
